@@ -27,11 +27,3 @@ class OverroundCalculator
         return $fairOdds;
     }
 }
-
-// Example usage:
-$backOdds = [2.00, 3.50, 3.50]; // Example odds for a three-way market
-$overround = OverroundCalculator::calculateOverround($backOdds);
-$fairOdds = OverroundCalculator::calculateFairOdds($backOdds);
-
-echo "Market overround: " . $overround . "%\n";
-echo "Fair odds: " . implode(", ", $fairOdds) . "\n";

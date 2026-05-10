@@ -94,6 +94,11 @@ use App\Enums\Mma\Markets\MMAOverUnder;
 use App\Enums\Mma\Markets\MMARoundBetting;
 use App\Enums\Mma\Markets\MMAVictoryMethod;
 use App\Enums\Races\Markets\Winner;
+// Cricket
+use App\Enums\Cricket\Markets\CricketMatchResult;
+use App\Enums\Cricket\Markets\CricketSessionRuns;
+use App\Enums\Cricket\Markets\CricketTossWinner;
+use App\Enums\Cricket\Markets\CricketOddEven;
 use App\Enums\Rugby\Markets\RugbyAsianHandicap;
 use App\Enums\Rugby\Markets\RugbyDoubleChance;
 use App\Enums\Rugby\Markets\RugbyExactGoals;
@@ -237,6 +242,11 @@ enum Market: string
     case VOLLEYBALL_TEAM_TO_SCORE = VolleyballTeamToScore::class;
         // Races
     case RACING_WINNER = Winner::class;
+        // Cricket
+    case CRICKET_MATCH_RESULT = CricketMatchResult::class;
+    case CRICKET_SESSION_RUNS = CricketSessionRuns::class;
+    case CRICKET_TOSS_WINNER = CricketTossWinner::class;
+    case CRICKET_ODD_EVEN = CricketOddEven::class;
 
 
     public function initialize(): Collection
@@ -371,6 +381,11 @@ enum Market: string
             static::MMA_ROUND_BETTING,
             static::MMA_VICTORY_METHOD,
             static::RACING_WINNER,
+            // Cricket
+            static::CRICKET_MATCH_RESULT,
+            static::CRICKET_SESSION_RUNS,
+            static::CRICKET_TOSS_WINNER,
+            static::CRICKET_ODD_EVEN,
         ];
     }
 }

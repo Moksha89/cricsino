@@ -88,6 +88,16 @@ class StakesController extends Controller
         }
         $bet = Bet::find($request->bet_id);
         $game = Game::find($request->game_id);
+        // Bet delay for live/in-play games
+        if ($game->is_live && $game->bet_delay > 0) {
+            $delayKey = "bet_delay:{$request->user()->id}:{$game->id}";
+            $lastBet = cache($delayKey);
+            if ($lastBet && now()->diffInSeconds($lastBet) < $game->bet_delay) {
+                $remaining = $game->bet_delay - now()->diffInSeconds($lastBet);
+                throw ValidationException::withMessages(['stake' => ["Please wait {$remaining} seconds before placing another bet on this live game."]]);
+            }
+            cache([$delayKey => now()], now()->addMinutes(5));
+        }
         //ensure market is attached.
         $game->markets()->syncWithoutDetaching([$bet->market_id => ['uuid' => Str::uuid()]]);
         $stake = new Stake();

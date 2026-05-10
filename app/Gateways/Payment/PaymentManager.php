@@ -8,6 +8,9 @@ use App\Gateways\Payment\Drivers\CoinPayments;
 use App\Gateways\Payment\Drivers\NowPayments;
 use App\Gateways\Payment\Drivers\Payeer;
 use App\Gateways\Payment\Drivers\Paypal;
+use App\Gateways\Payment\Drivers\Razorpay;
+use App\Gateways\Payment\Drivers\Upi;
+use App\Gateways\Payment\Drivers\BankTransfer;
 use Illuminate\Support\Manager;
 use InvalidArgumentException;
 
@@ -23,7 +26,10 @@ class PaymentManager extends Manager implements Factory
         "nowpayments",
         "paypal",
         "coinpayments",
-        "payeer"
+        "payeer",
+        "razorpay",
+        "upi",
+        "bank_transfer"
     ];
 
     /**
@@ -130,6 +136,23 @@ class PaymentManager extends Manager implements Factory
     }
 
 
+
+    protected function createRazorpayDriver(): Razorpay
+    {
+        $key_id = config('services.razorpay.key_id', settings('razorpay.key_id'));
+        $key_secret = config('services.razorpay.key_secret', settings('razorpay.key_secret'));
+        return new Razorpay(key_id: $key_id, key_secret: $key_secret);
+    }
+
+    protected function createUpiDriver(): Upi
+    {
+        return new Upi();
+    }
+
+    protected function createBank_transferDriver(): BankTransfer
+    {
+        return new BankTransfer();
+    }
 
     /**
      * Forget all of the resolved driver instances.

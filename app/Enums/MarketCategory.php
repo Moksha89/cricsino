@@ -109,6 +109,11 @@ use  App\Enums\Volleyball\Markets\VolleyballMatchResult;
 use  App\Enums\Volleyball\Markets\VolleyballOddEven;
 use  App\Enums\Volleyball\Markets\VolleyballOverUnder;
 use  App\Enums\Volleyball\Markets\VolleyballTeamToScore;
+// Cricket
+use App\Enums\Cricket\Markets\CricketMatchResult;
+use App\Enums\Cricket\Markets\CricketSessionRuns;
+use App\Enums\Cricket\Markets\CricketTossWinner;
+use App\Enums\Cricket\Markets\CricketOddEven;
 
 
 use App\Enums\Basketball\Markets\AsianHandicap as BasketballAsianHandicap;
@@ -240,6 +245,12 @@ enum MarketCategory: string
             MatchWinner::class => self::WINNER,
             OddEven::class => self::TOTALS,
             OverUnder::class => self::TOTALS,
+
+            // Cricket
+            CricketMatchResult::class => static::WINNER,
+            CricketSessionRuns::class => static::TOTALS,
+            CricketTossWinner::class => static::WINNER,
+            CricketOddEven::class => static::TOTALS,
 
             default => throw new \InvalidArgumentException('Unknown market type: ' . $market),
         };

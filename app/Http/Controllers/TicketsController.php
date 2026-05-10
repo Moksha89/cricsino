@@ -67,7 +67,7 @@ class TicketsController extends Controller
         $ticket->uid =  Random::generate(16);
         $ticket->amount = $request->stake;
         $ticket->payout = 0;
-        $ticket->total_odds = 0;
+        $ticket->total_odds = 1;
         $ticket->type  = StakeType::BACK;
         $ticket->status = TicketStatus::PENDING;
         $ticket->won = false;
@@ -104,7 +104,7 @@ class TicketsController extends Controller
                     'bet_info' => $wager->bet,
                     'market_info' => $wager->market,
                 ]);
-                $ticket->total_odds += $odd->odd;
+                $ticket->total_odds *= $odd->odd;
             }
             $ticket->payout = $ticket->total_odds *  $ticket->amount;
             $ticket->save();

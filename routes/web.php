@@ -282,3 +282,13 @@ Route::name('whitelists.')
         Route::delete('/whitelists/{whitelist:uuid}', 'initiateRemoval')->name('destroy');
     });
 #whitelists
+
+# Casino
+Route::name('casino.')
+    ->controller(\App\Http\Controllers\CasinoController::class)
+    ->group(function () {
+        Route::get('/casino', 'index')->name('index');
+        Route::get('/casino/live', 'liveCasino')->name('live');
+        Route::get('/casino/{casinoGame:uuid}', 'show')->name('show');
+        Route::post('/casino/{casinoGame:uuid}/launch', 'launch')->name('launch')->middleware('auth');
+    });

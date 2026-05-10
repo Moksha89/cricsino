@@ -9,6 +9,7 @@
 	import DropdownLink from "@/Components/DropdownLink.vue";
 	import NavLink from "@/Components/NavLink.vue";
 	import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
+	import WhatsAppWidget from "@/Components/WhatsAppWidget.vue";
 
 	const showingNavigationDropdown = ref(false);
 	const isDarkMode = useDark();
@@ -181,6 +182,9 @@
 			<main>
 				<slot />
 			</main>
+
+			<!-- WhatsApp Support Widget -->
+			<WhatsAppWidget />
 		</div>
 	</div>
 </template>

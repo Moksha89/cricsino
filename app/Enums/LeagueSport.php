@@ -12,6 +12,10 @@ use App\Api\ApiMma;
 use App\Api\ApiNfl;
 use App\Api\ApiRugby;
 use App\Api\ApiVolleyball;
+use App\Api\ApiCricket;
+use App\Enums\Cricket\GameStatus as CricketGameStatus;
+use App\Enums\Cricket\ScoreType as CricketScoreType;
+use App\Enums\Cricket\Outcomes\CricketOverUnderOutcome;
 use App\Contracts\GameStatus as ContractsGameStatus;
 use App\Enums\Afl\GameStatus as AflGameStatus;
 use App\Enums\Afl\Outcomes\AFLAsianHandicapOutcome;
@@ -67,6 +71,7 @@ enum LeagueSport: string
     case RUGBY = 'rugby';
     case MMA = 'mma';
     case RACING = 'racing';
+    case CRICKET = 'cricket';
 
 
     public function overunders(): ?array
@@ -83,6 +88,7 @@ enum LeagueSport: string
 
             static::RUGBY => RugbyOverUnderOutcome::getOverUnders(),
             static::MMA => MMAOverUnderOutcome::getOverUnders(),
+            static::CRICKET => CricketOverUnderOutcome::getOverUnders(),
             default => [],
         };
     }
@@ -106,6 +112,7 @@ enum LeagueSport: string
             self::RUGBY => 'Rugby',
             self::MMA => 'MMA',
             self::RACING => 'Racing',
+            self::CRICKET => 'Cricket',
         };
     }
 
@@ -142,6 +149,7 @@ enum LeagueSport: string
             static::VOLLEYBALL => VolleyballScoreType::cases(),
             static::RUGBY => RugbyScoreType::cases(),
             static::MMA => MmaScoreType::cases(),
+            static::CRICKET => CricketScoreType::cases(),
         };
     }
 
@@ -164,6 +172,7 @@ enum LeagueSport: string
             static::RUGBY => RugbyScoreType::TOTAL->value,
             static::MMA => null,
             static::RACING => null,
+            static::CRICKET => CricketScoreType::TOTAL->value,
         };
     }
 
@@ -181,6 +190,7 @@ enum LeagueSport: string
             static::NFL => NflGameStatus::class,
             static::RUGBY => RugbyGameStatus::class,
             static::MMA => MmaGameStatus::class,
+            static::CRICKET => CricketGameStatus::class,
             default => GameStatus::class,
         };
         return $state::tryFrom($status);
@@ -230,6 +240,7 @@ enum LeagueSport: string
             static::NFL => ApiNfl::class,
             static::RUGBY => ApiRugby::class,
             static::MMA => ApiMma::class,
+            static::CRICKET => ApiCricket::class,
             default => GameStatus::class,
         };
     }
@@ -298,6 +309,11 @@ enum LeagueSport: string
                 MarketCategory::TOTALS,
             ],
 
+            static::CRICKET => [
+                MarketCategory::WINNER,
+                MarketCategory::TOTALS,
+                MarketCategory::TEAMS,
+            ],
             default => []
         };
     }

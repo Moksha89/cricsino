@@ -254,3 +254,28 @@ Route::name('sliders.')->controller(SlidersController::class)->group(function ()
     Route::delete('/sliders/{slider}', 'destroy')->name('destroy');
 });
 #sliders
+
+# Agent/Master System
+Route::name('agents.')->controller(\App\Http\Controllers\Admin\AgentsController::class)->group(function () {
+    Route::get('/agents', 'index')->name('index');
+    Route::get('/agents/create', 'create')->name('create');
+    Route::get('/agents/hierarchy', 'hierarchy')->name('hierarchy');
+    Route::post('/agents/store', 'store')->name('store');
+    Route::get('/agents/{agent}', 'show')->name('show');
+    Route::put('/agents/{agent}', 'update')->name('update');
+    Route::put('/agents/{agent}/toggle', 'toggle')->name('toggle');
+    Route::post('/agents/{agent}/credit', 'credit')->name('credit');
+    Route::post('/agents/{agent}/debit', 'debit')->name('debit');
+    Route::delete('/agents/{agent}', 'destroy')->name('destroy');
+});
+
+# Casino Games Management
+Route::name('casino.')->controller(\App\Http\Controllers\Admin\CasinoGamesController::class)->group(function () {
+    Route::get('/casino-games', 'index')->name('index');
+    Route::get('/casino-games/create', 'create')->name('create');
+    Route::post('/casino-games/store', 'store')->name('store');
+    Route::get('/casino-games/{casinoGame}', 'show')->name('show');
+    Route::put('/casino-games/{casinoGame}', 'update')->name('update');
+    Route::put('/casino-games/{casinoGame}/toggle', 'toggle')->name('toggle');
+    Route::delete('/casino-games/{casinoGame}', 'destroy')->name('destroy');
+});

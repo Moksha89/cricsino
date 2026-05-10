@@ -11,6 +11,9 @@ enum WithdrawGateway: string
     case NOWPAYMENTS = 'nowpayments';
     case PAYEER = 'payeer';
     case PAYPAL = 'paypal';
+    case RAZORPAY = 'razorpay';
+    case UPI = 'upi';
+    case BANK_TRANSFER = 'bank_transfer';
 
     public function type()
     {
@@ -18,7 +21,10 @@ enum WithdrawGateway: string
             static::COINPAYMENTS,
             static::NOWPAYMENTS => 'crypto',
             static::PAYEER,
-            static::PAYPAL => 'fiat',
+            static::PAYPAL,
+            static::RAZORPAY,
+            static::UPI,
+            static::BANK_TRANSFER => 'fiat',
             default => 'fiat'
         };
     }
@@ -74,6 +80,9 @@ enum WithdrawGateway: string
             static::NOWPAYMENTS => 'Instant Crypto Payments',
             static::PAYEER => 'Global E-wallet & Online Payment System',
             static::PAYPAL => 'Secure Online Payments',
+            static::RAZORPAY => 'UPI, Cards, Netbanking & Wallets (India)',
+            static::UPI => 'Direct UPI Payment (PhonePe, GPay, Paytm)',
+            static::BANK_TRANSFER => 'Direct Bank Transfer (IMPS/NEFT/RTGS)',
         };
     }
 
@@ -84,6 +93,9 @@ enum WithdrawGateway: string
             static::NOWPAYMENTS => __('Destination {symbol} address'),
             static::PAYEER => 'Destination Payeer Account Number',
             static::PAYPAL => 'Destination PayPal Email address',
+            static::RAZORPAY => 'UPI ID or Bank Account',
+            static::UPI => 'UPI ID (e.g., name@upi)',
+            static::BANK_TRANSFER => 'Bank Account Number + IFSC Code',
         };
     }
 }

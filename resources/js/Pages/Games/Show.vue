@@ -1,5 +1,5 @@
 <script setup>
-	import { computed, onMounted, ref } from "vue";
+	import { computed, onMounted, onUnmounted, ref } from "vue";
 
 	import { Head, usePage } from "@inertiajs/vue3";
 
@@ -76,8 +76,8 @@
 				},
 			);
 	});
-	onMounted(() => {
-		listner.value.stopListening("GameUpdated");
+	onUnmounted(() => {
+		listner.value?.stopListening("GameUpdated");
 	});
 </script>
 
