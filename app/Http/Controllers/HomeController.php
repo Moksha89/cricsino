@@ -38,56 +38,63 @@ class HomeController extends Controller
             ->where('is_default', true)
             ->first();
 
-        $query  = Game::query()
-            ->where('active', true)
-            ->withSum('trades as traded', 'amount')
-            ->with([
-                'scores',
-                'league',
-                'homeTeam',
-                'awayTeam',
-                'odds' => fn($q) => $q->where('odds.market_id', $defaultMarket->id)
-            ])
-            ->when($multiples, function ($query) use ($defaultMarket) {
-                $query->whereHas('odds', function ($q) use ($defaultMarket) {
-                    $q->where('odds.market_id', $defaultMarket->id);
+        // Fallback: if no default market for football, try any default market
+        if (!$defaultMarket) {
+            $defaultMarket = Market::with(['bets'])
+                ->where('is_default', true)
+                ->first();
+        }
+
+        $gamesItems = collect();
+        if ($defaultMarket) {
+            $query  = Game::query()
+                ->where('active', true)
+                ->withSum('trades as traded', 'amount')
+                ->with([
+                    'scores',
+                    'league',
+                    'homeTeam',
+                    'awayTeam',
+                    'odds' => fn($q) => $q->where('odds.market_id', $defaultMarket->id)
+                ])
+                ->when($multiples, function ($query) use ($defaultMarket) {
+                    $query->whereHas('odds', function ($q) use ($defaultMarket) {
+                        $q->where('odds.market_id', $defaultMarket->id);
+                    });
+                })
+                ->withCount('activeMarkets as marketsCount')
+                ->withExists(['odds as has_odds' => fn($q) => $q->where('market_id', $defaultMarket->id)])
+                ->latest('traded')
+                ->whereHas('league', function (Builder $query) {
+                    $query->where('active', true);
                 });
-            })
-            ->withCount('activeMarkets as marketsCount')
-            ->withExists(['odds as has_odds' => fn($q) => $q->where('market_id', $defaultMarket->id)])
-            ->latest('traded')
-            ->whereHas('league', function (Builder $query) {
-                $query->where('active', true);
-            });
-        /**
-         * Requires to be updated to use ranges!!
-         */
-        $query->with([
-            'lays' => function (HasMany $q) use ($defaultMarket) {
-                $q->where('market_id', $defaultMarket->id)
-                    ->select(
-                        'game_id',
+            $query->with([
+                'lays' => function (HasMany $q) use ($defaultMarket) {
+                    $q->where('market_id', $defaultMarket->id)
+                        ->select(
+                            'game_id',
+                            'bet_id',
+                            DB::raw('sum(amount) as amount'),
+                            DB::raw('min(odds) as price')
+                        )
+                        ->groupBy(['bet_id', 'game_id'])
+                        ->limit(3);
+                },
+                'backs' => function (HasMany $q) use ($defaultMarket) {
+                    $q->where('market_id', $defaultMarket->id)->select(
                         'bet_id',
+                        'game_id',
                         DB::raw('sum(amount) as amount'),
-                        DB::raw('min(odds) as price')
+                        DB::raw('max(odds) as price')
                     )
-                    ->groupBy(['bet_id', 'game_id'])
-                    ->limit(3);
-            },
-            'backs' => function (HasMany $q) use ($defaultMarket) {
-                $q->where('market_id', $defaultMarket->id)->select(
-                    'bet_id',
-                    'game_id',
-                    DB::raw('sum(amount) as amount'),
-                    DB::raw('max(odds) as price')
-                )
-                    ->groupBy(['bet_id', 'game_id'])
-                    ->limit(3)
-                ;
-            },
-        ]);
-        $query->inNext7Days();
-        $gamesItems = $query->latest('startTime')->take(5)->get();
+                        ->groupBy(['bet_id', 'game_id'])
+                        ->limit(3)
+                    ;
+                },
+            ]);
+            $query->inNext7Days();
+            $gamesItems = $query->latest('startTime')->take(5)->get();
+        }
         return Inertia::render('PremiumHome', [
             'enableExchange' =>  settings('site.enable_exchange'),
             'enableBookie' => settings('site.enable_bookie'),

@@ -38,6 +38,22 @@ class GamesController extends Controller
             ->where('sport', $sport)
             ->where('is_default', true)
             ->first();
+
+        // If no default market exists for this sport, show empty page
+        if (!$defaultMarket) {
+            return Inertia::render('Games/Index', [
+                'defaultMarketsCount' => $sport ? Market::where('sport', $sport)->pluck('id')->count() : 0,
+                'defaultMarket' => null,
+                'games' => GameResource::collection(collect()),
+                'sport' => $sport,
+                'league' => null,
+                'region' => $region,
+                'enableExchange' =>  settings('site.enable_exchange'),
+                'enableBookie' => settings('site.enable_bookie'),
+                'country' => $country,
+            ]);
+        }
+
         $query  = Game::query()
             ->where('active', true)
             ->with(['gameMarkets' => fn($q) => $q->where('market_id', $defaultMarket->id)])

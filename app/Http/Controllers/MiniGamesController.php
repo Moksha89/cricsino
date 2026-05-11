@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\TransactionAction;
 use App\Enums\TransactionType;
+use App\Models\CasinoGame;
 use App\Models\CasinoSession;
 use App\Support\ProvablyFair;
 use Illuminate\Http\Request;
@@ -14,6 +15,15 @@ use Str;
 
 class MiniGamesController extends Controller
 {
+    private static function gameId(string $slug): int
+    {
+        static $ids = [];
+        if (!isset($ids[$slug])) {
+            $ids[$slug] = CasinoGame::where('slug', $slug)->value('id') ?? 0;
+        }
+        return $ids[$slug];
+    }
+
     // ─── CRASH GAME ───
 
     public function crash()
@@ -54,7 +64,7 @@ class MiniGamesController extends Controller
             $session = CasinoSession::create([
                 'uuid' => Str::uuid(),
                 'user_id' => $user->id,
-                'casino_game_id' => 0,
+                'casino_game_id' => self::gameId('crash'),
                 'bet_amount' => $request->amount,
                 'win_amount' => $payout,
                 'balance_before' => $user->balance + $request->amount - $payout,
@@ -125,7 +135,7 @@ class MiniGamesController extends Controller
             CasinoSession::create([
                 'uuid' => Str::uuid(),
                 'user_id' => $user->id,
-                'casino_game_id' => 0,
+                'casino_game_id' => self::gameId('dice'),
                 'bet_amount' => $request->amount,
                 'win_amount' => $payout,
                 'balance_before' => $user->balance + $request->amount - $payout,
@@ -182,7 +192,7 @@ class MiniGamesController extends Controller
         $session = CasinoSession::create([
             'uuid' => Str::uuid(),
             'user_id' => $user->id,
-            'casino_game_id' => 0,
+            'casino_game_id' => self::gameId('mines'),
             'bet_amount' => $request->amount,
             'win_amount' => 0,
             'balance_before' => $user->balance + $request->amount,
@@ -354,7 +364,7 @@ class MiniGamesController extends Controller
             CasinoSession::create([
                 'uuid' => Str::uuid(),
                 'user_id' => $user->id,
-                'casino_game_id' => 0,
+                'casino_game_id' => self::gameId('hilo'),
                 'bet_amount' => $request->amount,
                 'win_amount' => $payout,
                 'balance_before' => $user->balance + $request->amount - $payout,

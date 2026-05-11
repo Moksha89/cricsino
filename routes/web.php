@@ -126,7 +126,7 @@ Route::name('stakes.')
     ->group(function () {
         Route::get('/stakes', 'index')->name('index');
         Route::get('/stake/tradeout/{stake:uid}', 'showTradeOut')->name('tradeout.show');
-        Route::post('/stakes/store', 'store')->name('store');
+        Route::post('/stakes/store', 'store')->name('store')->middleware('throttle:betting');
         Route::put('/stakes/{stake}', 'tradeOut')->name('tradeout');
         Route::delete('/stakes/{stake}', 'cancel')->name('cancel');
     });
@@ -288,15 +288,15 @@ Route::name('games.mini.')
     ->controller(\App\Http\Controllers\MiniGamesController::class)
     ->group(function () {
         Route::get('/casino/crash', 'crash')->name('crash');
-        Route::post('/casino/crash/bet', 'crashBet')->name('crash.bet')->middleware('auth');
+        Route::post('/casino/crash/bet', 'crashBet')->name('crash.bet')->middleware(['auth', 'throttle:casino']);
         Route::get('/casino/dice', 'dice')->name('dice');
-        Route::post('/casino/dice/bet', 'diceBet')->name('dice.bet')->middleware('auth');
+        Route::post('/casino/dice/bet', 'diceBet')->name('dice.bet')->middleware(['auth', 'throttle:casino']);
         Route::get('/casino/mines', 'mines')->name('mines');
-        Route::post('/casino/mines/start', 'minesStart')->name('mines.start')->middleware('auth');
-        Route::post('/casino/mines/reveal', 'minesReveal')->name('mines.reveal')->middleware('auth');
-        Route::post('/casino/mines/cashout', 'minesCashout')->name('mines.cashout')->middleware('auth');
+        Route::post('/casino/mines/start', 'minesStart')->name('mines.start')->middleware(['auth', 'throttle:casino']);
+        Route::post('/casino/mines/reveal', 'minesReveal')->name('mines.reveal')->middleware(['auth', 'throttle:casino']);
+        Route::post('/casino/mines/cashout', 'minesCashout')->name('mines.cashout')->middleware(['auth', 'throttle:casino']);
         Route::get('/casino/hilo', 'hilo')->name('hilo');
-        Route::post('/casino/hilo/bet', 'hiloBet')->name('hilo.bet')->middleware('auth');
+        Route::post('/casino/hilo/bet', 'hiloBet')->name('hilo.bet')->middleware(['auth', 'throttle:casino']);
     });
 
 # Casino

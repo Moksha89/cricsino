@@ -68,6 +68,16 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
+        // Throttle betting endpoints: 30 requests/minute per user
+        RateLimiter::for('betting', function (Request $request) {
+            return Limit::perMinute(30)->by($request->user()?->id ?: $request->ip());
+        });
+
+        // Throttle casino endpoints: 20 requests/minute per user
+        RateLimiter::for('casino', function (Request $request) {
+            return Limit::perMinute(20)->by($request->user()?->id ?: $request->ip());
+        });
+
         /**
          * Setup check macro
          */

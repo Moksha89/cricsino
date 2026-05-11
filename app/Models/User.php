@@ -97,12 +97,37 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Determine is a user has a given permission
-     * @param string $pemission. The Permission to check for.
+     * Determine if a user has a given permission.
+     *
+     * Admins get all permissions (also handled by policy before() hooks).
+     * Regular users get view/create permissions for their own resource types
+     * (deposit, withdraw, stake, ticket, slip, favourite, whitelist, account,
+     * personal, feedback). Destructive/admin-only permissions (forcedelete,
+     * restore, commission, currency, slider) stay denied.
+     *
+     * @param string $permission The permission to check, e.g. "view.stake"
      */
-    public function hasPermission(string $pemission)
+    public function hasPermission(string $permission): bool
     {
-        return false;
+        if ($this->isAdmin()) {
+            return true;
+        }
+
+        $userPermissions = [
+            'viewany.stake', 'view.stake', 'create.stake',
+            'viewany.deposit', 'view.deposit', 'create.deposit',
+            'viewany.withdraw', 'view.withdraw', 'create.withdraw',
+            'viewany.ticket', 'view.ticket', 'create.ticket',
+            'viewany.slip', 'view.slip', 'create.slip',
+            'viewany.favourite', 'view.favourite', 'create.favourite',
+            'viewany.whitelist', 'view.whitelist', 'create.whitelist',
+            'viewany.account', 'view.account', 'create.account',
+            'viewany.personal', 'view.personal', 'create.personal',
+            'viewany.feedback', 'view.feedback', 'create.feedback',
+            'viewany.transaction', 'view.transaction',
+        ];
+
+        return in_array($permission, $userPermissions);
     }
 
     /**
