@@ -2,14 +2,15 @@
 import { ref } from "vue";
 import { Head, router } from "@inertiajs/vue3";
 import { Search } from "lucide-vue-next";
-import UserLayout from "@/Layouts/UserLayout.vue";
-import PageHeader from "@/Components/User/PageHeader.vue";
-import StatusBadge from "@/Components/User/StatusBadge.vue";
-import EmptyState from "@/Components/User/EmptyState.vue";
-import ResponsiveTableWrapper from "@/Components/User/ResponsiveTableWrapper.vue";
+
+import SportsNavTabs from "@/Components/Sports/SportsNavTabs.vue";
+import BetStatusBadge from "@/Components/Sports/BetStatusBadge.vue";
+import BetHistoryCard from "@/Components/Sports/BetHistoryCard.vue";
+import SportsEmptyState from "@/Components/Sports/SportsEmptyState.vue";
 import MoneyFormat from "@/Components/MoneyFormat.vue";
 import Pagination from "@/Components/Pagination.vue";
 import FormInput from "@/Components/FormInput.vue";
+import UserLayout from "@/Layouts/UserLayout.vue";
 
 const props = defineProps({
 	stakes: Object,
@@ -25,106 +26,94 @@ function doSearch() {
 <template>
 	<Head title="Bet History" />
 	<UserLayout>
-		<div class="p-4 sm:p-6">
-			<PageHeader title="Bet History" subtitle="View your exchange bet history and manage open positions" />
+		<div class="p-4 sm:p-6 max-w-full">
+			<!-- Sports Navigation -->
+			<div class="mb-5">
+				<SportsNavTabs />
+			</div>
 
-			<div class="flex flex-col sm:flex-row gap-3 mb-6">
-				<form @submit.prevent="doSearch" class="flex-1 max-w-sm">
-					<FormInput v-model="search" placeholder="Search bets..." @keyup.enter="doSearch">
-						<template #lead>
-							<Search class="w-4 h-4 text-gray-400" />
-						</template>
-					</FormInput>
+			<!-- Page header -->
+			<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+				<div>
+					<h1 class="text-xl sm:text-2xl font-bold text-white">Bet History</h1>
+					<p class="text-sm text-gray-400 mt-1">View your exchange bet history and manage open positions</p>
+				</div>
+				<form @submit.prevent="doSearch" class="flex-shrink-0 w-full sm:w-64">
+					<div class="flex items-center bg-surface-light border border-white/[0.08] rounded-lg overflow-hidden h-10">
+						<Search class="w-4 h-4 text-gray-500 ml-3" />
+						<input
+							v-model="search"
+							@keyup.enter="doSearch"
+							placeholder="Search bets..."
+							class="flex-1 bg-transparent text-white text-sm outline-none px-3 h-full placeholder-gray-500" />
+					</div>
 				</form>
 			</div>
 
-			<EmptyState
+			<!-- Empty state -->
+			<SportsEmptyState
 				v-if="!stakes.data?.length"
 				title="No bets yet"
 				message="Your exchange bets will appear here once you place your first bet."
-				icon="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+				:showHomeLink="true" />
 
 			<template v-else>
 				<!-- Desktop table -->
-				<div class="hidden md:block">
-					<ResponsiveTableWrapper>
+				<div class="hidden md:block bg-surface-light rounded-xl border border-white/[0.06] overflow-hidden">
+					<div class="overflow-x-auto">
 						<table class="min-w-full">
 							<thead>
-								<tr class="border-b border-white/10">
-									<th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">ID</th>
-									<th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Game</th>
-									<th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Market</th>
-									<th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Selection</th>
-									<th class="px-4 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">Type</th>
-									<th class="px-4 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">Odds</th>
-									<th class="px-4 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">Stake</th>
-									<th class="px-4 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">Matched</th>
-									<th class="px-4 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+								<tr class="border-b border-white/[0.06]">
+									<th class="px-4 py-3 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">ID</th>
+									<th class="px-4 py-3 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Game</th>
+									<th class="px-4 py-3 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Market</th>
+									<th class="px-4 py-3 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Selection</th>
+									<th class="px-4 py-3 text-center text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Type</th>
+									<th class="px-4 py-3 text-right text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Odds</th>
+									<th class="px-4 py-3 text-right text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Stake</th>
+									<th class="px-4 py-3 text-right text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Matched</th>
+									<th class="px-4 py-3 text-center text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Status</th>
 								</tr>
 							</thead>
-							<tbody class="divide-y divide-white/5">
-								<tr v-for="stake in stakes.data" :key="stake.uid" class="hover:bg-white/5 transition-colors">
-									<td class="px-4 py-3 text-sm text-gray-300 font-mono">{{ stake.uid }}</td>
-									<td class="px-4 py-3 text-sm text-white">{{ stake.game_info || '—' }}</td>
-									<td class="px-4 py-3 text-sm text-gray-300">{{ stake.market_info || '—' }}</td>
-									<td class="px-4 py-3 text-sm text-gray-300">{{ stake.bet_info || '—' }}</td>
-									<td class="px-4 py-3 text-center">
+							<tbody class="divide-y divide-white/[0.04]">
+								<tr v-for="stake in stakes.data" :key="stake.uid" class="hover:bg-white/[0.03] transition-colors">
+									<td class="px-4 py-3.5 text-sm text-gray-400 font-mono text-[12px]">{{ stake.uid }}</td>
+									<td class="px-4 py-3.5 text-sm text-white font-medium">{{ stake.game_info || '—' }}</td>
+									<td class="px-4 py-3.5 text-sm text-gray-300">{{ stake.market_info || '—' }}</td>
+									<td class="px-4 py-3.5 text-sm text-gray-300">{{ stake.bet_info || '—' }}</td>
+									<td class="px-4 py-3.5 text-center">
 										<span
-											class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
-											:class="stake.isLay ? 'bg-pink-500/20 text-pink-400 border border-pink-500/30' : 'bg-blue-500/20 text-blue-400 border border-blue-500/30'">
+											class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold"
+											:class="stake.isLay ? 'bg-sky-500/20 text-sky-400 border border-sky-500/30' : 'bg-primary/20 text-primary-light border border-primary/30'">
 											{{ stake.isLay ? 'LAY' : 'BACK' }}
 										</span>
 									</td>
-									<td class="px-4 py-3 text-sm text-right text-white font-medium">{{ Number(stake.odds).toFixed(2) }}</td>
-									<td class="px-4 py-3 text-sm text-right">
-										<MoneyFormat :amount="stake.amount" class="text-white" />
+									<td class="px-4 py-3.5 text-sm text-right text-white font-semibold tabular-nums">{{ Number(stake.odds).toFixed(2) }}</td>
+									<td class="px-4 py-3.5 text-sm text-right">
+										<MoneyFormat :amount="stake.amount" class="text-white font-medium" />
 									</td>
-									<td class="px-4 py-3 text-sm text-right">
-										<MoneyFormat :amount="stake.filled" class="text-gray-300" />
+									<td class="px-4 py-3.5 text-sm text-right">
+										<MoneyFormat :amount="stake.filled" class="text-gray-400" />
 									</td>
-									<td class="px-4 py-3 text-center">
-										<StatusBadge :status="stake.status" />
+									<td class="px-4 py-3.5 text-center">
+										<BetStatusBadge :status="stake.status" />
 									</td>
 								</tr>
 							</tbody>
 						</table>
-					</ResponsiveTableWrapper>
+					</div>
 				</div>
 
 				<!-- Mobile cards -->
 				<div class="md:hidden space-y-3">
-					<div
+					<BetHistoryCard
 						v-for="stake in stakes.data"
 						:key="stake.uid"
-						class="bg-surface-light rounded-lg p-4 border border-white/10">
-						<div class="flex items-center justify-between mb-2">
-							<span class="text-xs text-gray-400 font-mono">{{ stake.uid }}</span>
-							<StatusBadge :status="stake.status" />
-						</div>
-						<div class="text-sm text-white font-medium mb-1">{{ stake.game_info || '—' }}</div>
-						<div class="text-xs text-gray-400 mb-3">{{ stake.market_info }} &middot; {{ stake.bet_info }}</div>
-						<div class="grid grid-cols-3 gap-2 text-center">
-							<div>
-								<div class="text-xs text-gray-500">Type</div>
-								<span
-									class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
-									:class="stake.isLay ? 'bg-pink-500/20 text-pink-400' : 'bg-blue-500/20 text-blue-400'">
-									{{ stake.isLay ? 'LAY' : 'BACK' }}
-								</span>
-							</div>
-							<div>
-								<div class="text-xs text-gray-500">Odds</div>
-								<div class="text-sm text-white font-medium">{{ Number(stake.odds).toFixed(2) }}</div>
-							</div>
-							<div>
-								<div class="text-xs text-gray-500">Stake</div>
-								<MoneyFormat :amount="stake.amount" class="text-sm text-white font-medium" />
-							</div>
-						</div>
-					</div>
+						:stake="stake" />
 				</div>
 
-				<Pagination :meta="stakes.meta" class="mt-4" />
+				<!-- Pagination -->
+				<Pagination :meta="stakes.meta" class="mt-6" />
 			</template>
 		</div>
 	</UserLayout>

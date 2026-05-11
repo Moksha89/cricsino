@@ -1,10 +1,13 @@
 <script setup>
 import { Head } from "@inertiajs/vue3";
-import UserLayout from "@/Layouts/UserLayout.vue";
-import PageHeader from "@/Components/User/PageHeader.vue";
-import EmptyState from "@/Components/User/EmptyState.vue";
-import GameRow from "@/Components/Cards/GameRow.vue";
+
+import SportsNavTabs from "@/Components/Sports/SportsNavTabs.vue";
+import MatchCard from "@/Components/Sports/MatchCard.vue";
+import BetSlip from "@/Components/Sports/BetSlip.vue";
+import MobileBetSlipSheet from "@/Components/Sports/MobileBetSlipSheet.vue";
+import SportsEmptyState from "@/Components/Sports/SportsEmptyState.vue";
 import Pagination from "@/Components/Pagination.vue";
+import UserLayout from "@/Layouts/UserLayout.vue";
 
 const props = defineProps({
 	games: Object,
@@ -14,32 +17,48 @@ const props = defineProps({
 <template>
 	<Head title="In-Play" />
 	<UserLayout>
-		<div class="p-4 sm:p-6">
-			<PageHeader title="In-Play" subtitle="Live matches happening right now">
-				<div class="flex items-center gap-2 mt-2">
-					<span class="relative flex h-3 w-3">
+		<div class="p-4 sm:p-6 max-w-full">
+			<!-- Sports Navigation -->
+			<div class="mb-5">
+				<SportsNavTabs />
+			</div>
+
+			<!-- Page header -->
+			<div class="flex items-center gap-3 mb-5">
+				<h1 class="text-xl sm:text-2xl font-bold text-white">In-Play</h1>
+				<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-green-500/20 border border-green-500/30">
+					<span class="relative flex h-2 w-2">
 						<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-						<span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+						<span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
 					</span>
-					<span class="text-sm text-green-400">Live</span>
-				</div>
-			</PageHeader>
+					<span class="text-[11px] font-bold text-green-400 uppercase tracking-wider">Live</span>
+				</span>
+				<span v-if="games.data?.length" class="text-sm text-gray-400 ml-auto">
+					{{ games.meta?.total ?? games.data.length }} live matches
+				</span>
+			</div>
 
-			<EmptyState
-				v-if="!games.data?.length"
+			<!-- Match list -->
+			<div v-if="games.data?.length" class="space-y-3">
+				<MatchCard
+					v-for="game in games.data"
+					:key="game.slug"
+					:game="game" />
+			</div>
+
+			<!-- Empty state -->
+			<SportsEmptyState
+				v-else
 				title="No in-play matches right now"
-				message="Check back later for live matches or browse upcoming events."
-				icon="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+				message="Check back later for live matches or browse upcoming events." />
 
-			<template v-else>
-				<div class="grid gap-3">
-					<GameRow
-						v-for="game in games.data"
-						:key="game.slug"
-						:game="game" />
-				</div>
-				<Pagination :meta="games.meta" class="mt-4" />
-			</template>
+			<!-- Pagination -->
+			<Pagination v-if="games.meta" :meta="games.meta" class="mt-6" />
 		</div>
+
+		<template #right-sidebar-top>
+			<BetSlip />
+		</template>
 	</UserLayout>
+	<MobileBetSlipSheet />
 </template>

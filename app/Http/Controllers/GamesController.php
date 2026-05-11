@@ -34,15 +34,18 @@ class GamesController extends Controller
         $keyword = $request->get('search');
         $perPage = 25;
         $multiples =  TradeManager::multiples();
-        $defaultMarket = Market::with(['bets'])
-            ->where('sport', $sport)
-            ->where('is_default', true)
-            ->first();
+        $defaultMarket = null;
+        if ($sport) {
+            $defaultMarket = Market::with(['bets'])
+                ->where('sport', $sport)
+                ->where('is_default', true)
+                ->first();
+        }
 
-        // If no default market exists for this sport, show empty page
-        if (!$defaultMarket) {
+        // If a specific sport is selected but has no default market, show empty page
+        if ($sport && !$defaultMarket) {
             return Inertia::render('Games/Index', [
-                'defaultMarketsCount' => $sport ? Market::where('sport', $sport)->pluck('id')->count() : 0,
+                'defaultMarketsCount' => Market::where('sport', $sport)->pluck('id')->count(),
                 'defaultMarket' => null,
                 'games' => GameResource::collection(collect()),
                 'sport' => $sport,
@@ -56,55 +59,60 @@ class GamesController extends Controller
 
         $query  = Game::query()
             ->where('active', true)
-            ->with(['gameMarkets' => fn($q) => $q->where('market_id', $defaultMarket->id)])
             ->withSum('trades as traded', 'amount')
             ->with([
                 'scores',
                 'league',
                 'homeTeam',
                 'awayTeam',
-                'odds' => fn($q) => $q->where('market_id', $defaultMarket->id)
             ])
             ->withCount('activeMarkets as marketsCount')
-            ->withExists(['odds as has_odds' => fn($q) => $q->where('market_id', $defaultMarket->id)])
             ->latest('traded')
             ->whereHas('league', function (Builder $query) {
                 $query->where('active', true);
             });
 
+        if ($defaultMarket) {
+            $query->with(['gameMarkets' => fn($q) => $q->where('market_id', $defaultMarket->id)])
+                ->with(['odds' => fn($q) => $q->where('market_id', $defaultMarket->id)])
+                ->withExists(['odds as has_odds' => fn($q) => $q->where('market_id', $defaultMarket->id)]);
+        }
+
         DB::statement("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
         $rangeSize = (float) settings('odds_spread', 0.2);
         $rangeSize = $rangeSize < 0.001 ? 0.2 :  $rangeSize;
-        $query->with([
-            'lays' => function (HasMany $q) use ($defaultMarket, $rangeSize) {
-                $q->where('market_id', $defaultMarket->id)
-                    ->select(
-                        'bet_id',
-                        'game_id',
-                        DB::raw("FLOOR(odds / $rangeSize) AS range_code"),
-                        DB::raw('SUM(unfilled) AS amount'),
-                        DB::raw('MAX(odds) as price')
-                    )
-                    ->groupBy(['bet_id', 'game_id'])
-                    ->groupBy(DB::raw("FLOOR(odds / $rangeSize)"))
-                    ->latest(DB::raw('MAX(odds)'))
-                    ->limit(3);
-            },
-            'backs' => function (HasMany $q) use ($defaultMarket, $rangeSize) {
-                $q->where('market_id', $defaultMarket->id)
-                    ->select(
-                        'bet_id',
-                        'game_id',
-                        DB::raw("FLOOR(odds / $rangeSize) AS range_code"),
-                        DB::raw('SUM(unfilled) AS amount'),
-                        DB::raw('MIN(odds) as price')
-                    )
-                    ->groupBy(['bet_id', 'game_id'])
-                    ->groupBy(DB::raw("FLOOR(odds / $rangeSize)"))
-                    ->oldest(DB::raw('MAX(odds)'))
-                    ->limit(3);;
-            },
-        ]);
+        if ($defaultMarket) {
+            $query->with([
+                'lays' => function (HasMany $q) use ($defaultMarket, $rangeSize) {
+                    $q->where('market_id', $defaultMarket->id)
+                        ->select(
+                            'bet_id',
+                            'game_id',
+                            DB::raw("FLOOR(odds / $rangeSize) AS range_code"),
+                            DB::raw('SUM(unfilled) AS amount'),
+                            DB::raw('MAX(odds) as price')
+                        )
+                        ->groupBy(['bet_id', 'game_id'])
+                        ->groupBy(DB::raw("FLOOR(odds / $rangeSize)"))
+                        ->latest(DB::raw('MAX(odds)'))
+                        ->limit(3);
+                },
+                'backs' => function (HasMany $q) use ($defaultMarket, $rangeSize) {
+                    $q->where('market_id', $defaultMarket->id)
+                        ->select(
+                            'bet_id',
+                            'game_id',
+                            DB::raw("FLOOR(odds / $rangeSize) AS range_code"),
+                            DB::raw('SUM(unfilled) AS amount'),
+                            DB::raw('MIN(odds) as price')
+                        )
+                        ->groupBy(['bet_id', 'game_id'])
+                        ->groupBy(DB::raw("FLOOR(odds / $rangeSize)"))
+                        ->oldest(DB::raw('MAX(odds)'))
+                        ->limit(3);;
+                },
+            ]);
+        }
         if (!empty($sport)) {
             $query->where('sport', $sport);
         }
@@ -142,10 +150,7 @@ class GamesController extends Controller
         };
         return Inertia::render('Games/Index', [
             'defaultMarketsCount' => $sport ? Market::where('sport', $sport)->pluck('id')->count() : 0,
-            'defaultMarket' => Market::with(['bets'])
-                ->where('sport', $sport)
-                ->where('is_default', true)
-                ->first(),
+            'defaultMarket' => $defaultMarket,
             'games' => $games,
             'sport' => $sport,
             'league' => $league,
