@@ -17,7 +17,7 @@ class TeamsController extends Controller
     {
         $keyword = $request->get('search');
         $perPage = 25;
-        $query  = Team::query()->with(['home_games','away_games']);
+        $query  = Team::query();
         if (!empty($keyword)) {
             $query->where('teamId', 'LIKE', "%$keyword%")
 			->orWhere('name', 'LIKE', "%$keyword%")
@@ -26,9 +26,9 @@ class TeamsController extends Controller
 			->orWhere('description', 'LIKE', "%$keyword%")
 			->orWhere('image', 'LIKE', "%$keyword%");
         } 
-        $teamsItems = $query->latest()->paginate($perPage);
+        $teamsItems = $query->where('active', true)->latest()->paginate($perPage);
         $teams = TeamResource::collection($teamsItems);
-        return Inertia::render('AdminTeams/Index', compact('teams'));
+        return Inertia::render('Teams/Index', compact('teams'));
     }
 
     /**

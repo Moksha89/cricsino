@@ -164,6 +164,42 @@ class GamesController extends Controller
 
 
     /**
+     * Display in-play / live games.
+     * @return \Illuminate\View\View
+     */
+    public function inPlay(Request $request)
+    {
+        $perPage = 25;
+        $defaultMarkets = Market::with(['bets'])
+            ->where('is_default', true)
+            ->get();
+        $defaultMarketIds = $defaultMarkets->pluck('id')->all();
+
+        $query = Game::query()
+            ->where('active', true)
+            ->live()
+            ->with([
+                'scores',
+                'league',
+                'homeTeam',
+                'awayTeam',
+                'odds' => fn($q) => $q->whereIn('market_id', $defaultMarketIds)
+            ])
+            ->withCount('activeMarkets as marketsCount')
+            ->withSum('trades as traded', 'amount')
+            ->whereHas('league', function (Builder $query) {
+                $query->where('active', true);
+            });
+
+        $gamesItems = $query->latest('startTime')->paginate($perPage);
+        $games = GameResource::collection($gamesItems);
+
+        return Inertia::render('Games/InPlay', [
+            'games' => $games,
+        ]);
+    }
+
+    /**
      * Add to watch list.
      * @return \Illuminate\Http\RedirectResponse
      */

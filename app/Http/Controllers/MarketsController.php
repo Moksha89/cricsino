@@ -17,15 +17,15 @@ class MarketsController extends Controller
     {
         $keyword = $request->get('search');
         $perPage = 25;
-        $query  = Market::query()->with(['bets','games']);
+        $query  = Market::query()->with(['bets']);
         if (!empty($keyword)) {
             $query->where('name', 'LIKE', "%$keyword%")
 			->orWhere('slug', 'LIKE', "%$keyword%")
 			->orWhere('mode', 'LIKE', "%$keyword%");
         } 
-        $marketsItems = $query->latest()->paginate($perPage);
+        $marketsItems = $query->where('active', true)->latest()->paginate($perPage);
         $markets = MarketResource::collection($marketsItems);
-        return Inertia::render('AdminMarkets/Index', compact('markets'));
+        return Inertia::render('Markets/Index', compact('markets'));
     }
 
     /**
