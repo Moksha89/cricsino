@@ -38,7 +38,7 @@
 </script>
 <template>
 	<header
-		class="fixed container-fluid w-full top-0 z-50 flex justify-start items-center bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 contain-size flex-nowrap h-[52px]">
+		class="fixed container-fluid w-full top-0 z-50 flex justify-start items-center bg-gray-950 border-b border-white/[0.06] contain-size flex-nowrap h-[52px]">
 		<div class="flex w-full items-center">
 			<button
 				@click="toggleLeftSidebar"

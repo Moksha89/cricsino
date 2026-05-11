@@ -19,7 +19,7 @@
 	<div>
 		<ul class="gap-y-2 grid">
 			<li
-				class="text-sky-500 text-xs font-semibold tracking-widest uppercase py-1.5 px-6"
+				class="text-primary-light text-xs font-semibold tracking-widest uppercase py-1.5 px-6"
 				role="heading"
 				aria-level="2">
 				QUICKLINKS
@@ -32,7 +32,7 @@
 			</template>
 
 			<li
-				class="text-sky-500 text-xs font-semibold tracking-widest uppercase py-1.5 px-6"
+				class="text-primary-light text-xs font-semibold tracking-widest uppercase py-1.5 px-6"
 				role="heading"
 				aria-level="2">
 				CATEGORIES

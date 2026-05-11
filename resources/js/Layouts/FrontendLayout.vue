@@ -37,7 +37,7 @@
 </script>
 <template>
 	<div
-		class="flex h-full bg-white dark:bg-gray-900 flex-1 flex-col flex-nowrap max-w-full scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700 scrollbar-track-transparent">
+		class="flex h-full bg-gray-950 flex-1 flex-col flex-nowrap max-w-full scrollbar-thumb-gray-700 scrollbar-track-transparent">
 		<AlertMessages />
 		<div class="flex-auto flex flex-col flex-nowrap">
 			<AppHeader
@@ -45,7 +45,7 @@
 				@toggleLeftSidebar="toggleLeftSidebar"
 				:leftSidebarOpen="leftSidebarOpen"
 				:rightSidebarOpen="rightSidebarOpen" />
-			<div class="pt-[52px] -mt-px bg-white dark:bg-gray-900 flex flex-1">
+			<div class="pt-[52px] -mt-px bg-gray-950 flex flex-1">
 				<nav
 					:class="[
 						{
@@ -58,8 +58,8 @@
 							? 'lg:visible'
 							: 'lg:hidden',
 					}"
-					class="contain-strict border-r border-gray-250 dark:border-gray-650 left-0 w-[240px] z-40 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700 scrollbar-track-transparent overflow-y-auto fixed top-[52px] bottom-0 text-left transition duration-600">
-					<Sidebar class="py-4 bg-gray-100 dark:bg-gray-850" />
+					class="contain-strict border-r border-white/[0.06] left-0 w-[240px] z-40 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent overflow-y-auto fixed top-[52px] bottom-0 text-left transition duration-600">
+					<Sidebar class="py-4 bg-gray-900" />
 				</nav>
 				<div
 					id="main"
@@ -67,8 +67,8 @@
 						'lg:ml-[240px]': leftSidebarOpen,
 						'lg:mr-[340px]': rightSidebarOpen,
 					}"
-					class="flex flex-col scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700 scrollbar-track-transparent flex-nowrap flex-[1_0] relative max-w-full transition-spacing duration-600">
-					<main class="flex-[1_0_auto] bg-gray-150 dark:bg-gray-900">
+					class="flex flex-col scrollbar-thumb-gray-700 scrollbar-track-transparent flex-nowrap flex-[1_0] relative max-w-full transition-spacing duration-600">
+					<main class="flex-[1_0_auto] bg-gray-950">
 						<slot />
 					</main>
 				</div>
@@ -86,15 +86,15 @@
 							? '#52525b transparent'
 							: '#d4d4d8 transparent',
 					}"
-					class="lg:z-0 z-40 w-[340px] 2xl:w-[440px] max-w-[820px] contain-strict p-0 right-0 overflow-y-auto fixed top-[52px] bottom-0 text-left transition duration-600 scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent dark:bg-gray-850">
-					<div class="bg-white dark:bg-gray-800">
+					class="lg:z-0 z-40 w-[340px] 2xl:w-[440px] max-w-[820px] contain-strict p-0 right-0 overflow-y-auto fixed top-[52px] bottom-0 text-left transition duration-600 scrollbar-thumb-gray-600 scrollbar-track-transparent bg-gray-900">
+					<div class="bg-gray-900">
 						<slot name="right-sidebar-top" />
 						<template
 							v-if="
 								($page.props.auth.user?.stakes ?? []).length > 0
 							">
 							<div
-								class="bg-gray-300 text-gray-900 text-xs dark:text-white dark:bg-gray-750 border-b border-gray-50 dark:border-gray-850 flex items-center justify-between px-2.5 uppercase font-inter tracking-[1px] font-bold h-12 box-border flex-shrink-0 flex-wrap m-0">
+								class="bg-gray-800 text-white text-xs border-b border-gray-700 flex items-center justify-between px-2.5 uppercase font-inter tracking-[1px] font-bold h-12 box-border flex-shrink-0 flex-wrap m-0">
 								<div
 									@click="showBets = !showBets"
 									class="flex-grow cursor-pointer">
@@ -109,7 +109,7 @@
 											})
 										"
 										v-show="showBets"
-										class="text-sky-600 text-xs dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-500 hover:underline">
+										class="text-primary-light text-xs hover:text-primary hover:underline">
 										{{ $t("See All") }}
 									</Link>
 									<a
@@ -140,7 +140,7 @@
 								0
 							">
 							<div
-								class="bg-gray-300 text-gray-900 dark:text-white dark:bg-gray-750 border-b border-gray-50 dark:border-gray-850 flex items-center justify-between px-2.5 uppercase font-inter text-xs tracking-[1px] font-bold h-12 box-border flex-shrink-0 flex-wrap m-0">
+								class="bg-gray-800 text-white border-b border-gray-700 flex items-center justify-between px-2.5 uppercase font-inter text-xs tracking-[1px] font-bold h-12 box-border flex-shrink-0 flex-wrap m-0">
 								<div
 									@click="showTickets = !showTickets"
 									class="flex-grow cursor-pointer">
@@ -155,7 +155,7 @@
 											})
 										"
 										v-show="showTickets"
-										class="text-sky-600 text-xs dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-500 hover:underline">
+										class="text-primary-light text-xs hover:text-primary hover:underline">
 										{{ $t("See All") }}
 									</Link>
 									<a
@@ -184,7 +184,7 @@
 						</template>
 						<slot name="right-sidebar">
 							<div
-								class="bg-gray-300 text-gray-900 dark:text-white dark:bg-gray-750 border-b border-gray-250 dark:border-gray-850 flex items-center px-2.5 uppercase font-inter text-sm tracking-[1px] font-bold h-12 box-border flex-shrink-0 flex-wrap m-0">
+								class="bg-gray-800 text-white border-b border-gray-700 flex items-center px-2.5 uppercase font-inter text-sm tracking-[1px] font-bold h-12 box-border flex-shrink-0 flex-wrap m-0">
 								Top Events
 							</div>
 							<div class="grid">

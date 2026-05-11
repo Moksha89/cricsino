@@ -25,11 +25,11 @@
 <template>
 	<div>
 		<div class="py-3" v-if="menu.type === 'line'">
-			<hr class="border-gray-300 dark:border-gray-700" />
+			<hr class="border-gray-700" />
 		</div>
 		<li
 			v-else-if="menu.type == 'title'"
-			class="text-sky-500 text-sm font-semibold tracking-widest uppercase py-1.5 px-4"
+			class="text-primary-light text-sm font-semibold tracking-widest uppercase py-1.5 px-4"
 			role="heading"
 			aria-level="2">
 			{{ menu.name }}
@@ -41,13 +41,13 @@
 				target="_blank"
 				:class="
 					menu.active
-						? 'text-emerald-500 dark:text-emerald-400'
-						: ' text-gray-900 dark:text-gray-200'
+						? 'text-primary-light'
+						: 'text-gray-200'
 				"
-				class="items-center text-sm cursor-pointer flex font-semibold h-8 justify-between px-6 select-none mb-2 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-emerald-200/50 dark:hover:bg-emerald-700/50 transition-colors">
+				class="items-center text-sm cursor-pointer flex font-semibold h-8 justify-between px-6 select-none mb-2 hover:text-primary-light hover:bg-primary/10 transition-colors">
 				<span class="flex items-center">
 					<component
-						class="w-5 h-5 mr-2 opacity-80 text-emerald-600 dark:text-emerald-400"
+						class="w-5 h-5 mr-2 opacity-80 text-primary-light"
 						:is="menu.icon" />
 					<div class="whitespace-nowrap">{{ menu.name }}</div>
 				</span>
@@ -58,13 +58,13 @@
 				:href="route(menu.route, menu.params)"
 				:class="
 					menu.active
-						? 'text-emerald-500 dark:text-emerald-400'
-						: ' text-gray-900 dark:text-gray-200'
+						? 'text-primary-light'
+						: 'text-gray-200'
 				"
-				class="items-center text-sm cursor-pointer flex font-semibold h-8 justify-between px-6 select-none mb-2 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-emerald-200/50 dark:hover:bg-emerald-700/50 transition-colors">
+				class="items-center text-sm cursor-pointer flex font-semibold h-8 justify-between px-6 select-none mb-2 hover:text-primary-light hover:bg-primary/10 transition-colors">
 				<span class="flex items-center">
 					<component
-						class="w-5 h-5 mr-2 opacity-80 text-emerald-600 dark:text-emerald-400"
+						class="w-5 h-5 mr-2 opacity-80 text-primary-light"
 						:is="menu.icon" />
 					<div
 						class="overflow-hidden line-clamp-1 text-ellipsis max-w-[105px]">
@@ -74,7 +74,7 @@
 				<span class="text-lg flex items-center space-x-1 mt-1">
 					<Favourite v-if="menu.star" class="z-5" :favId="menu.key" />
 					<GameCount
-						class="border border-gray-300 group-hover:border-emerald-400 bg-white dark:border-none dark:bg-gray-700 text-xs group-hover:bg-emerald-600 group-hover:text-white"
+						class="border-none bg-gray-700 text-xs group-hover:bg-primary group-hover:text-white"
 						:count="menu.count" />
 				</span>
 			</Link>
@@ -83,14 +83,14 @@
 				@click="isOpen = !isOpen"
 				:class="[
 					menu.active
-						? 'text-emerald-500 dark:text-emerald-400'
-						: ' text-gray-900 dark:text-gray-200',
-					{ 'bg-gray-300 dark:bg-gray-750': isOpen },
+						? 'text-primary-light'
+						: 'text-gray-200',
+					{ 'bg-gray-800': isOpen },
 				]"
-				class="items-center group text-sm cursor-pointer flex font-semibold h-8 justify-between px-6 select-none hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-emerald-200/50 dark:hover:bg-emerald-700/50">
+				class="items-center group text-sm cursor-pointer flex font-semibold h-8 justify-between px-6 select-none hover:text-primary-light hover:bg-primary/10">
 				<span class="flex items-center">
 					<component
-						class="w-5 h-5 mr-2 opacity-80 text-emerald-600 dark:text-emerald-400"
+						class="w-5 h-5 mr-2 opacity-80 text-primary-light"
 						:is="menu.icon" />
 					<div
 						class="overflow-hidden line-clamp-1 text-ellipsis max-w-[100px]">
@@ -100,7 +100,7 @@
 				<span class="text-lg flex items-center space-x-1 mt-1">
 					<Favourite v-if="menu.star" class="z-5" :favId="menu.key" />
 					<GameCount
-						class="border border-gray-300 group-hover:border-emerald-400 bg-white dark:border-none dark:bg-gray-700 text-xs group-hover:bg-emerald-600 group-hover:text-white"
+						class="border-none bg-gray-700 text-xs group-hover:bg-primary group-hover:text-white"
 						:count="menu.count" />
 					<VueIcon
 						v-if="menu.submenu"
@@ -110,7 +110,7 @@
 				</span>
 			</div>
 			<CollapseTransition>
-				<ul v-show="isOpen" class="bg-gray-200 dark:bg-gray-800">
+				<ul v-show="isOpen" class="bg-gray-800">
 					<template v-for="sub in menu.submenu" :key="sub.id">
 						<DeepMenu
 							v-if="sub.deepMenu"
@@ -136,7 +136,7 @@
 									? 'bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-white'
 									: ' text-gray-600 hover:text-gray-700 dark:hover:text-white dark:text-gray-300'
 							"
-							class="items-center h-8 text-sm gap-x-2 cursor-pointer flex font-semibold pl-10 pr-6 whitespace-nowrap w-full hover:bg-emerald-200/50 dark:hover:bg-emerald-700/30 transition-colors">
+							class="items-center h-8 text-sm gap-x-2 cursor-pointer flex font-semibold pl-10 pr-6 whitespace-nowrap w-full hover:bg-primary/10 transition-colors">
 							<Link
 								class="h-full w-full group flex items-center justify-between"
 								:href="route(sub.route, sub.params)">
@@ -147,10 +147,10 @@
 								<div class="flex items-center">
 									<Favourite
 										v-if="sub.star"
-										class="z-5 group-hover:text-emerald-500"
+										class="z-5 group-hover:text-primary"
 										:favId="sub.key" />
 									<GameCount
-										class="border border-gray-300 group-hover:border-emerald-400 bg-white dark:border-none dark:bg-gray-700 text-xs group-hover:bg-emerald-600 group-hover:text-white"
+										class="border-none bg-gray-700 text-xs group-hover:bg-primary group-hover:text-white"
 										:count="sub.count" />
 								</div>
 							</Link>
