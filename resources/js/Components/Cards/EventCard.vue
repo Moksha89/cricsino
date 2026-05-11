@@ -53,7 +53,7 @@
 <template>
 	<a
 		:href="route('sports.show', { game: game.slug })"
-		class="flex items-center bg-white content-contain dark:bg-gray-800 border-t hover:border-t-0 first:border-t-0 border-gray-200 dark:border-gray-700 p-2 transition-colors duration-300 ease-in-out hover:bg-gray-100 dark:hover:bg-gray-700 no-underline">
+		class="flex items-center bg-white content-contain dark:bg-gray-800 border-t hover:border-t-0 first:border-t-0 border-white/[0.06] p-2 transition-colors duration-300 ease-in-out hover:bg-gray-100 dark:hover:bg-gray-700 no-underline">
 		<component
 			:is="icons[game.sport]"
 			class="w-7 h-7 mt-1 mr-3 text-gray-500 opacity-50" />
@@ -122,7 +122,7 @@
 								game.state == 'in_play',
 						},
 						{
-							'text-gray-700 dark:text-gray-300':
+							'text-gray-300':
 								!game.hasStarted,
 						},
 						{ 'text-red-500': game.hasEnded || game.stateEnded },

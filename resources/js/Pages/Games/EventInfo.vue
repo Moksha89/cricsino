@@ -14,13 +14,13 @@
 				<div class="flex items-center flex-nowrap min-w-0">
 					<div class="min-w-[100px]">
 						<h1
-							class="text-[1.7em] text-gray-800 dark:text-white font-extrabold font-inter text-ellipsis overflow-hidden whitespace-nowrap lining-nums">
+							class="text-[1.7em] text-white font-extrabold font-inter text-ellipsis overflow-hidden whitespace-nowrap lining-nums">
 							<span class="lining-nums">
 								{{ game.homeTeam.name }}
 							</span>
 						</h1>
 						<h1
-							class="text-[1.7em] text-gray-800 dark:text-white font-extrabold font-inter text-ellipsis overflow-hidden whitespace-nowrap lining-nums">
+							class="text-[1.7em] text-white font-extrabold font-inter text-ellipsis overflow-hidden whitespace-nowrap lining-nums">
 							<span class="lining-nums">
 								{{ game.awayTeam.name }}
 							</span>
@@ -102,7 +102,7 @@
 						Traded
 						<MoneyFormat
 							billion
-							class="text-emeral-600 dark:text-emerald-400"
+							class="text-emeral-600 dark:text-primary-light"
 							:amount="game.traded" />
 					</div>
 				</div>

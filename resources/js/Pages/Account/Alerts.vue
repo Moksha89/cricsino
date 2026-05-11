@@ -35,7 +35,7 @@
 
 <template>
 	<SettingsLayout>
-		<div class="p-4 sm:p-8 bg-white dark:bg-gray-850 sm:rounded">
+		<div class="p-4 sm:p-8 bg-gray-800/50 border border-white/[0.06] sm:rounded">
 			<div class="grid">
 				<FormLabel class="mb-1">Bet Result Emails</FormLabel>
 				<Select v-model="form.bet_emails">
@@ -92,16 +92,16 @@
 			</div>
 		</div>
 		<div class="bg-white mt-8 dark:bg-gray-800 p-6 rounded shadow-md">
-			<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+			<h2 class="text-2xl font-bold mb-4 text-white">
 				Protecting Your Contact Privacy
 			</h2>
 
-			<p class="mb-4 text-gray-700 dark:text-gray-300">
+			<p class="mb-4 text-gray-300">
 				At {{ $page.props.appName }}, we take your privacy seriously.
 				Here's how we protect your contact information:
 			</p>
 
-			<ul class="space-y-2 text-gray-600 dark:text-gray-400">
+			<ul class="space-y-2 text-gray-400">
 				<li class="flex items-start">
 					<svg
 						class="w-6 h-6 mr-2 text-green-500 flex-shrink-0"

@@ -55,7 +55,7 @@ const verificationLinkSent = computed(
                     </div>
 
                     <div
-                        class="mb-4 text-sm font-semibold text-gray-600 dark:text-gray-400"
+                        class="mb-4 text-sm font-semibold text-gray-400"
                     >
                         Before continuing, could your verify your email address
                         by clicking on the link we just emailed to you? If you
@@ -65,7 +65,7 @@ const verificationLinkSent = computed(
 
                     <div
                         v-if="verificationLinkSent"
-                        class="mb-4 font-medium text-sm text-emerald-600 dark:text-emerald-300"
+                        class="mb-4 font-medium text-sm text-primary-dark dark:text-emerald-300"
                     >
                         A new verification link has been sent to the email
                         address you provided in your profile settings.
@@ -82,7 +82,7 @@ const verificationLinkSent = computed(
                             :href="route('logout')"
                             method="post"
                             as="button"
-                            class="underline text-sm text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 hover:text-gray-900 ml-2 transition-colors duration-200"
+                            class="underline text-sm text-gray-400 dark:hover:text-gray-300 hover:text-gray-900 ml-2 transition-colors duration-200"
                         >
                             Log Out
                         </Link>

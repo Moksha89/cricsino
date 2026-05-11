@@ -87,9 +87,9 @@ class HandleInertiaRequests extends Middleware
             'gdprText' => fn() => settings('pages.gdpr_terms'),
             'enableKyc' => fn() => str(settings('site.enable_kyc'))->toBoolean(),
             'currency' => fn() => [
-                'currency_code' => settings('site.currency_code'),
-                'currency_symbol' => settings('site.currency_symbol'),
-                'currency_display' => settings('site.currency_display'),
+                'currency_code' => settings('site.currency_code') ?? 'INR',
+                'currency_symbol' => settings('site.currency_symbol') ?? '₹',
+                'currency_display' => settings('site.currency_display') ?? 'auto',
             ],
             'sports' => fn() => collect(LeagueSport::cases())->map(fn(LeagueSport $l) => strlen($l->value) == 3 ? strtoupper($l->value) :  ucfirst($l->value)),
             'menus' => function () {

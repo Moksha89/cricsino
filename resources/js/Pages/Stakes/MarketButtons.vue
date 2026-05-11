@@ -15,8 +15,8 @@
 					@click="$emit('select', odd.price * 1)"
 					:class="
 						index == 0
-							? 'bg-emerald-600 first:bg-emerald-500 hover:bg-emerald-500 dark:hover:bg-emerald-400'
-							: 'bg-gray-600 first:bg-gray-650 hover:bg-emerald-500 dark:hover:bg-emerald-400'
+							? 'bg-primary-dark first:bg-primary hover:bg-primary dark:hover:bg-primary-light'
+							: 'bg-gray-600 first:bg-gray-650 hover:bg-primary dark:hover:bg-primary-light'
 					"
 					class="font-bold whitespace-nowrap lining-nums text-xs uppercase block relative text-center transition-[background-color] duration-[0.3s] text-white mr-0.5 m-0 px-0 py-1 rounded-sm">
 					<OddsFormat :odds="odd.price * 1" #default="{ odds }">

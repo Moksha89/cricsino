@@ -37,7 +37,7 @@
 				variant="outline"
 				:class="
 					cn(
-						'w-full sm:w-40 justify-between text-left font-normal  !border !border-emerald-500',
+						'w-full sm:w-40 justify-between text-left font-normal  !border !border-primary',
 						selected.length === 0 && 'text-muted-foreground',
 					)
 				">

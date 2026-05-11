@@ -23,7 +23,7 @@ const model = computed({
             :disabled="disabled"
         />
         <span
-            class="text-sm font-medium cursor-pointer text-gray-900 dark:text-gray-300"
+            class="text-sm font-medium cursor-pointer text-gray-300"
         >
             <slot />
         </span>

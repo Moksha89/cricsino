@@ -24,12 +24,12 @@
 </script>
 
 <template>
-	<div class="p-4 sm:p-8 bg-white dark:bg-gray-850 sm:rounded">
+	<div class="p-4 sm:p-8 bg-gray-800/50 border border-white/[0.06] sm:rounded">
 		<header>
 			<h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
 				Limit your gross deposits
 			</h2>
-			<p class="text-sm text-gray-600 dark:text-gray-400">
+			<p class="text-sm text-gray-400">
 				Set a limit on the gross amount you can deposit for a period of
 				your choice.
 			</p>

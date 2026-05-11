@@ -42,7 +42,7 @@
 				<div class="flex justify-between">
 					<Link
 						:href="route('installer.welcome')"
-						class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-emerald-600 bg-white hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+						class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-primary-dark bg-white hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
 						Back
 					</Link>
 					<Link
@@ -50,7 +50,7 @@
 						:class="[
 							'py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500',
 							allRequirementsMet
-								? 'bg-emerald-600 hover:bg-emerald-700'
+								? 'bg-primary-dark hover:bg-emerald-700'
 								: 'bg-gray-400 cursor-not-allowed',
 						]"
 						:disabled="!allRequirementsMet">
