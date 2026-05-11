@@ -7,7 +7,7 @@
 	import FormInput from "@/Components/FormInput.vue";
 	import PrimaryButton from "@/Components/PrimaryButton.vue";
 	import RadioCards from "@/Components/RadioCards.vue";
-	import FrontendLayout from "@/Layouts/FrontendLayout.vue";
+	import UserLayout from "@/Layouts/UserLayout.vue";
 	import History from "@/Pages/Whitelists/History.vue";
 	const props = defineProps({
 		gateways: Array,
@@ -39,11 +39,11 @@
 </script>
 
 <template>
-	<FrontendLayout>
-		<div class="px-3.5 mb-12">
+	<UserLayout>
+		<div class="p-4 sm:p-6 mb-12">
 			<div class="grid py-6">
 				<h1
-					class="text-3xl text-gray-650 dark:text-white font-inter font-semibold">
+					class="text-3xl text-white font-inter font-semibold">
 					{{ $t("Whitelist payout accounts") }}
 				</h1>
 				<p class="text-sm">
@@ -55,9 +55,9 @@
 				</p>
 			</div>
 			<RadioCards v-model="form.gateway" :options="gateways" />
-			<div class="p-6 mt-4 bg-white dark:bg-gray-800 rounded shadow-md">
+			<div class="p-6 mt-4 bg-gray-800/50 border border-white/[0.06] rounded shadow-md">
 				<div class="p-6 my-4 bg-gray-100 dark:bg-gray-750 rounded">
-					<FormLabel class="mb-3 text-gray-700 dark:text-gray-300">
+					<FormLabel class="mb-3 text-gray-300">
 						The currency you wish recieve payout in.
 					</FormLabel>
 					<RadioCards
@@ -110,5 +110,5 @@
 			</div>
 			<History :whitelists="whitelists" />
 		</div>
-	</FrontendLayout>
+	</UserLayout>
 </template>

@@ -42,9 +42,9 @@
 	<div class="bg-gray-50 mt-4 dark:bg-gray-850 p-4 rounded">
 		<div class="flex items-center">
 			<BookUser
-				class="w-16 h-16 mr-4 stroke-[0.5] text-gray-900 dark:text-white" />
+				class="w-16 h-16 mr-4 stroke-[0.5] text-white" />
 			<div>
-				<h3 class="text-base font-inter text-gray-800 dark:text-white">
+				<h3 class="text-base font-inter text-white">
 					{{ $t("Proof of Address") }}
 				</h3>
 				<h3 class="text-xs">

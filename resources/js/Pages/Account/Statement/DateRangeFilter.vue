@@ -107,7 +107,7 @@
 				variant="outline"
 				:class="
 					cn(
-						'w-full sm:w-64 justify-start text-left font-normal  !border !border-emerald-500',
+						'w-full sm:w-64 justify-start text-left font-normal  !border !border-primary',
 						!value && !selected && 'text-muted-foreground',
 					)
 				">

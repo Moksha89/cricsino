@@ -43,9 +43,9 @@
 	<div class="bg-gray-50 dark:bg-gray-850 p-4 rounded">
 		<div class="flex items-center">
 			<ScanEye
-				class="w-16 h-16 text-gray-900 dark:text-white mr-4 stroke-[0.5]" />
+				class="w-16 h-16 text-white mr-4 stroke-[0.5]" />
 			<div>
-				<h3 class="text-base font-inter text-gray-800 dark:text-white">
+				<h3 class="text-base font-inter text-white">
 					{{ $t("Proof of Identity") }}
 				</h3>
 				<h3 class="text-xs mb-1">

@@ -77,7 +77,7 @@
 								v-else
 								:icon="HiSolidMinus" />
 							<MoneyFormat
-								class="font-semibold text-gray-850 dark:text-white"
+								class="font-semibold text-white"
 								:amount="transaction.amount" />
 						</div>
 					</TableCell>
@@ -90,7 +90,7 @@
 						<div class="w-full text-center min-h-40">
 							<div class="w-full mt-4 mb-6 flex justify-center">
 								<NoTransactions
-									class="text-gray-900 dark:text-white w-32 h-32" />
+									class="text-white w-32 h-32" />
 							</div>
 							<p
 								class="text-sm font-bold font-inter text-gray-900 dark:text-gray-50">
@@ -106,9 +106,9 @@
 		<Pagination :meta="$page.props.transactions.meta" />
 		<Dialog v-model:open="open">
 			<DialogContent
-				class="sm:max-w-[525px] bg-white dark:bg-gray-850 text-gray-700 dark:text-white">
+				class="sm:max-w-[525px] bg-gray-800/50 border border-white/[0.06] text-gray-700 dark:text-white">
 				<DialogHeader>
-					<DialogTitle class="text-gray-900 dark:text-white">
+					<DialogTitle class="text-white">
 						{{ txCurrentlyShowing.uuid }}
 					</DialogTitle>
 					<DialogDescription>

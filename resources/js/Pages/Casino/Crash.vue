@@ -1,5 +1,5 @@
 <script setup>
-import PremiumLayout from "@/Layouts/PremiumLayout.vue";
+import UserLayout from "@/Layouts/UserLayout.vue";
 import { Head, usePage } from "@inertiajs/vue3";
 import { ref, computed, onUnmounted } from "vue";
 import axios from "axios";
@@ -74,7 +74,7 @@ const multiplierColor = computed(() => {
 
 <template>
 <Head :title="$t('Crash Game')" />
-<PremiumLayout>
+<UserLayout :showRightSidebar="false">
 	<div class="p-4 lg:p-6 pb-24 lg:pb-6">
 		<div class="flex items-center gap-3 mb-6">
 			<span class="text-2xl">📈</span>
@@ -171,5 +171,5 @@ const multiplierColor = computed(() => {
 			</div>
 		</div>
 	</div>
-</PremiumLayout>
+</UserLayout>
 </template>

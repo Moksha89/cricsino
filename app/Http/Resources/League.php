@@ -34,6 +34,7 @@ class League extends JsonResource
             'menu' => $this->menu,
             'has_odds' => $this->has_odds,
             'image' => $this->image,
+            'games_count' => $this->when(isset($this->games_count), $this->games_count),
             'games' => Game::collection($this->whenLoaded('games')),
         ];
     }
