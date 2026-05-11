@@ -234,6 +234,37 @@
 			],
 		},
 		{
+			text: "Agents",
+			url: "#",
+			active: window.route().current("admin.agents.*"),
+			value: "agents",
+			icon: MdMiscellaneousservicesSharp,
+			id: uid(),
+			submenu: [
+				{
+					text: "All Agents",
+					url: window.route("admin.agents.index"),
+					active: window.route().current("admin.agents.index"),
+					value: "agents.index",
+					id: uid(),
+				},
+				{
+					text: "Create Agent",
+					url: window.route("admin.agents.create"),
+					active: window.route().current("admin.agents.create"),
+					value: "agents.create",
+					id: uid(),
+				},
+				{
+					text: "Hierarchy",
+					url: window.route("admin.agents.hierarchy"),
+					active: window.route().current("admin.agents.hierarchy"),
+					value: "agents.hierarchy",
+					id: uid(),
+				},
+			],
+		},
+		{
 			text: "Bet Exchange",
 			url: "#",
 			active:
