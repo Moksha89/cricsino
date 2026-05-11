@@ -9,9 +9,9 @@
 	import FileUploader from "@/Components/FileUploader.vue";
 	import FileUploaderLocal from "@/Components/FileUploaderLocal.vue";
 	import FormLabel from "@/Components/FormLabel.vue";
-	import PrimaryButton from "@/Components/PrimaryButton.vue";
+	import Loading from "@/Components/Loading.vue";
 	import RadioSelect from "@/Components/RadioSelect.vue";
-	import { Badge } from "@/Components/ui/badge";
+	import VerificationStatusBadge from "@/Components/Account/VerificationStatusBadge.vue";
 	defineProps({
 		addressTypes: Object,
 		personal: Object,
@@ -39,52 +39,36 @@
 </script>
 
 <template>
-	<div class="bg-gray-50 mt-4 dark:bg-gray-850 p-4 rounded">
-		<div class="flex items-center">
-			<BookUser
-				class="w-16 h-16 mr-4 stroke-[0.5] text-white" />
-			<div>
-				<h3 class="text-base font-inter text-white">
+	<div class="bg-gray-800/50 rounded-2xl border border-white/[0.06] p-4 sm:p-6">
+		<div class="flex items-center gap-4">
+			<div class="w-12 h-12 rounded-xl bg-purple-600/10 flex items-center justify-center flex-shrink-0">
+				<BookUser class="w-6 h-6 text-purple-400" />
+			</div>
+			<div class="flex-1 min-w-0">
+				<h3 class="text-base font-semibold text-white">
 					{{ $t("Proof of Address") }}
 				</h3>
-				<h3 class="text-xs">
-					{{
-						$t(
-							"Submit clear and high resolution documents in order to complete KYC faster",
-						)
-					}}
-				</h3>
-				<Badge
-					v-if="!$page.props.enableKyc"
-					variant="outline"
-					class="!border-gray-250 dark:!border-gray-550">
-					{{ $t("Not required") }}
-				</Badge>
-				<Badge
-					v-else-if="$page.props.auth.user.isAddressVerified"
-					variant="outline"
-					class="!border-green-500 !text-green-500">
-					{{ $t("Complete") }}
-				</Badge>
-				<template v-else-if="personal.proof_of_address">
-					<div class="flex items-center mt-1 space-x-2">
-						<Badge
-							variant="outline"
-							class="!border-gray-350 dark:!border-gray-550">
-							{{ $t("Pending") }}
-						</Badge>
-						<a @click.prevent="showForm = !showForm" href="#">
-							<Badge
-								variant="outline"
-								class="!border-red-600 !text-red-600 dark:!border-red-400 dark:!text-white">
+				<p class="text-sm text-gray-400 mt-0.5">
+					{{ $t("Submit clear and high resolution documents to complete KYC faster") }}
+				</p>
+				<div class="mt-2">
+					<VerificationStatusBadge
+						v-if="!$page.props.enableKyc"
+						status="not_required" />
+					<VerificationStatusBadge
+						v-else-if="$page.props.auth.user.isAddressVerified"
+						status="complete" />
+					<template v-else-if="personal.proof_of_address">
+						<div class="flex items-center gap-2">
+							<VerificationStatusBadge status="pending" />
+							<button @click.prevent="showForm = !showForm"
+								class="text-xs text-red-400 hover:text-red-300 underline transition-colors">
 								{{ $t("Resubmit") }}
-							</Badge>
-						</a>
-					</div>
-				</template>
-				<Badge v-else variant="destructive">
-					{{ $t("Unverified") }}
-				</Badge>
+							</button>
+						</div>
+					</template>
+					<VerificationStatusBadge v-else status="unverified" />
+				</div>
 			</div>
 		</div>
 
@@ -95,7 +79,7 @@
 					!$page.props.auth.user.isAddressVerified &&
 					(showForm || !personal.proof_of_address)
 				">
-				<div class="mt-8">
+				<div class="mt-6 pt-4 border-t border-white/[0.06]">
 					<FormLabel class="mb-2">
 						{{ $t("Type of Document") }}
 					</FormLabel>
@@ -118,21 +102,21 @@
 						class="mb-1 sm:max-w-sm w-full"
 						v-model="form.image_uri"
 						v-model:file="form.image_path" />
-					<p v-if="form.errors.image" class="text-red-500">
+					<p v-if="form.errors.image" class="text-red-500 text-sm mt-1">
 						{{ form.errors.image }}
 					</p>
-					<p v-else class="text-xs">
+					<p v-else class="text-xs text-gray-500 mt-1">
 						{{ $t("This will overwrite any previous uploads") }}
 					</p>
 				</div>
 				<div class="flex w-full mt-5">
-					<PrimaryButton
+					<button
 						@click="approveAddress"
-						class="!py-1 uppercase"
-						primary>
-						<Loading v-if="form.processing" class="mr-2 -ml-1" />
+						:disabled="form.processing"
+						class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-purple-600 hover:bg-purple-700 text-white transition-all duration-200 min-h-[44px] disabled:opacity-50">
+						<Loading v-if="form.processing" class="!w-4 !h-4" />
 						Submit Documents
-					</PrimaryButton>
+					</button>
 				</div>
 			</div>
 		</CollapseTransition>

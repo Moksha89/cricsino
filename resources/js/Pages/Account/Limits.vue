@@ -1,4 +1,5 @@
 <script setup>
+	import { Gauge } from "lucide-vue-next";
 	import LimitDeposits from "@/Pages/Account/Limits/LimitDeposits.vue";
 	import LimitStake from "@/Pages/Account/Limits/LimitStake.vue";
 	import PotentialLoss from "@/Pages/Account/Limits/PotentialLoss.vue";
@@ -14,7 +15,7 @@
 
 <template>
 	<SettingsLayout>
-		<div class="py-2 grid gap-4">
+		<div class="grid gap-5 max-w-4xl">
 			<LimitDeposits :personal="personal" />
 			<PotentialLoss
 				:lossOptions="Object.values(lossOptions)"
