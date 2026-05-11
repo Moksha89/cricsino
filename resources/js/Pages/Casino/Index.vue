@@ -1,7 +1,7 @@
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import PremiumLayout from "@/Layouts/PremiumLayout.vue";
 import { Head, Link, router } from "@inertiajs/vue3";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
 const props = defineProps({
 	games: Object,
@@ -13,6 +13,7 @@ const props = defineProps({
 
 const selectedCat = ref(props.selectedCategory || "");
 const selectedProv = ref(props.selectedProvider || "");
+const searchQuery = ref("");
 
 function filterGames() {
 	const params = {};
@@ -21,163 +22,150 @@ function filterGames() {
 	router.get(route("casino.index"), params, { preserveState: true });
 }
 
-function clearFilters() {
-	selectedCat.value = "";
-	selectedProv.value = "";
-	router.get(route("casino.index"));
-}
+const houseOriginals = [
+	{ name: 'Crash', desc: 'Ride the multiplier!', icon: '📈', gradient: 'from-orange-500 to-red-600', route: 'games.mini.crash' },
+	{ name: 'Dice', desc: 'Roll over or under', icon: '🎲', gradient: 'from-blue-500 to-indigo-600', route: 'games.mini.dice' },
+	{ name: 'Mines', desc: 'Find the diamonds!', icon: '💎', gradient: 'from-emerald-500 to-teal-600', route: 'games.mini.mines' },
+	{ name: 'Hi-Lo', desc: 'Higher or lower?', icon: '🃏', gradient: 'from-purple-500 to-pink-600', route: 'games.mini.hilo' },
+];
+
+const gameTabs = [
+	{ id: '', label: 'All Games', icon: '🔥' },
+	{ id: 'originals', label: 'Originals', icon: '💎' },
+	{ id: 'live_casino', label: 'Live Games', icon: '📺' },
+	{ id: 'slots', label: 'Slots', icon: '🎰' },
+	{ id: 'table_games', label: 'Table Games', icon: '♠️' },
+];
 </script>
 
 <template>
-	<Head :title="$t('Casino')" />
-	<AuthenticatedLayout>
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-			<!-- Header -->
-			<div class="flex items-center justify-between mb-6">
-				<h1
-					class="text-2xl font-bold text-gray-900 dark:text-white">
-					{{ $t("Casino Games") }}
-				</h1>
+<Head :title="$t('Casino')" />
+<PremiumLayout>
+	<div class="p-4 lg:p-6 space-y-6 pb-24 lg:pb-6">
+
+		<!-- Header -->
+		<div class="flex items-center justify-between">
+			<h1 class="text-2xl font-bold text-white">Casino</h1>
+			<Link
+				:href="route('casino.live')"
+				class="flex items-center gap-2 bg-danger/20 text-danger text-sm font-semibold px-4 py-2 rounded-xl hover:bg-danger/30 transition">
+				<span class="w-2 h-2 bg-danger rounded-full animate-pulse"></span>
+				Live Casino
+			</Link>
+		</div>
+
+		<!-- House Originals -->
+		<div>
+			<h2 class="text-white font-bold text-lg mb-4 flex items-center gap-2">
+				<span>💎</span> House Originals — Provably Fair
+			</h2>
+			<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
 				<Link
-					:href="route('casino.live')"
-					class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center space-x-2">
-					<span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-					<span>{{ $t("Live Casino") }}</span>
+					v-for="game in houseOriginals"
+					:key="game.name"
+					:href="route(game.route)"
+					:class="['group relative overflow-hidden rounded-2xl p-5 transition-all hover:scale-[1.02] hover:shadow-xl bg-gradient-to-br', game.gradient]">
+					<div class="text-3xl mb-2">{{ game.icon }}</div>
+					<h3 class="text-white font-bold text-base">{{ game.name }}</h3>
+					<p class="text-white/60 text-xs mt-1">{{ game.desc }}</p>
+					<div class="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition duration-300"></div>
 				</Link>
 			</div>
-
-			<!-- House Originals (Provably Fair Mini Games) -->
-			<div class="mb-8">
-				<h2 class="text-lg font-bold text-white mb-4">🎲 {{ $t("House Originals") }} — {{ $t("Provably Fair") }}</h2>
-				<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-					<Link
-						:href="route('games.mini.crash')"
-						class="group relative rounded-xl overflow-hidden bg-gradient-to-br from-orange-600 to-red-700 p-6 hover:scale-105 transition-transform shadow-lg">
-						<div class="text-4xl mb-2">📈</div>
-						<h3 class="text-white font-bold text-lg">{{ $t("Crash") }}</h3>
-						<p class="text-orange-200 text-xs mt-1">{{ $t("Ride the multiplier!") }}</p>
-					</Link>
-					<Link
-						:href="route('games.mini.dice')"
-						class="group relative rounded-xl overflow-hidden bg-gradient-to-br from-blue-600 to-purple-700 p-6 hover:scale-105 transition-transform shadow-lg">
-						<div class="text-4xl mb-2">🎲</div>
-						<h3 class="text-white font-bold text-lg">{{ $t("Dice") }}</h3>
-						<p class="text-blue-200 text-xs mt-1">{{ $t("Roll over or under") }}</p>
-					</Link>
-					<Link
-						:href="route('games.mini.mines')"
-						class="group relative rounded-xl overflow-hidden bg-gradient-to-br from-green-600 to-teal-700 p-6 hover:scale-105 transition-transform shadow-lg">
-						<div class="text-4xl mb-2">💣</div>
-						<h3 class="text-white font-bold text-lg">{{ $t("Mines") }}</h3>
-						<p class="text-green-200 text-xs mt-1">{{ $t("Find the diamonds!") }}</p>
-					</Link>
-					<Link
-						:href="route('games.mini.hilo')"
-						class="group relative rounded-xl overflow-hidden bg-gradient-to-br from-pink-600 to-rose-700 p-6 hover:scale-105 transition-transform shadow-lg">
-						<div class="text-4xl mb-2">🃏</div>
-						<h3 class="text-white font-bold text-lg">{{ $t("Hi-Lo") }}</h3>
-						<p class="text-pink-200 text-xs mt-1">{{ $t("Higher or lower?") }}</p>
-					</Link>
-				</div>
-			</div>
-
-			<!-- Category Tabs -->
-			<div class="flex flex-wrap gap-2 mb-6">
-				<button
-					@click="selectedCat = ''; filterGames()"
-					:class="[
-						'px-4 py-2 rounded-full text-sm font-medium transition',
-						!selectedCat
-							? 'bg-blue-600 text-white'
-							: 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600',
-					]">
-					{{ $t("All Games") }}
-				</button>
-				<button
-					v-for="(label, key) in categories"
-					:key="key"
-					@click="selectedCat = key; filterGames()"
-					:class="[
-						'px-4 py-2 rounded-full text-sm font-medium transition',
-						selectedCat === key
-							? 'bg-blue-600 text-white'
-							: 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600',
-					]">
-					{{ label }}
-				</button>
-			</div>
-
-			<!-- Games Grid -->
-			<div
-				v-if="games.data && games.data.length > 0"
-				class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-				<div
-					v-for="game in games.data"
-					:key="game.id"
-					class="group relative rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-sm hover:shadow-lg transition-shadow">
-					<div class="aspect-[3/4] relative">
-						<img
-							v-if="game.image"
-							:src="game.image"
-							:alt="game.name"
-							class="w-full h-full object-cover" />
-						<div
-							v-else
-							class="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-600 to-blue-600">
-							<span class="text-white text-lg font-bold">
-								{{ game.name.charAt(0) }}
-							</span>
-						</div>
-						<!-- Live Badge -->
-						<span
-							v-if="game.is_live"
-							class="absolute top-2 left-2 px-2 py-0.5 bg-red-600 text-white text-xs rounded-full flex items-center">
-							<span class="w-1.5 h-1.5 bg-white rounded-full mr-1 animate-pulse"></span>
-							LIVE
-						</span>
-						<!-- Hover Overlay -->
-						<div
-							class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 flex items-center justify-center transition-all">
-							<Link
-								:href="route('casino.show', game.uuid)"
-								class="opacity-0 group-hover:opacity-100 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium transition">
-								{{ $t("Play Now") }}
-							</Link>
-						</div>
-					</div>
-					<div class="p-2">
-						<h3
-							class="text-sm font-medium text-gray-900 dark:text-white truncate">
-							{{ game.name }}
-						</h3>
-						<p class="text-xs text-gray-500 dark:text-gray-400">
-							{{ game.provider }}
-						</p>
-					</div>
-				</div>
-			</div>
-
-			<!-- Empty State -->
-			<div
-				v-else
-				class="text-center py-16 text-gray-500 dark:text-gray-400">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="h-16 w-16 mx-auto mb-4"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-				</svg>
-				<p class="text-lg">{{ $t("No casino games available yet.") }}</p>
-				<p class="text-sm mt-1">
-					{{ $t("Casino games will be added by the admin.") }}
-				</p>
-			</div>
 		</div>
-	</AuthenticatedLayout>
+
+		<!-- Category Tabs -->
+		<div class="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
+			<button
+				v-for="tab in gameTabs"
+				:key="tab.id"
+				@click="selectedCat = tab.id; filterGames()"
+				:class="[
+					'flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all',
+					selectedCat === tab.id
+						? 'bg-primary text-white shadow-lg shadow-primary/20'
+						: 'bg-gray-800 text-gray-400 hover:text-white border border-white/[0.06]'
+				]">
+				<span>{{ tab.icon }}</span>
+				{{ tab.label }}
+			</button>
+			<button
+				v-for="(label, key) in categories"
+				:key="key"
+				@click="selectedCat = key; filterGames()"
+				:class="[
+					'flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all',
+					selectedCat === key
+						? 'bg-primary text-white shadow-lg shadow-primary/20'
+						: 'bg-gray-800 text-gray-400 hover:text-white border border-white/[0.06]'
+				]">
+				{{ label }}
+			</button>
+		</div>
+
+		<!-- Search + Provider Filter -->
+		<div class="flex flex-col sm:flex-row gap-3">
+			<div class="relative flex-1">
+				<svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+				</svg>
+				<input
+					v-model="searchQuery"
+					type="text"
+					placeholder="Search for games..."
+					class="w-full bg-gray-800 text-white text-sm rounded-2xl pl-10 pr-4 py-3 border border-white/[0.06] focus:border-primary/50 focus:ring-1 focus:ring-primary/30 outline-none placeholder:text-gray-500" />
+			</div>
+			<select
+				v-if="providers && Object.keys(providers).length > 0"
+				v-model="selectedProv"
+				@change="filterGames()"
+				class="bg-gray-800 text-white text-sm rounded-2xl px-4 py-3 border border-white/[0.06] focus:border-primary/50 outline-none appearance-none cursor-pointer">
+				<option value="">All Providers</option>
+				<option v-for="(label, key) in providers" :key="key" :value="key">{{ label }}</option>
+			</select>
+		</div>
+
+		<!-- Games Grid -->
+		<div v-if="games?.data?.length > 0" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+			<Link
+				v-for="game in games.data"
+				:key="game.id"
+				:href="route('casino.show', game.uuid)"
+				class="group relative overflow-hidden rounded-2xl bg-gray-800 border border-white/[0.06] hover:border-primary/30 transition-all hover:scale-[1.02]">
+				<div class="aspect-[3/4] relative">
+					<img
+						v-if="game.image"
+						:src="game.image"
+						:alt="game.name"
+						class="w-full h-full object-cover" />
+					<div
+						v-else
+						class="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary to-accent">
+						<span class="text-white text-2xl font-bold">{{ game.name?.charAt(0) }}</span>
+					</div>
+					<!-- Live Badge -->
+					<span
+						v-if="game.is_live"
+						class="absolute top-2 left-2 px-2 py-0.5 bg-danger text-white text-[10px] font-bold rounded-full flex items-center gap-1">
+						<span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> LIVE
+					</span>
+					<!-- Hover Overlay -->
+					<div class="absolute inset-0 bg-black/0 group-hover:bg-black/40 flex items-center justify-center transition-all">
+						<span class="opacity-0 group-hover:opacity-100 bg-primary text-white font-bold text-xs px-4 py-2 rounded-xl transition">Play Now</span>
+					</div>
+				</div>
+				<div class="p-3">
+					<h3 class="text-sm font-semibold text-white truncate">{{ game.name }}</h3>
+					<p class="text-[11px] text-gray-400">{{ game.provider }}</p>
+				</div>
+			</Link>
+		</div>
+
+		<!-- Empty State -->
+		<div v-else class="text-center py-20">
+			<div class="text-5xl mb-4">🎰</div>
+			<p class="text-lg text-gray-300 font-semibold mb-1">No casino games yet</p>
+			<p class="text-sm text-gray-500">Try our House Originals above, or games will be added soon.</p>
+		</div>
+	</div>
+</PremiumLayout>
 </template>

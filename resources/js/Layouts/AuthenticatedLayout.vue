@@ -13,9 +13,8 @@
 
 	const showingNavigationDropdown = ref(false);
 	const isDarkMode = useDark();
-	if (usePage().props.forceDark) {
-		isDarkMode.value = true;
-	}
+	// Always force dark mode for premium casino theme
+	isDarkMode.value = true;
 </script>
 
 <template>

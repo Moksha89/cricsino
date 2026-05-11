@@ -13,9 +13,8 @@
 	import AppHeader from "@/Layouts/FontendLayout/AppHeader.vue";
 	import Sidebar from "@/Layouts/FontendLayout/Sidebar.vue";
 	const isDarkMode = useDark();
-	if (usePage().props.forceDark) {
-		isDarkMode.value = true;
-	}
+	// Always force dark mode for premium casino theme
+	isDarkMode.value = true;
 
 	const leftSidebarOpen = ref(true);
 	const rightSidebarOpen = ref(true);

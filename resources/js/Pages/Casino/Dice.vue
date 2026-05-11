@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import PremiumLayout from "@/Layouts/PremiumLayout.vue";
 import { Head, usePage } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
 import axios from "axios";
@@ -64,7 +64,7 @@ function roll() {
 
 <template>
 	<Head :title="$t('Dice Game')" />
-	<AuthenticatedLayout>
+	<PremiumLayout>
 		<div class="max-w-4xl mx-auto px-4 py-6">
 			<h1 class="text-2xl font-bold text-white mb-6">
 				{{ $t("Dice") }}
@@ -228,5 +228,5 @@ function roll() {
 				</div>
 			</div>
 		</div>
-	</AuthenticatedLayout>
+	</PremiumLayout>
 </template>

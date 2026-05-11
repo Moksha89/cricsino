@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import PremiumLayout from "@/Layouts/PremiumLayout.vue";
 import { Head, usePage } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
 import axios from "axios";
@@ -105,7 +105,7 @@ function cashout() {
 
 <template>
 	<Head :title="$t('Mines Game')" />
-	<AuthenticatedLayout>
+	<PremiumLayout>
 		<div class="max-w-4xl mx-auto px-4 py-6">
 			<h1 class="text-2xl font-bold text-white mb-6">
 				{{ $t("Mines") }}
@@ -244,5 +244,5 @@ function cashout() {
 				</div>
 			</div>
 		</div>
-	</AuthenticatedLayout>
+	</PremiumLayout>
 </template>

@@ -88,7 +88,7 @@ class HomeController extends Controller
         ]);
         $query->inNext7Days();
         $gamesItems = $query->latest('startTime')->take(5)->get();
-        return Inertia::render('Home', [
+        return Inertia::render('PremiumHome', [
             'enableExchange' =>  settings('site.enable_exchange'),
             'enableBookie' => settings('site.enable_bookie'),
             'defaultMarkets' => ResourcesMarket::collection(

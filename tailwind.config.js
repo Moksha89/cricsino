@@ -16,59 +16,71 @@ export default {
             colors: () => {
                 return {
                     emerald: colors.amber,
+                    // Premium dark purple casino theme
                     gray: {
-                        50: "#fafafa",
-                        100: "#f4f4f5",
-                        150: "#ececed",  // New mid-range color
-                        200: "#e4e4e7",
-                        250: "#dcdcdf",  // New mid-range color
-                        300: "#d4d4d8",
-                        350: "#bbbbc1",  // New mid-range color
-                        400: "#a1a1aa",
-                        450: "#8c8c94",  // New mid-range color
-                        500: "#71717a",
-                        550: "#63636b",  // New mid-range color
-                        600: "#52525b",
-                        650: "#494951",  // New mid-range color
-                        700: "#3f3f46",
-                        750: "#353538",  // New mid-range color
-                        800: "#27272a",
-                        850: "#202022",  // New mid-range color
-                        900: "#18181b",
-                        950: "#09090b"
-                    }, zinc: {
-                        50: "#fafafa",
-                        100: "#f4f4f5",
-                        150: "#ececed",  // New mid-range color
-                        200: "#e4e4e7",
-                        250: "#dcdcdf",  // New mid-range color
-                        300: "#d4d4d8",
-                        350: "#bbbbc1",  // New mid-range color
-                        400: "#a1a1aa",
-                        450: "#8c8c94",  // New mid-range color
-                        500: "#71717a",
-                        550: "#63636b",  // New mid-range color
-                        600: "#52525b",
-                        650: "#494951",  // New mid-range color
-                        700: "#3f3f46",
-                        750: "#353538",  // New mid-range color
-                        800: "#27272a",
-                        850: "#202022",  // New mid-range color
-                        900: "#18181b",
-                        950: "#09090b"
+                        50: "#E8E6F0",
+                        100: "#D0CCE0",
+                        150: "#B8B3D0",
+                        200: "#A099C0",
+                        250: "#8880B0",
+                        300: "#6B6B85",
+                        350: "#5A5A70",
+                        400: "#A1A1B5",
+                        450: "#8c8c9f",
+                        500: "#6B6B85",
+                        550: "#4A4A60",
+                        600: "#2A2A45",
+                        650: "#1C1B3A",
+                        700: "#1C1B3A",
+                        750: "#161530",
+                        800: "#14142B",
+                        850: "#101022",
+                        900: "#0B0B1F",
+                        950: "#070716"
                     },
-                    primary: "#BFBFBF",
-                    secondary: "#F000B9",
-                    info: colors.sky["500"],
-                    success: colors.green["500"],
-                    warning: "#ff9800",
-                    error: "#ff5724",
-                    accent: "#5f5af6",
+                    zinc: {
+                        50: "#E8E6F0",
+                        100: "#D0CCE0",
+                        150: "#B8B3D0",
+                        200: "#A099C0",
+                        250: "#8880B0",
+                        300: "#6B6B85",
+                        350: "#5A5A70",
+                        400: "#A1A1B5",
+                        450: "#8c8c9f",
+                        500: "#6B6B85",
+                        550: "#4A4A60",
+                        600: "#2A2A45",
+                        650: "#1C1B3A",
+                        700: "#1C1B3A",
+                        750: "#161530",
+                        800: "#14142B",
+                        850: "#101022",
+                        900: "#0B0B1F",
+                        950: "#070716"
+                    },
+                    primary: "#7C3AED",
+                    'primary-light': "#A855F7",
+                    'primary-dark': "#5B21B6",
+                    secondary: "#C084FC",
+                    info: "#38BDF8",
+                    success: "#10B981",
+                    warning: "#F59E0B",
+                    error: "#EF4444",
+                    danger: "#EF4444",
+                    accent: "#C084FC",
+                    gold: "#FACC15",
+                    surface: "#14142B",
+                    'surface-light': "#1C1B3A",
+                    'surface-dark': "#101022",
                 };
             },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
                 inter: ['Inter', ...defaultTheme.fontFamily.sans]
+            },
+            borderColor: {
+                DEFAULT: 'rgba(255,255,255,0.08)',
             },
             backgroundImage: (theme) => ({
                 'multiselect-caret': `url("${svgToDataUri(
