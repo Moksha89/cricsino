@@ -24,8 +24,8 @@ function isActive(routeName) {
 }
 
 const mainNav = [
-	{ label: 'Home', icon: 'home', route: 'dashboard', match: 'dashboard' },
-	{ label: 'Sports', icon: 'sports', route: 'games.index', match: 'games.*' },
+	{ label: 'Home', icon: 'home', route: 'home', match: 'home' },
+	{ label: 'Sports', icon: 'sports', route: 'sports.index', match: 'sports.*' },
 	{ label: 'In-Play', icon: 'live', route: 'sports.inplay', match: 'sports.inplay' },
 	{ label: 'Casino', icon: 'casino', route: 'casino.index', match: 'casino.*' },
 ];
