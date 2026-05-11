@@ -35,27 +35,21 @@ class StakesController extends Controller
     {
         $keyword = $request->get('search');
         $perPage = 25;
-        $query  = Stake::query()->with(['user', 'game', 'bet', 'maker_trades', 'taker_trades']);
+        $query  = Stake::query()
+            ->where('user_id', $request->user()->id)
+            ->with(['game', 'bet', 'maker_trades', 'taker_trades']);
         if (!empty($keyword)) {
-            $query->where('slip_id', 'LIKE', "%$keyword%")
-                ->orWhere('user_id', 'LIKE', "%$keyword%")
-                ->orWhere('bet_id', 'LIKE', "%$keyword%")
-                ->orWhere('game_id', 'LIKE', "%$keyword%")
-                ->orWhere('uuid', 'LIKE', "%$keyword%")
-                ->orWhere('scoreType', 'LIKE', "%$keyword%")
-                ->orWhere('amount', 'LIKE', "%$keyword%")
-                ->orWhere('filled', 'LIKE', "%$keyword%")
-                ->orWhere('unfilled', 'LIKE', "%$keyword%")
-                ->orWhere('payout', 'LIKE', "%$keyword%")
-                ->orWhere('odds', 'LIKE', "%$keyword%")
-                ->orWhere('status', 'LIKE', "%$keyword%")
-                ->orWhere('won', 'LIKE', "%$keyword%")
-                ->orWhere('is_withdrawn', 'LIKE', "%$keyword%")
-                ->orWhere('allow_partial', 'LIKE', "%$keyword%");
+            $query->where(function ($q) use ($keyword) {
+                $q->where('uid', 'LIKE', "%$keyword%")
+                    ->orWhere('game_info', 'LIKE', "%$keyword%")
+                    ->orWhere('market_info', 'LIKE', "%$keyword%")
+                    ->orWhere('bet_info', 'LIKE', "%$keyword%")
+                    ->orWhere('status', 'LIKE', "%$keyword%");
+            });
         }
         $stakesItems = $query->latest()->paginate($perPage);
         $stakes = StakeResource::collection($stakesItems);
-        return Inertia::render('AdminStakes/Index', compact('stakes'));
+        return Inertia::render('Stakes/Index', compact('stakes'));
     }
 
 

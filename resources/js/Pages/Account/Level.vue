@@ -4,7 +4,7 @@
 
 	import { Badge } from "@/Components/ui/badge";
 	import Button from "@/Components/ui/button/Button.vue";
-	import FrontendLayout from "@/Layouts/FrontendLayout.vue";
+	import UserLayout from "@/Layouts/UserLayout.vue";
 	import LevelOneIcon from "@/Pages/Account/Level/LevelOneIcon.vue";
 	import LevelThreeIcon from "@/Pages/Account/Level/LevelThreeIcon.vue";
 	import LevelTwoIcon from "@/Pages/Account/Level/LevelTwoIcon.vue";
@@ -28,8 +28,8 @@
 </script>
 
 <template>
-	<FrontendLayout>
-		<div class="px-3.5 mb-12">
+	<UserLayout>
+		<div class="p-4 sm:p-6 mb-12">
 			<div class="grid py-6">
 				<h1
 					class="text-3xl text-gray-650 dark:text-gray-250 font-inter font-semibold">
@@ -53,16 +53,16 @@
 					<div class="flex items-center justify-start space-x-4">
 						<LevelOneIcon
 							v-if="$page.props.auth.user.isLevelOne"
-							class="text-gray-800 dark:text-white w-14 h-14" />
+							class="text-white w-14 h-14" />
 						<LevelTwoIcon
 							v-if="$page.props.auth.user.isLevelTwo"
-							class="text-gray-800 dark:text-white w-14 h-14" />
+							class="text-white w-14 h-14" />
 						<LevelThreeIcon
 							v-if="$page.props.auth.user.isLevelThree"
-							class="text-gray-800 dark:text-white w-14 h-14" />
+							class="text-white w-14 h-14" />
 						<div>
 							<h3
-								class="text-gray-800 dark:text-white text-base font-inter">
+								class="text-white text-base font-inter">
 								{{ $page.props.auth.user.levelConfig.name }}
 							</h3>
 							<p>
@@ -92,10 +92,10 @@
 				<div class="p-6">
 					<div class="flex items-center justify-start space-x-4">
 						<LevelOneIcon
-							class="text-gray-800 dark:text-white w-14 h-14" />
+							class="text-white w-14 h-14" />
 						<div>
 							<h3
-								class="text-gray-800 dark:text-white text-base font-inter">
+								class="text-white text-base font-inter">
 								{{ levelOne.name }}
 							</h3>
 							<p>{{ levelOne.description }}</p>
@@ -114,7 +114,7 @@
 							</Badge>
 							<Button
 								v-else-if="!$page.props.auth.user.isLevelOne"
-								class="mt-4 text-gray-800 dark:text-white"
+								class="mt-4 text-white"
 								variant="outline"
 								@click="optinFor(1)"
 								:disabled="
@@ -137,10 +137,10 @@
 				<div class="p-6">
 					<div class="flex items-center justify-start space-x-4">
 						<LevelTwoIcon
-							class="text-gray-800 dark:text-white w-14 h-14" />
+							class="text-white w-14 h-14" />
 						<div>
 							<h3
-								class="text-gray-800 dark:text-white text-base font-inter">
+								class="text-white text-base font-inter">
 								{{ levelTwo.name }}
 							</h3>
 							<p>{{ levelTwo.description }}</p>
@@ -159,7 +159,7 @@
 							</Badge>
 							<Button
 								v-else-if="!$page.props.auth.user.isLevelTwo"
-								class="mt-4 text-gray-800 dark:text-white"
+								class="mt-4 text-white"
 								variant="outline"
 								@click="optinFor(2)"
 								:disabled="
@@ -182,10 +182,10 @@
 				<div class="p-6">
 					<div class="flex items-center justify-start space-x-4">
 						<LevelThreeIcon
-							class="text-gray-800 dark:text-white w-14 h-14" />
+							class="text-white w-14 h-14" />
 						<div>
 							<h3
-								class="text-gray-800 dark:text-white text-base font-inter">
+								class="text-white text-base font-inter">
 								{{ levelThree.name }}
 							</h3>
 							<p>{{ levelThree.description }}</p>
@@ -204,7 +204,7 @@
 							</Badge>
 							<Button
 								v-else-if="!$page.props.auth.user.isLevelThree"
-								class="mt-4 text-gray-800 dark:text-white"
+								class="mt-4 text-white"
 								variant="outline"
 								@click="optinFor(3)"
 								:disabled="
@@ -224,5 +224,5 @@
 				</div>
 			</div>
 		</div>
-	</FrontendLayout>
+	</UserLayout>
 </template>

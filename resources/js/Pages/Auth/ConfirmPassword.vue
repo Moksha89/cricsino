@@ -3,7 +3,7 @@ import { Head, useForm } from "@inertiajs/vue3";
 
 import FormInput from "@/Components/FormInput.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import GuestLayout from "@/Layouts/GuestLayout.vue";
+import AuthLayout from "@/Layouts/AuthLayout.vue";
 
 const form = useForm({
     password: "",
@@ -17,10 +17,10 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
+    <AuthLayout>
         <Head title="Confirm Password" />
 
-        <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+        <div class="mb-4 text-sm text-gray-400">
             This is a secure area of the application. Please confirm your
             password before continuing.
         </div>
@@ -46,5 +46,5 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
-    </GuestLayout>
+    </AuthLayout>
 </template>

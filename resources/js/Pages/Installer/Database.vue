@@ -55,7 +55,7 @@
 						<select
 							id="db_connection"
 							v-model="form.connection"
-							class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+							class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-emerald-500 focus:border-primary focus:z-10 sm:text-sm"
 							required>
 							<option value="mysql">MySQL</option>
 							<option value="pgsql">PostgreSQL</option>
@@ -71,7 +71,7 @@
 							v-model="form.host"
 							type="text"
 							required
-							class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+							class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-primary focus:z-10 sm:text-sm"
 							placeholder="Database Host" />
 					</div>
 					<div>
@@ -83,7 +83,7 @@
 							v-model="form.port"
 							type="text"
 							required
-							class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+							class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-primary focus:z-10 sm:text-sm"
 							placeholder="Database Port" />
 					</div>
 					<div>
@@ -95,7 +95,7 @@
 							v-model="form.database"
 							type="text"
 							required
-							class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+							class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-primary focus:z-10 sm:text-sm"
 							placeholder="Database Name" />
 					</div>
 					<div>
@@ -107,7 +107,7 @@
 							v-model="form.username"
 							type="text"
 							required
-							class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+							class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-emerald-500 focus:border-primary focus:z-10 sm:text-sm"
 							placeholder="Database Username" />
 					</div>
 					<div>
@@ -118,7 +118,7 @@
 							id="db_password"
 							v-model="form.password"
 							type="password"
-							class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+							class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-emerald-500 focus:border-primary focus:z-10 sm:text-sm"
 							placeholder="Database Password" />
 					</div>
 				</div>
@@ -126,12 +126,12 @@
 				<div class="flex justify-between">
 					<Link
 						:href="route('installer.permissions')"
-						class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-emerald-600 bg-white hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+						class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-primary-dark bg-white hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
 						Back
 					</Link>
 					<button
 						type="submit"
-						class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+						class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-dark hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
 						Configure Database
 					</button>
 				</div>

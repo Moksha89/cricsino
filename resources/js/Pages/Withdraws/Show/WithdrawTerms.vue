@@ -1,6 +1,6 @@
 <template>
-  <div class="max-w-md mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-    <h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Withdrawal Terms</h2>
+  <div class="max-w-md mx-auto p-6 bg-gray-800/50 border border-white/[0.06] rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-4 text-white">Withdrawal Terms</h2>
     <div class="mb-4">
       <div v-for="(term, index) in terms" :key="index" class="flex items-center mb-2">
         <input
@@ -11,7 +11,7 @@
           v-model="selectedTerm"
           class="mr-2 text-blue-600"
         />
-        <label :for="`term-${index}`" class="text-sm text-gray-700 dark:text-gray-300">
+        <label :for="`term-${index}`" class="text-sm text-gray-300">
           {{ term }}
         </label>
       </div>

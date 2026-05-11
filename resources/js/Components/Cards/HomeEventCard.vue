@@ -14,7 +14,7 @@
 
 <template>
 	<li
-		class="flex flex-col min-h-[131px] [contain-intrinsic-size:115px] relative transition-color duration-500 contain-strict [content-visibility:auto] will-change-transform bg-white dark:bg-gray-800 pt-2 pb-1 px-3.5 rounded-sm">
+		class="flex flex-col min-h-[131px] [contain-intrinsic-size:115px] relative transition-color duration-500 contain-strict [content-visibility:auto] will-change-transform bg-gray-800/50 pt-2 pb-1 px-3.5 rounded-sm">
 		<div class="flex flex-col flex-1 min-h-0 max-w-full">
 			<div
 				class="text-[9px] font-bold font-inter tracking-[0.7px] uppercase max-w-full min-h-[1.125rem] overflow-hidden whitespace-nowrap flex flex-wrap items-center">
@@ -38,7 +38,7 @@
 
 			<div class="flex-[1_1_0px] w-full min-w-0">
 				<a
-					class="bg-transparent text-[12px] font-extrabold font-inter w-0 min-w-full text-gray-800 dark:text-white flex flex-wrap max-h-[2.8125rem] leading-[1.2rem] overflow-hidden no-underline"
+					class="bg-transparent text-[12px] font-extrabold font-inter w-0 min-w-full text-white flex flex-wrap max-h-[2.8125rem] leading-[1.2rem] overflow-hidden no-underline"
 					:href="
 						route('sports.show', {
 							game: game.slug,

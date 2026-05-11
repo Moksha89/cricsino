@@ -69,7 +69,7 @@
 			for="name"
 			v-if="label || $slots.label"
 			:class="xs ? 'text-xs' : 'text-sm'"
-			class="block mb-2 font-medium text-gray-900 dark:text-gray-300">
+			class="block mb-2 font-medium text-gray-300">
 			<slot name="label">{{ label }}</slot>
 		</label>
 
@@ -92,8 +92,8 @@
 				class="border block w-full focus:outline-none focus:ring-1 appearance-none transition-colors duration-300"
 				:class="[
 					error
-						? 'bg-red-50 border-red-500  text-red-900 placeholder-red-700 rounded-[4px] focus:ring-red-500 focus:border-red-500  dark:bg-red-100 dark:border-red-400'
-						: 'bg-white border-gray-300 text-gray-900  rounded-[4px] focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-600 dark:text-white',
+						? 'bg-red-900/30 border-red-500/50 text-red-300 placeholder-red-700 rounded-lg focus:ring-red-500 focus:border-red-500'
+						: 'bg-gray-800 border-gray-600 text-white rounded-lg focus:ring-primary focus:border-primary placeholder-gray-500',
 					classes,
 					inputClasses,
 				]"
@@ -124,19 +124,19 @@
 			:class="[
 				error
 					? 'bg-red-50 border-red-500 text-red-900 placeholder-red-700 rounded-[4px] focus:ring-red-500 focus:border-red-500  dark:bg-red-100 dark:border-red-400'
-					: 'bg-white border-gray-300 text-gray-900  rounded-[4px] focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-600 dark:text-white',
+					: 'bg-gray-800 border-gray-600 text-white rounded-lg focus:ring-primary focus:border-primary placeholder-gray-500',
 				'border block w-full focus:outline-none  focus:ring-1 appearance-none',
 				classes,
 				inputClasses,
 			]"
 			:type="type ? type : hide ? 'password' : 'text'"
 			:placeholder="placeholder" />
-		<p v-if="error" class="mt-2 text-sm text-red-600 dark:text-red-400">
+		<p v-if="error" class="mt-2 text-sm text-red-400">
 			{{ error }}
 		</p>
 		<p
 			v-else-if="help"
-			class="mt-1 ml-1 text-xs font-semibold text-gray-600 dark:text-gray-300"
+			class="mt-1 ml-1 text-xs font-semibold text-gray-400"
 			id="email-error">
 			{{ help }}
 		</p>
