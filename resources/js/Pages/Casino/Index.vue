@@ -46,6 +46,41 @@ function clearFilters() {
 				</Link>
 			</div>
 
+			<!-- House Originals (Provably Fair Mini Games) -->
+			<div class="mb-8">
+				<h2 class="text-lg font-bold text-white mb-4">🎲 {{ $t("House Originals") }} — {{ $t("Provably Fair") }}</h2>
+				<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+					<Link
+						:href="route('games.mini.crash')"
+						class="group relative rounded-xl overflow-hidden bg-gradient-to-br from-orange-600 to-red-700 p-6 hover:scale-105 transition-transform shadow-lg">
+						<div class="text-4xl mb-2">📈</div>
+						<h3 class="text-white font-bold text-lg">{{ $t("Crash") }}</h3>
+						<p class="text-orange-200 text-xs mt-1">{{ $t("Ride the multiplier!") }}</p>
+					</Link>
+					<Link
+						:href="route('games.mini.dice')"
+						class="group relative rounded-xl overflow-hidden bg-gradient-to-br from-blue-600 to-purple-700 p-6 hover:scale-105 transition-transform shadow-lg">
+						<div class="text-4xl mb-2">🎲</div>
+						<h3 class="text-white font-bold text-lg">{{ $t("Dice") }}</h3>
+						<p class="text-blue-200 text-xs mt-1">{{ $t("Roll over or under") }}</p>
+					</Link>
+					<Link
+						:href="route('games.mini.mines')"
+						class="group relative rounded-xl overflow-hidden bg-gradient-to-br from-green-600 to-teal-700 p-6 hover:scale-105 transition-transform shadow-lg">
+						<div class="text-4xl mb-2">💣</div>
+						<h3 class="text-white font-bold text-lg">{{ $t("Mines") }}</h3>
+						<p class="text-green-200 text-xs mt-1">{{ $t("Find the diamonds!") }}</p>
+					</Link>
+					<Link
+						:href="route('games.mini.hilo')"
+						class="group relative rounded-xl overflow-hidden bg-gradient-to-br from-pink-600 to-rose-700 p-6 hover:scale-105 transition-transform shadow-lg">
+						<div class="text-4xl mb-2">🃏</div>
+						<h3 class="text-white font-bold text-lg">{{ $t("Hi-Lo") }}</h3>
+						<p class="text-pink-200 text-xs mt-1">{{ $t("Higher or lower?") }}</p>
+					</Link>
+				</div>
+			</div>
+
 			<!-- Category Tabs -->
 			<div class="flex flex-wrap gap-2 mb-6">
 				<button

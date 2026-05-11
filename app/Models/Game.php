@@ -82,6 +82,10 @@ class Game extends Model
         'sport',
         'active',
         'closed',
+        'is_live',
+        'bet_delay',
+        'stream_url',
+        'scorecard_url',
     ];
 
     public function getScores($type, GoalCount|string $team): float|int

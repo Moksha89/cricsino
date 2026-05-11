@@ -292,3 +292,20 @@ Route::name('casino.')
         Route::get('/casino/{casinoGame:uuid}', 'show')->name('show');
         Route::post('/casino/{casinoGame:uuid}/launch', 'launch')->name('launch')->middleware('auth');
     });
+
+# Mini Games (Provably Fair)
+Route::name('games.mini.')
+    ->middleware('auth')
+    ->controller(\App\Http\Controllers\MiniGamesController::class)
+    ->group(function () {
+        Route::get('/casino/crash', 'crash')->name('crash');
+        Route::post('/casino/crash/bet', 'crashBet')->name('crash.bet');
+        Route::get('/casino/dice', 'dice')->name('dice');
+        Route::post('/casino/dice/bet', 'diceBet')->name('dice.bet');
+        Route::get('/casino/mines', 'mines')->name('mines');
+        Route::post('/casino/mines/start', 'minesStart')->name('mines.start');
+        Route::post('/casino/mines/reveal', 'minesReveal')->name('mines.reveal');
+        Route::post('/casino/mines/cashout', 'minesCashout')->name('mines.cashout');
+        Route::get('/casino/hilo', 'hilo')->name('hilo');
+        Route::post('/casino/hilo/bet', 'hiloBet')->name('hilo.bet');
+    });

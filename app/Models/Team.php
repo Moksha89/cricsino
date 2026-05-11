@@ -50,6 +50,7 @@ class Team extends Model
     protected $fillable = [
         'teamId',
         'name',
+
         'code',
         'country',
         'description',

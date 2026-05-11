@@ -81,6 +81,10 @@ return [
         'apikey' => env('APIFOOTBALL_APIKEY', null)
     ],
 
+    'theoddsapi' => [
+        'apikey' => env('THEODDSAPI_APIKEY', null)
+    ],
+
     'mailgun' => [
         'secret' => env('MAILGUN_SECRET'),
         'domain' =>  env('MAILGUN_DOMAIN'),
