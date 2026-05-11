@@ -25,7 +25,7 @@
 </script>
 
 <template>
-	<div class="p-4 sm:p-8 bg-white dark:bg-gray-850 sm:rounded">
+	<div class="p-4 sm:p-8 bg-gray-800/50 border border-white/[0.06] sm:rounded">
 		<div class="grid mt-8">
 			<FormLabel class="mb-1">Bet Result Emails</FormLabel>
 			<Select v-model="form.bet_emails">

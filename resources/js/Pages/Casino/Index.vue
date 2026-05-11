@@ -1,5 +1,5 @@
 <script setup>
-import PremiumLayout from "@/Layouts/PremiumLayout.vue";
+import UserLayout from "@/Layouts/UserLayout.vue";
 import { Head, Link, router } from "@inertiajs/vue3";
 import { ref } from "vue";
 
@@ -40,7 +40,7 @@ const gameTabs = [
 
 <template>
 <Head :title="$t('Casino')" />
-<PremiumLayout>
+<UserLayout :showRightSidebar="false">
 	<div class="p-4 lg:p-6 space-y-6 pb-24 lg:pb-6">
 
 		<!-- Header -->
@@ -167,5 +167,5 @@ const gameTabs = [
 			<p class="text-sm text-gray-500">Try our House Originals above, or games will be added soon.</p>
 		</div>
 	</div>
-</PremiumLayout>
+</UserLayout>
 </template>

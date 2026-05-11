@@ -27,10 +27,10 @@ const submit = () => {
                 {{ status }}
             </div>
             <div class="text-start mb-8">
-                <h2 class="text-3xl font-bold text-gray-800 dark:text-white">
+                <h2 class="text-3xl font-bold text-white">
                     Create Your Account 👋
                 </h2>
-                <p class="text-gray-600 dark:text-gray-300">
+                <p class="text-gray-300">
                     By continuing, you agree to our User Agreement and
                     acknowledge that you understand the Privacy Policy.
                 </p>
@@ -75,7 +75,7 @@ const submit = () => {
                 <div class="flex items-center justify-end mt-4">
                     <Link
                         :href="route('login')"
-                        class="font-medium text-amber-600 hover:text-amber-500"
+                        class="font-medium text-primary hover:text-primary-light"
                         >Already registered?</Link
                     >
 

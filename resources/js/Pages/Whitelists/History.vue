@@ -92,7 +92,7 @@
 						:key="whitelist.id"
 						role="row">
 						<td
-							class="rounded-l-[4px] px-6 py-4 whitespace-nowrap bg-white dark:bg-gray-800 text-sm font-medium text-gray-900 dark:text-gray-300">
+							class="rounded-l-[4px] px-6 py-4 whitespace-nowrap bg-gray-800/50 border border-white/[0.06] text-sm font-medium text-gray-900 dark:text-gray-300">
 							<div class="flex items-center">
 								<img
 									class="w-7 h-7 rounded-full mr-3"
@@ -109,7 +109,7 @@
 							</div>
 						</td>
 						<td
-							class="rounded-l-[4px] px-6 py-4 whitespace-nowrap bg-white dark:bg-gray-800 text-sm font-medium text-gray-900 dark:text-gray-300">
+							class="rounded-l-[4px] px-6 py-4 whitespace-nowrap bg-gray-800/50 border border-white/[0.06] text-sm font-medium text-gray-900 dark:text-gray-300">
 							<div>
 								<div class="flex items-center">
 									<Flag
@@ -143,13 +143,13 @@
 						</td>
 
 						<td
-							class="px-6 py-4 text-right whitespace-nowrap bg-white dark:bg-gray-800 text-sm font-medium text-gray-900 dark:text-gray-300">
+							class="px-6 py-4 text-right whitespace-nowrap bg-gray-800/50 border border-white/[0.06] text-sm font-medium text-gray-900 dark:text-gray-300">
 							<div class="flex items-center space-x-3">
 								<Badge
 									variant="outline"
 									class="uppercase font-semibold font-inter"
 									:class="{
-										'border-gray-400 dark:border-gray-650 text-gray-600 dark:text-gray-400':
+										'border-gray-400 dark:border-gray-650 text-gray-400':
 											[
 												'review',
 												'pending',

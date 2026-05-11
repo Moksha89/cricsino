@@ -1,7 +1,7 @@
 <script setup>
 	import { Head } from "@inertiajs/vue3";
 
-	import FrontendLayout from "@/Layouts/FrontendLayout.vue";
+	import UserLayout from "@/Layouts/UserLayout.vue";
 	import MenuLink from "@/Pages/Account/Settings/MenuLink.vue";
 	defineProps({
 		personal: Object,
@@ -10,16 +10,15 @@
 
 <template>
 	<Head title="Settings" />
-	<FrontendLayout>
-		<div class="px-3.5 mb-12">
-			<div class="grid py-6">
-				<h1
-					class="text-3xl text-gray-750 dark:text-white font-inter font-semibold">
+	<UserLayout>
+		<div class="p-4 sm:p-6 mb-12">
+			<div class="mb-6">
+				<h1 class="text-2xl sm:text-3xl text-white font-inter font-semibold">
 					{{ $t("Settings") }}
 				</h1>
 			</div>
 			<div
-				class="my-2 mx-2.5 flex items-center space-x-4 overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-track-transparent">
+				class="mb-6 flex items-center space-x-2 overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-track-transparent pb-1">
 				<MenuLink
 					:active="route().current('accounts.settings')"
 					:href="route('accounts.settings')">
@@ -38,5 +37,5 @@
 			</div>
 			<slot></slot>
 		</div>
-	</FrontendLayout>
+	</UserLayout>
 </template>

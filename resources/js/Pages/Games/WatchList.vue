@@ -5,7 +5,7 @@
 
 	import BreadCrumbs from "@/Components/BreadCrumbs.vue";
 	import GameRow from "@/Components/Cards/GameRow.vue";
-	import AppLayout from "@/Layouts/FrontendLayout.vue";
+	import UserLayout from "@/Layouts/UserLayout.vue";
 	import BettingSideBar from "@/Pages/Games/BettingSideBar.vue";
 	const props = defineProps({
 		league: Object,
@@ -39,14 +39,14 @@
 <template>
 	<Head title="Dashboard" />
 
-	<AppLayout>
-		<div class="px-3.5">
+	<UserLayout>
+		<div class="p-4 sm:p-6">
 			<div class="flex justify-between">
 				<BreadCrumbs class="mt-3" :crumbs="crumbs" />
 			</div>
 			<div class="grid pb-6 pt-3">
 				<h1
-					class="text-lg sm:text-3xl md:text-4xl text-gray-850 dark:text-white font-inter font-extrabold">
+					class="text-lg sm:text-3xl md:text-4xl text-white font-inter font-extrabold">
 					{{ $t("Watchlist") }}
 				</h1>
 			</div>
@@ -64,5 +64,5 @@
 		<template #right-sidebar-top>
 			<BettingSideBar :multiples="multiples" />
 		</template>
-	</AppLayout>
+	</UserLayout>
 </template>

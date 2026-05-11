@@ -44,7 +44,7 @@
 				<span
 					class="flex-1 font-bold text-[13px] min-w-full max-w-0 overflow-hidden text-ellipsis mb-[3px]">
 					<a
-						class="bg-transparent text-gray-800 dark:text-white font-bold font-inter no-underline"
+						class="bg-transparent text-white font-bold font-inter no-underline"
 						:href="
 							route('sports.show', {
 								sport: stake.sport,
@@ -134,7 +134,7 @@
 								game.state == 'in_play',
 						},
 						{
-							'text-gray-700 dark:text-gray-300':
+							'text-gray-300':
 								!game.hasStarted,
 						},
 						{ 'text-red-500': game.hasEnded || game.stateEnded },
