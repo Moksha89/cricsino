@@ -6,7 +6,7 @@
 	import BreadCrumbs from "@/Components/BreadCrumbs.vue";
 	import ContractsCard from "@/Components/Cards/ContractsCard.vue";
 	import EventCard from "@/Components/Cards/EventCard.vue";
-	import AppLayout from "@/Layouts/FrontendLayout.vue";
+	import UserLayout from "@/Layouts/UserLayout.vue";
 	import MenuLink from "@/Pages/Account/Settings/MenuLink.vue";
 	import BettingSideBar from "@/Pages/Games/BettingSideBar.vue";
 	import EventInfo from "@/Pages/Games/EventInfo.vue";
@@ -84,7 +84,7 @@
 <template>
 	<Head title="Dashboard" />
 
-	<AppLayout>
+	<UserLayout>
 		<div class="sm:px-3.5">
 			<div class="px-2 sm:px-0">
 				<BreadCrumbs class="mt-3" :crumbs="crumbs" />
@@ -127,7 +127,7 @@
 			<div>
 				<BettingSideBar :multiples="multiples" />
 				<div
-					class="bg-gray-300 text-gray-900 dark:text-white dark:bg-gray-750 border-b border-gray-250 dark:border-gray-850 flex items-center px-2.5 uppercase font-inter text-sm tracking-[1px] font-bold h-12 box-border flex-shrink-0 flex-wrap m-0">
+					class="bg-gray-300 text-white dark:bg-gray-750 border-b border-gray-250 dark:border-gray-850 flex items-center px-2.5 uppercase font-inter text-sm tracking-[1px] font-bold h-12 box-border flex-shrink-0 flex-wrap m-0">
 					Top Events
 				</div>
 				<div class="grid">
@@ -138,5 +138,5 @@
 				</div>
 			</div>
 		</template>
-	</AppLayout>
+	</UserLayout>
 </template>

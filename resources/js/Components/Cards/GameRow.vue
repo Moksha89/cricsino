@@ -38,7 +38,7 @@
 </script>
 <template>
 	<li
-		class="text-gray-700 dark:text-white flex flex-row min-h-[70px] [contain-intrinsic-size:70px] relative transition-[background-color] duration-[0.5s] [contain:content] [content-visibility:auto] will-change-transform content-center m-0 p-0 rounded-sm bg-white dark:bg-gray-800">
+		class="text-gray-700 dark:text-white flex flex-row min-h-[70px] [contain-intrinsic-size:70px] relative transition-[background-color] duration-[0.5s] [contain:content] [content-visibility:auto] will-change-transform content-center m-0 p-0 rounded-sm bg-gray-800/50">
 		<div
 			v-if="game.scores.length"
 			class="flex flex-[0_0_auto] justify-center items-center order-1 w-[50px] border-r border-gray-150 dark:border-gray-750 m-0">
@@ -106,7 +106,7 @@
 								game.state == 'in_play',
 						},
 						{
-							'text-gray-700 dark:text-gray-300':
+							'text-gray-300':
 								!game.hasStarted,
 						},
 						{ 'text-red-500': game.hasEnded || game.stateEnded },

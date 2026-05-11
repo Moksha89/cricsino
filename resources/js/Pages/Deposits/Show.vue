@@ -5,7 +5,7 @@
 	import { ArrowLeftCircle } from "lucide-vue-next";
 
 	import WeCopy from "@/Components/WeCopy.vue";
-	import FrontendLayout from "@/Layouts/FrontendLayout.vue";
+	import UserLayout from "@/Layouts/UserLayout.vue";
 	import CryptoDeposit from "@/Pages/Deposits/Show/CryptoDeposit.vue";
 	import Transaction from "@/Pages/Deposits/Show/Transaction.vue";
 	const props = defineProps({
@@ -30,17 +30,16 @@
 </script>
 
 <template>
-	<FrontendLayout>
-		<div class="px-3.5 mb-12">
+	<UserLayout>
+		<div class="p-4 sm:p-6 mb-12">
 			<div class="flex space-x-4 items-center">
 				<Link
-					class="text-gray-400 hover:text-gray-850 transition-colors duration-300 dark:hover:text-white"
+					class="text-gray-400 hover:text-white transition-colors duration-300"
 					:href="route('deposits.create')">
-					<ArrowLeftCircle class="w-12 h-12 stroke-[1px]" />
+					<ArrowLeftCircle class="w-10 h-10 stroke-[1px]" />
 				</Link>
-				<div class="grid py-6">
-					<h1
-						class="text-3xl text-gray-650 dark:text-white font-inter font-semibold">
+				<div class="grid">
+					<h1 class="text-2xl sm:text-3xl text-white font-inter font-semibold">
 						{{ $t("Deposit money") }}
 					</h1>
 					<WeCopy after :text="deposit.uuid">
@@ -64,5 +63,5 @@
 				<Transaction :deposit="deposit" />
 			</template>
 		</div>
-	</FrontendLayout>
+	</UserLayout>
 </template>

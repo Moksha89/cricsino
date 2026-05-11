@@ -12,7 +12,7 @@
 	import RadioCards from "@/Components/RadioCards.vue";
 	import Switch from "@/Components/Switch.vue";
 	import { Badge } from "@/Components/ui/badge";
-	import FrontendLayout from "@/Layouts/FrontendLayout.vue";
+	import UserLayout from "@/Layouts/UserLayout.vue";
 	import History from "@/Pages/Withdraws/History.vue";
 	const props = defineProps({
 		accounts: Array,
@@ -80,16 +80,16 @@
 </script>
 
 <template>
-	<FrontendLayout>
-		<div class="px-3.5 mb-12">
+	<UserLayout>
+		<div class="p-4 sm:p-6 mb-12">
 			<div class="grid py-6">
 				<h1
-					class="text-3xl text-gray-650 dark:text-white font-inter font-semibold">
+					class="text-3xl text-white font-inter font-semibold">
 					{{ $t("Withdraw money") }}
 				</h1>
 			</div>
 
-			<div class="p-6 mt-4 bg-white dark:bg-gray-800 rounded shadow-md">
+			<div class="p-6 mt-4 bg-gray-800/50 border border-white/[0.06] rounded shadow-md">
 				<div
 					v-if="accounts.length == 0"
 					class="p-6 my-4 bg-gray-150 dark:bg-gray-750 rounded">
@@ -206,7 +206,7 @@
 					<div
 						class="p-4 mb-4 bg-white dark:bg-gray-750 rounded-lg shadow-md">
 						<h2
-							class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">
+							class="text-2xl font-bold mb-4 text-white">
 							Withdrawal Terms
 						</h2>
 						<div class="mb-4">
@@ -214,7 +214,7 @@
 								<li
 									v-for="(term, index) in terms"
 									:key="index"
-									class="text-sm text-gray-700 dark:text-gray-300">
+									class="text-sm text-gray-300">
 									{{ term }}
 								</li>
 							</ul>
@@ -250,5 +250,5 @@
 			</div>
 			<History :withdraws="withdraws" />
 		</div>
-	</FrontendLayout>
+	</UserLayout>
 </template>

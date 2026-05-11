@@ -7,7 +7,7 @@
 	import MoneyFormat from "@/Components/MoneyFormat.vue";
 	import Switch from "@/Components/Switch.vue";
 	import VueIcon from "@/Components/VueIcon.vue";
-	import FrontendLayout from "@/Layouts/FrontendLayout.vue";
+	import UserLayout from "@/Layouts/UserLayout.vue";
 	import DateRangeFilter from "@/Pages/Account/Statement/DateRangeFilter.vue";
 	import SportsFilter from "@/Pages/Account/Statement/SportsFilter.vue";
 	import Transactions from "@/Pages/Account/Statement/Transactions.vue";
@@ -53,8 +53,8 @@
 	);
 </script>
 <template>
-	<FrontendLayout>
-		<div class="px-3.5">
+	<UserLayout>
+		<div class="p-4 sm:p-6">
 			<div class="grid sm:grid-cols-2 py-6">
 				<h1
 					class="text-3xl text-gray-650 dark:text-gray-250 font-inter font-semibold">
@@ -102,7 +102,7 @@
 							<div class="flex items-center justify-between">
 								<div class="text-center">
 									<h3
-										class="text-base font-inter text-gray-800 dark:text-gray-200">
+										class="text-base font-inter text-gray-200">
 										{{ $page.props.bets ?? 0 }}
 									</h3>
 									<h3 class="text-xs opacity-75 uppercase">
@@ -111,7 +111,7 @@
 								</div>
 								<div class="text-center">
 									<h3
-										class="text-base font-inter text-gray-800 dark:text-gray-200">
+										class="text-base font-inter text-gray-200">
 										{{ $page.props.won ?? 0 }}
 									</h3>
 									<h3 class="text-xs opacity-75 uppercase">
@@ -120,7 +120,7 @@
 								</div>
 								<div class="text-center">
 									<h3
-										class="text-base font-inter text-gray-800 dark:text-gray-200">
+										class="text-base font-inter text-gray-200">
 										{{ $page.props.lost ?? 0 }}
 									</h3>
 									<h3 class="text-xs opacity-75 uppercase">
@@ -129,7 +129,7 @@
 								</div>
 								<div class="text-center">
 									<h3
-										class="text-base font-inter text-gray-800 dark:text-gray-200">
+										class="text-base font-inter text-gray-200">
 										<MoneyFormat
 											:amount="
 												$page.props.profitLoss ?? 0
@@ -141,7 +141,7 @@
 								</div>
 								<div class="text-center">
 									<h3
-										class="text-base font-inter text-gray-800 dark:text-gray-200">
+										class="text-base font-inter text-gray-200">
 										<MoneyFormat
 											:amount="
 												$page.props.exposure ?? 0
@@ -170,7 +170,7 @@
 							<div class="flex items-center justify-between">
 								<div class="text-center">
 									<h3
-										class="text-base font-inter text-gray-800 dark:text-gray-200">
+										class="text-base font-inter text-gray-200">
 										{{ $page.props.referrals ?? 0 }}
 									</h3>
 									<h3 class="text-xs opacity-75 uppercase">
@@ -179,7 +179,7 @@
 								</div>
 								<div class="text-center">
 									<h3
-										class="text-base font-inter text-gray-800 dark:text-gray-200">
+										class="text-base font-inter text-gray-200">
 										<MoneyFormat
 											:amount="
 												$page.props.refComMonth ?? 0
@@ -191,7 +191,7 @@
 								</div>
 								<div class="text-center">
 									<h3
-										class="text-base font-inter text-gray-800 dark:text-gray-200">
+										class="text-base font-inter text-gray-200">
 										<MoneyFormat
 											:amount="
 												$page.props.refComLifetime ?? 0
@@ -219,5 +219,5 @@
 				<Transactions />
 			</div>
 		</div>
-	</FrontendLayout>
+	</UserLayout>
 </template>

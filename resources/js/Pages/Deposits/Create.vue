@@ -9,7 +9,7 @@
 	import PrimaryButton from "@/Components/PrimaryButton.vue";
 	import RadioCards from "@/Components/RadioCards.vue";
 	import Switch from "@/Components/Switch.vue";
-	import FrontendLayout from "@/Layouts/FrontendLayout.vue";
+	import UserLayout from "@/Layouts/UserLayout.vue";
 	import History from "@/Pages/Deposits/History.vue";
 	const props = defineProps({
 		gateways: Array,
@@ -34,17 +34,16 @@
 </script>
 
 <template>
-	<FrontendLayout>
-		<div class="px-3.5 mb-12">
-			<div class="grid py-6">
-				<h1
-					class="text-3xl text-gray-650 dark:text-white font-inter font-semibold">
+	<UserLayout>
+		<div class="p-4 sm:p-6 mb-12">
+			<div class="mb-6">
+				<h1 class="text-2xl sm:text-3xl text-white font-inter font-semibold">
 					{{ $t("Deposit money") }}
 				</h1>
 			</div>
 			<RadioCards v-model="form.gateway" :options="gateways" />
 
-			<div class="p-6 mt-4 bg-white dark:bg-gray-800 rounded shadow-md">
+			<div class="p-6 mt-4 bg-gray-800/50 border border-white/[0.06] rounded shadow-md">
 				<FormInput
 					:label="$t('Amount to deposit to your account')"
 					class="mb-6 max-w-sm"
@@ -77,10 +76,10 @@
 					</p>
 				</div>
 				<h2
-					class="text-lg font-bold mb-4 text-gray-800 dark:text-white">
+					class="text-lg font-bold mb-4 text-white">
 					Terms
 				</h2>
-				<p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+				<p class="text-sm text-gray-300 mb-4">
 					By initiating a deposit, you confirm that you are at least
 					18 years old and that the funds are legally obtained. You
 					agree to use the deposited funds solely for betting
@@ -116,5 +115,5 @@
 			</div>
 			<History :deposits="deposits" />
 		</div>
-	</FrontendLayout>
+	</UserLayout>
 </template>

@@ -35,15 +35,15 @@
 	<div
 		class="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center px-4">
 		<div
-			class="max-w-2xl w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
+			class="max-w-2xl w-full bg-gray-800/50 border border-white/[0.06] rounded-lg shadow-md p-8">
 			<div class="flex items-center justify-center mb-6">
 				<AlertTriangle class="text-yellow-500 w-12 h-12 mr-4" />
-				<h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+				<h1 class="text-3xl font-bold text-white">
 					Account Timeout
 				</h1>
 			</div>
 
-			<p class="text-gray-700 dark:text-gray-300 mb-6">
+			<p class="text-gray-300 mb-6">
 				You are currently under a voluntary timeout. During this period,
 				you will not be able to place bets or use the website.
 			</p>
@@ -58,7 +58,7 @@
 
 			<div v-if="timeoutEndsAt" class="flex items-center mb-4">
 				<Clock class="text-sky-500 w-6 h-6 mr-2" />
-				<p class="text-gray-700 dark:text-gray-300">
+				<p class="text-gray-300">
 					Your timeout will end on:
 					<span class="font-semibold">{{ timeoutEndsAt }}</span>
 				</p>
@@ -66,12 +66,12 @@
 
 			<p
 				v-if="timeRemaining"
-				class="text-gray-700 dark:text-gray-300 mb-6">
+				class="text-gray-300 mb-6">
 				Time remaining:
 				<span class="font-semibold">{{ timeRemaining }}</span>
 			</p>
 
-			<p class="text-gray-700 dark:text-gray-300 mb-6">
+			<p class="text-gray-300 mb-6">
 				When the timeout expires, your account will be automatically
 				reopened.
 			</p>

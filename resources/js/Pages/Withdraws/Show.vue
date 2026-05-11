@@ -5,7 +5,7 @@
 	import { ArrowLeftCircle } from "lucide-vue-next";
 
 	import WeCopy from "@/Components/WeCopy.vue";
-	import FrontendLayout from "@/Layouts/FrontendLayout.vue";
+	import UserLayout from "@/Layouts/UserLayout.vue";
 	import Transaction from "@/Pages/Withdraws/Show/Transaction.vue";
 	const props = defineProps({
 		withdraw: Object,
@@ -29,8 +29,8 @@
 </script>
 
 <template>
-	<FrontendLayout>
-		<div class="px-3.5 mb-12">
+	<UserLayout>
+		<div class="p-4 sm:p-6 mb-12">
 			<div class="flex space-x-4 items-center">
 				<Link
 					class="text-gray-400 hover:text-gray-850 transition-colors duration-300 dark:hover:text-white"
@@ -39,7 +39,7 @@
 				</Link>
 				<div class="grid py-6">
 					<h1
-						class="text-3xl text-gray-650 dark:text-white font-inter font-semibold">
+						class="text-3xl text-white font-inter font-semibold">
 						{{ $t("Withdraw balance") }}
 					</h1>
 					<WeCopy after :text="withdraw.uuid">
@@ -49,5 +49,5 @@
 			</div>
 			<Transaction :withdraw="withdraw" />
 		</div>
-	</FrontendLayout>
+	</UserLayout>
 </template>

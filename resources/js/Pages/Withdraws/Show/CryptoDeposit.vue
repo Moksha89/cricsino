@@ -20,10 +20,10 @@
 </script>
 <template>
 	<div>
-		<div class="bg-white dark:bg-gray-850 rounded shadow-md p-6">
+		<div class="bg-gray-800/50 border border-white/[0.06] rounded shadow-md p-6">
 			<div class="mb-6">
 				<p
-					class="text-base font-semibold text-gray-700 dark:text-gray-300">
+					class="text-base font-semibold text-gray-300">
 					Total Amount to Pay:
 				</p>
 				<p
@@ -33,7 +33,7 @@
 				</p>
 			</div>
 			<p
-				class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
+				class="text-lg font-semibold text-gray-300 mb-2">
 				Scan QR Code:
 			</p>
 			<div class="flex flex-col md:flex-row gap-4 mb-6">
@@ -43,26 +43,26 @@
 				<div>
 					<div class="mb-6">
 						<p
-							class="text-lg font-semibold text-gray-700 dark:text-gray-300">
+							class="text-lg font-semibold text-gray-300">
 							Deposit Address:
 						</p>
 						<WeCopy :text="deposit.deposit_address" after>
 							<p
-								class="text-sm text-gray-900 dark:text-white font-semibold font-mono bg-gray-100 dark:bg-gray-700 py-2 px-4 rounded break-all">
+								class="text-sm text-white font-semibold font-mono bg-gray-100 dark:bg-gray-700 py-2 px-4 rounded break-all">
 								{{ deposit.deposit_address }}
 							</p>
 						</WeCopy>
 					</div>
 					<div class="">
 						<p
-							class="text-lg font-semibold text-gray-700 dark:text-gray-300">
+							class="text-lg font-semibold text-gray-300">
 							Time Remaining:
 						</p>
 						<CountdownTimer :end-time="endTime" />
 					</div>
 				</div>
 			</div>
-			<div class="text-sm text-gray-600 dark:text-gray-400">
+			<div class="text-sm text-gray-400">
 				<p>
 					Please make sure to send the exact amount to the provided
 					address.

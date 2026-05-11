@@ -19,16 +19,16 @@
 <template>
 	<SettingsLayout>
 		<div class="py-2 grid gap-4">
-			<div class="p-4 sm:p-8 bg-white dark:bg-gray-850 sm:rounded">
+			<div class="p-4 sm:p-8 bg-gray-800/50 border border-white/[0.06] sm:rounded">
 				<TwoFactorAuthenticationForm
 					:requiresConfirmation="
 						$page.props.twoFactorRequiresConfirmation ?? false
 					" />
 			</div>
-			<div class="p-4 sm:p-8 bg-white dark:bg-gray-850 sm:rounded">
+			<div class="p-4 sm:p-8 bg-gray-800/50 border border-white/[0.06] sm:rounded">
 				<UpdatePasswordForm class="max-w-xl" />
 			</div>
-			<div class="p-4 sm:p-8 bg-white dark:bg-gray-850 sm:rounded">
+			<div class="p-4 sm:p-8 bg-gray-800/50 border border-white/[0.06] sm:rounded">
 				<UpdateProfileInformationForm
 					:must-verify-email="mustVerifyEmail"
 					:status="status"
@@ -36,12 +36,12 @@
 			</div>
 
 			<div class="grid gap-4">
-				<div class="p-4 sm:p-8 bg-white dark:bg-gray-850 sm:rounded">
+				<div class="p-4 sm:p-8 bg-gray-800/50 border border-white/[0.06] sm:rounded">
 					<ProfilePhoto
 						:photo="$page.props.auth.user.profile_photo_url"
 						class="max-w-xl" />
 				</div>
-				<div class="p-4 sm:p-8 bg-white dark:bg-gray-850 sm:rounded">
+				<div class="p-4 sm:p-8 bg-gray-800/50 border border-white/[0.06] sm:rounded">
 					<DeleteUserForm class="max-w-xl" />
 				</div>
 			</div>
