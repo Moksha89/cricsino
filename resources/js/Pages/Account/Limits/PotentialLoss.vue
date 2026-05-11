@@ -1,13 +1,12 @@
 <script setup>
 	import { useForm } from "@inertiajs/vue3";
+	import { TrendingDown } from "lucide-vue-next";
 
-	import CollapseTransition from "@/Components/CollapseTransition.vue";
 	import CurrencySymbol from "@/Components/CurrencySymbol.vue";
 	import FormInput from "@/Components/FormInput.vue";
 	import FormLabel from "@/Components/FormLabel.vue";
-	import Loading from "@/Components/Loading.vue";
-	import PrimaryButton from "@/Components/PrimaryButton.vue";
 	import RadioSelect from "@/Components/RadioSelect.vue";
+	import LimitCard from "@/Components/Account/LimitCard.vue";
 
 	const props = defineProps({
 		personal: Object,
@@ -26,18 +25,15 @@
 </script>
 
 <template>
-	<div class="p-4 sm:p-8 bg-gray-800/50 border border-white/[0.06] sm:rounded">
-		<header>
-			<h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-				Limit your potential loss
-			</h2>
-			<p class="text-sm text-gray-400">
-				Set a limit on the amount you can lose for a period of your
-				choice.
-			</p>
-		</header>
-
-		<div class="grid mt-8 gap-6">
+	<LimitCard
+		title="Loss Limits"
+		description="Set a limit on the amount you can lose for a period of your choice."
+		:icon="TrendingDown"
+		:processing="form.processing"
+		:recentlySuccessful="form.recentlySuccessful"
+		buttonLabel="Update Loss Limit"
+		@submit="updateGrossLimit">
+		<div class="space-y-5">
 			<div>
 				<FormLabel class="mb-2">Loss Interval</FormLabel>
 				<RadioSelect
@@ -54,21 +50,5 @@
 				</template>
 			</FormInput>
 		</div>
-		<div class="mt-4">
-			<CollapseTransition>
-				<p
-					v-show="form.recentlySuccessful"
-					class="mb-3 text-green-500 dark:text-green-400">
-					Saved successfully
-				</p>
-			</CollapseTransition>
-			<PrimaryButton
-				@click="updateGrossLimit"
-				:disabled="form.processing"
-				class="text-xs font-semibold uppercase">
-				<Loading v-if="form.processing" class="!w-4 !h-4 mr-2 -ml-1" />
-				Update Loss Limit
-			</PrimaryButton>
-		</div>
-	</div>
+	</LimitCard>
 </template>
