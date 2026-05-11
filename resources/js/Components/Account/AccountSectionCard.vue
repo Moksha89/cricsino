@@ -2,7 +2,7 @@
 defineProps({
 	title: { type: String, default: null },
 	description: { type: String, default: null },
-	icon: { type: Object, default: null },
+	icon: { type: [Object, Function], default: null },
 	noPadding: { type: Boolean, default: false },
 });
 </script>

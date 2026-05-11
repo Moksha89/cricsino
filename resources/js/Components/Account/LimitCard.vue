@@ -5,7 +5,7 @@ import CollapseTransition from "@/Components/CollapseTransition.vue";
 defineProps({
 	title: { type: String, required: true },
 	description: { type: String, default: null },
-	icon: { type: Object, default: null },
+	icon: { type: [Object, Function], default: null },
 	processing: { type: Boolean, default: false },
 	disabled: { type: Boolean, default: false },
 	recentlySuccessful: { type: Boolean, default: false },

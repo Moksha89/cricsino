@@ -7,7 +7,7 @@ defineProps({
 	description: { type: String, default: "Check back later." },
 	actionLabel: { type: String, default: null },
 	actionRoute: { type: String, default: null },
-	icon: { type: Object, default: null },
+	icon: { type: [Object, Function], default: null },
 });
 </script>
 

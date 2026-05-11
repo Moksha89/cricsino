@@ -2,7 +2,7 @@
 defineProps({
 	title: { type: String, required: true },
 	subtitle: { type: String, default: null },
-	icon: { type: Object, default: null },
+	icon: { type: [Object, Function], default: null },
 });
 </script>
 
