@@ -27,18 +27,19 @@ class TicketsController extends Controller
     {
         $keyword = $request->get('search');
         $perPage = 25;
-        $query  = Ticket::query()->with(['user', 'wagers']);
+        $query  = Ticket::query()
+            ->where('user_id', $request->user()->id)
+            ->with(['wagers']);
         if (!empty($keyword)) {
-            $query->where('user_id', 'LIKE', "%$keyword%")
-                ->orWhere('uid', 'LIKE', "%$keyword%")
-                ->orWhere('amount', 'LIKE', "%$keyword%")
-                ->orWhere('payout', 'LIKE', "%$keyword%")
-                ->orWhere('status', 'LIKE', "%$keyword%")
-                ->orWhereHas('wagers', function ($query) use ($keyword) {
-                    $query->where('game_info', 'LIKE', "%$keyword%")
-                        ->orWhere('bet_info', 'LIKE', "%$keyword%")
-                        ->orWhere('market_info', 'LIKE', "%$keyword%");
-                });;
+            $query->where(function ($q) use ($keyword) {
+                $q->where('uid', 'LIKE', "%$keyword%")
+                    ->orWhere('status', 'LIKE', "%$keyword%")
+                    ->orWhereHas('wagers', function ($wq) use ($keyword) {
+                        $wq->where('game_info', 'LIKE', "%$keyword%")
+                            ->orWhere('bet_info', 'LIKE', "%$keyword%")
+                            ->orWhere('market_info', 'LIKE', "%$keyword%");
+                    });
+            });
         }
         $ticketsItems = $query->latest()->paginate($perPage);
         $tickets = TicketResource::collection($ticketsItems);
