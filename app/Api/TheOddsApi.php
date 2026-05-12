@@ -3,10 +3,11 @@
 namespace App\Api;
 
 use App\Enums\LeagueSport;
+use App\Models\Bet;
 use App\Models\Game;
 use App\Models\League;
+use App\Models\Market;
 use App\Models\Odd;
-use App\Models\Bet;
 use App\Models\Team;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -164,49 +165,74 @@ class TheOddsApi
             ]
         );
 
+        $game->load(['homeTeam', 'awayTeam']);
+
         $count = 0;
         foreach ($event['bookmakers'] ?? [] as $bookmaker) {
             foreach ($bookmaker['markets'] ?? [] as $market) {
-                $count += static::processMarketOdds($game, $market, $bookmaker['key']);
+                $count += static::processMarketOdds($game, $market, $bookmaker['key'], $league->id);
             }
         }
 
         return $count;
     }
 
-    private static function processMarketOdds(Game $game, array $market, string $bookmakerKey): int
+    private static function marketKeyToCategory(): array
     {
+        return [
+            'h2h' => 'winner',
+            'spreads' => 'handicap',
+            'totals' => 'total',
+        ];
+    }
+
+    private static function processMarketOdds(Game $game, array $market, string $bookmakerKey, int $leagueId = 0): int
+    {
+        $marketKey = $market['key'] ?? 'h2h';
+        $categoryMap = static::marketKeyToCategory();
+        $category = $categoryMap[$marketKey] ?? null;
+        if (!$category) {
+            Log::info('TheOddsApi: Skipping unmapped market', ['key' => $marketKey, 'game' => $game->id]);
+            return 0;
+        }
+
+        $marketModel = Market::where('sport', $game->sport)
+            ->where('category', $category)
+            ->first();
+        if (!$marketModel) {
+            Log::info('TheOddsApi: No market model for category', ['sport' => $game->sport->value, 'category' => $category]);
+            return 0;
+        }
+
+        $game->markets()->syncWithoutDetaching([
+            $marketModel->id => ['uuid' => Str::uuid()]
+        ]);
+
         $count = 0;
         foreach ($market['outcomes'] ?? [] as $outcome) {
             $betName = $outcome['name'];
             $odds = $outcome['price'] ?? 0;
-            $point = $outcome['point'] ?? null;
 
-            if ($odds <= 1) continue;
+            if ($odds <= 1.01) continue;
 
-            $marketModel = Market::where('sport', $game->sport)->first();
-            if (!$marketModel) continue;
+            $bet = static::matchBet($marketModel, $game, $betName);
+            if (!$bet) {
+                Log::info('TheOddsApi: No bet match', ['market' => $marketModel->id, 'outcome' => $betName]);
+                continue;
+            }
 
-            $bet = Bet::where('market_id', $marketModel->id)
-                ->where('sport', $game->sport)
-                ->first();
-            if (!$bet) continue;
-
-            $game->markets()->syncWithoutDetaching([
-                $marketModel->id => ['uuid' => Str::uuid()]
-            ]);
+            $md5 = md5($marketModel->id . '-' . $bet->id . '-' . $game->id);
 
             Odd::updateOrCreate(
+                ['md5' => $md5],
                 [
                     'game_id' => $game->id,
                     'bet_id' => $bet->id,
                     'market_id' => $marketModel->id,
-                    'source' => 'theoddsapi_' . $bookmakerKey,
-                ],
-                [
+                    'league_id' => $leagueId,
+                    'bookie' => 'theoddsapi_' . $bookmakerKey,
                     'odd' => round($odds, 2),
                     'active' => true,
-                    'sport' => $game->sport,
                 ]
             );
 
@@ -214,6 +240,32 @@ class TheOddsApi
         }
 
         return $count;
+    }
+
+    private static function matchBet(Market $marketModel, Game $game, string $outcomeName): ?Bet
+    {
+        $homeName = $game->homeTeam->name ?? '';
+        $awayName = $game->awayTeam->name ?? '';
+
+        if (strcasecmp($outcomeName, $homeName) === 0 || strtolower($outcomeName) === 'home') {
+            return Bet::where('market_id', $marketModel->id)->where('result', 'home')->first();
+        }
+        if (strcasecmp($outcomeName, $awayName) === 0 || strtolower($outcomeName) === 'away') {
+            return Bet::where('market_id', $marketModel->id)->where('result', 'away')->first();
+        }
+        if (strtolower($outcomeName) === 'draw' || strtolower($outcomeName) === 'tie') {
+            return Bet::where('market_id', $marketModel->id)->where('result', 'draw')->first();
+        }
+        if (strtolower($outcomeName) === 'over') {
+            return Bet::where('market_id', $marketModel->id)->where('result', 'like', '%over%')->first();
+        }
+        if (strtolower($outcomeName) === 'under') {
+            return Bet::where('market_id', $marketModel->id)->where('result', 'like', '%under%')->first();
+        }
+
+        return Bet::where('market_id', $marketModel->id)
+            ->where('result', Str::slug($outcomeName, '_'))
+            ->first();
     }
 
     private static function leagueNameFromKey(string $sportKey): string
