@@ -26,11 +26,11 @@ const submit = () => {
         <div class="w-full max-w-md">
             <div class="text-start mb-8">
                 <h2
-                    class="text-3xl mb-3 font-bold text-gray-800 dark:text-white"
+                    class="text-3xl mb-3 font-bold text-white"
                 >
                     Forgot your password ?
                 </h2>
-                <p class="text-gray-600 dark:text-gray-300">
+                <p class="text-gray-300">
                     No problem. Just let us know your email address and we will
                     email you a password reset link that will allow you to
                     choose a new one.

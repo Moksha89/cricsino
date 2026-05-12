@@ -6,7 +6,7 @@
 	import GameRow from "@/Components/Cards/GameRow.vue";
 	import HomeEventCard from "@/Components/Cards/HomeEventCard.vue";
 	import HomePageCarousel from "@/Components/Carousel/HomePageCarousel.vue";
-	import AppLayout from "@/Layouts/FrontendLayout.vue";
+	import UserLayout from "@/Layouts/UserLayout.vue";
 	import BettingSideBar from "@/Pages/Games/BettingSideBar.vue";
 	const props = defineProps({
 		slides: Array,
@@ -30,14 +30,14 @@
 
 <template>
 	<Head title="Welcome" />
-	<AppLayout>
-		<div class="px-3">
-			<div class="pb-4 pt-3">
+	<UserLayout>
+		<div class="p-4 sm:p-6">
+			<div class="pb-4">
 				<HomePageCarousel :slides="slides" />
 			</div>
-			<div class="grid gap-3 mb-12">
+			<div class="grid gap-4 mb-12">
 				<div>
-					<h3 class="text-gray-900 font-inter dark:text-white">
+					<h3 class="text-lg font-bold text-white font-inter">
 						{{ $t("Top Football") }}
 					</h3>
 				</div>
@@ -52,7 +52,7 @@
 						:game="game" />
 				</div>
 				<div>
-					<h3 class="text-gray-900 font-inter dark:text-white">
+					<h3 class="text-lg font-bold text-white font-inter">
 						{{ $t("Top Markets") }}
 					</h3>
 				</div>
@@ -69,5 +69,5 @@
 		<template #right-sidebar-top>
 			<BettingSideBar :multiples="multiples" />
 		</template>
-	</AppLayout>
+	</UserLayout>
 </template>

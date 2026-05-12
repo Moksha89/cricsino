@@ -52,8 +52,8 @@
 
 <template>
 	<div
-		class="p-6 bg-white dark:bg-gray-800 rounded shadow-md mt-10 text-gray-800 dark:text-gray-200">
-		<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+		class="p-6 bg-gray-800/50 border border-white/[0.06] rounded shadow-md mt-10 text-gray-200">
+		<h2 class="text-2xl font-bold mb-4 text-white">
 			Important Information
 		</h2>
 

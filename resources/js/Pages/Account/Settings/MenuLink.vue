@@ -11,20 +11,20 @@
 		v-if="btn"
 		:class="
 			active
-				? 'text-gray-900 dark:text-white border-b-2 border-emerald-500 dark:border-emerald-400'
-				: 'text-gray-600 dark:text-gray-400 border-emerald-500/20'
+				? 'text-white bg-primary/20 border-primary'
+				: 'text-gray-400 border-transparent hover:text-white hover:border-primary/50'
 		"
-		class="font-bold font-inter hover:border-b-2 inline-block text-[10px] tracking-[0.5px] py-1.5 px-4 uppercase transition-colors duration-300">
+		class="font-semibold font-inter border-b-2 inline-block text-xs tracking-wide py-2 px-4 uppercase transition-colors duration-200">
 		<slot />
 	</button>
 	<Link
 		v-else
 		:class="
 			active
-				? 'text-gray-900 dark:text-white border-b-2 border-emerald-500 dark:border-emerald-400'
-				: 'text-gray-600 dark:text-gray-400 border-emerald-500/20'
+				? 'text-white bg-primary/20 border-primary'
+				: 'text-gray-400 border-transparent hover:text-white hover:border-primary/50'
 		"
-		class="font-bold font-inter hover:border-b-2 inline-block text-[10px] tracking-[0.5px] py-1.5 px-4 uppercase transition-colors duration-300">
+		class="font-semibold font-inter border-b-2 inline-block text-xs tracking-wide py-2 px-4 uppercase transition-colors duration-200 rounded-t-lg">
 		<slot />
 	</Link>
 </template>

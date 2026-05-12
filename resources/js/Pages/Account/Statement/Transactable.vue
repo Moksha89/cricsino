@@ -41,18 +41,18 @@
 	<div class="bg-gray-150 dark:bg-gray-800 rounded-lg p-6">
 		<div class="flex items-center mb-4">
 			<component :is="transactionIcon" class="w-6 h-6 mr-2" />
-			<h3 class="text-xl font-semibold text-gray-800 dark:text-white">
+			<h3 class="text-xl font-semibold text-white">
 				{{ ucfirst(transaction.type.replace("_", " ")) }} Transaction
 			</h3>
 		</div>
 		<div class="mb-4">
-			<p class="text-gray-600 dark:text-gray-300">
+			<p class="text-gray-300">
 				<Calendar class="inline mr-2 w-5 h-5" />
 				{{ transaction.created_at }}
 			</p>
 		</div>
 		<div class="mb-4">
-			<p class="text-gray-600 dark:text-gray-300">
+			<p class="text-gray-300">
 				<span class="font-semibold mr-2">Amount:</span>
 				<MoneyFormat
 					:class="
@@ -62,7 +62,7 @@
 					"
 					:amount="transaction.amount" />
 			</p>
-			<p class="text-gray-600 dark:text-gray-300">
+			<p class="text-gray-300">
 				<span class="font-semibold">Action:</span>
 				{{ transaction.action }}
 			</p>

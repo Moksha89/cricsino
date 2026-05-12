@@ -300,7 +300,10 @@ class UsersController extends Controller
      * @param  Request  $request
      * @return \Inertia\Response
      */
-    public function promotions(Request $request) {}
+    public function promotions(Request $request)
+    {
+        return Inertia::render('Account/Promotions');
+    }
     /**
      * Show the users feedback page.
      * @param  Request  $request

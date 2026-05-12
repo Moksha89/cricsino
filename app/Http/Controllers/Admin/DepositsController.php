@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Deposit as DepositResource;
 
 use App\Models\Deposit;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -49,6 +50,7 @@ class DepositsController extends Controller
         $deposit->status = DepositStatus::FAILED;
         $deposit->gateway_error = __('Deposit cancelled by admin');
         $deposit->save();
+        NotificationService::depositFailed($deposit);
         return  back();
     }
 
@@ -66,6 +68,7 @@ class DepositsController extends Controller
         $deposit->gateway_error = null;
         $deposit->save();
         app(DepositTx::class)->create($deposit);
+        NotificationService::depositCompleted($deposit);
         return  back();
     }
 }

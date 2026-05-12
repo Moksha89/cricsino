@@ -17,16 +17,16 @@ class LeaguesController extends Controller
     {
         $keyword = $request->get('search');
         $perPage = 25;
-        $query  = League::query()->with(['games']);
+        $query  = League::query()->withCount('games');
         if (!empty($keyword)) {
             $query->where('leagueId', 'LIKE', "%$keyword%")
 			->orWhere('name', 'LIKE', "%$keyword%")
 			->orWhere('description', 'LIKE', "%$keyword%")
 			->orWhere('image', 'LIKE', "%$keyword%");
         } 
-        $leaguesItems = $query->latest()->paginate($perPage);
+        $leaguesItems = $query->where('active', true)->latest()->paginate($perPage);
         $leagues = LeagueResource::collection($leaguesItems);
-        return Inertia::render('AdminLeagues/Index', compact('leagues'));
+        return Inertia::render('Leagues/Index', compact('leagues'));
     }
 
     /**

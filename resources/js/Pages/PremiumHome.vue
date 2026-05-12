@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import { Head, Link, router } from "@inertiajs/vue3";
-import PremiumLayout from "@/Layouts/PremiumLayout.vue";
+import UserLayout from "@/Layouts/UserLayout.vue";
 
 const props = defineProps({
 	slides: Array,
@@ -60,7 +60,7 @@ const upcomingGames = computed(() => {
 
 <template>
 <Head title="Home" />
-<PremiumLayout>
+<UserLayout :showRightSidebar="false">
 	<div class="p-4 lg:p-6 space-y-6 pb-24 lg:pb-6">
 
 		<!-- Hero Banner + Category Cards -->
@@ -248,5 +248,5 @@ const upcomingGames = computed(() => {
 		</div>
 
 	</div>
-</PremiumLayout>
+</UserLayout>
 </template>

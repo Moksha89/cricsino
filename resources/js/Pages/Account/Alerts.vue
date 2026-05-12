@@ -1,11 +1,12 @@
 <script setup>
 	import { useForm } from "@inertiajs/vue3";
+	import { Bell, Shield, Check } from "lucide-vue-next";
 
 	import CollapseTransition from "@/Components/CollapseTransition.vue";
 	import FormLabel from "@/Components/FormLabel.vue";
 	import Loading from "@/Components/Loading.vue";
-	import PrimaryButton from "@/Components/PrimaryButton.vue";
 	import Switch from "@/Components/Switch.vue";
+	import AccountSectionCard from "@/Components/Account/AccountSectionCard.vue";
 	import {
 		Select,
 		SelectContent,
@@ -35,173 +36,97 @@
 
 <template>
 	<SettingsLayout>
-		<div class="p-4 sm:p-8 bg-white dark:bg-gray-850 sm:rounded">
-			<div class="grid">
-				<FormLabel class="mb-1">Bet Result Emails</FormLabel>
-				<Select v-model="form.bet_emails">
-					<SelectTrigger class="max-w-sm">
-						<SelectValue
-							class="text-gray-650 font-semibold dark:text-gray-300"
-							placeholder="Method of notification" />
-					</SelectTrigger>
-					<SelectContent>
-						<SelectGroup>
-							<SelectItem
-								v-for="option in mailOptions"
-								:key="option.value"
-								:value="option.value">
-								{{ option.label }}
-							</SelectItem>
-						</SelectGroup>
-					</SelectContent>
-				</Select>
-				<div class="my-6">
-					<FormLabel class="mb-2">Mailing List</FormLabel>
-					<div class="mb-4">
-						<Switch v-model="form.mailing_list">
-							I'd like to receive updates and special offers.
-						</Switch>
+		<div class="grid gap-5 max-w-4xl">
+			<AccountSectionCard title="Notification Preferences" description="Control how and when you receive notifications" :icon="Bell">
+				<div class="space-y-6">
+					<div>
+						<FormLabel class="mb-2">Bet Result Emails</FormLabel>
+						<Select v-model="form.bet_emails">
+							<SelectTrigger class="max-w-sm bg-gray-900/50 border-white/[0.06] rounded-xl min-h-[44px]">
+								<SelectValue
+									class="text-gray-300 font-medium"
+									placeholder="Method of notification" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectGroup>
+									<SelectItem
+										v-for="option in mailOptions"
+										:key="option.value"
+										:value="option.value">
+										{{ option.label }}
+									</SelectItem>
+								</SelectGroup>
+							</SelectContent>
+						</Select>
 					</div>
 
-					<FormLabel class="mb-2">Skip bet confirmations</FormLabel>
-					<div>
-						<Switch v-model="form.confirm_bets">
-							Tick to place bets immediately without any
-							confirmation.
-						</Switch>
+					<div class="space-y-4">
+						<div>
+							<FormLabel class="mb-2">Mailing List</FormLabel>
+							<Switch v-model="form.mailing_list">
+								I'd like to receive updates and special offers.
+							</Switch>
+						</div>
+
+						<div>
+							<FormLabel class="mb-2">Skip bet confirmations</FormLabel>
+							<Switch v-model="form.confirm_bets">
+								Tick to place bets immediately without any confirmation.
+							</Switch>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="mt-4">
-				<CollapseTransition>
-					<p
-						v-show="form.recentlySuccessful"
-						class="mb-3 text-green-500 dark:text-green-400">
-						Saved successfully
-					</p>
-				</CollapseTransition>
-				<PrimaryButton
-					@click="updateGrossLimit"
-					:disabled="form.processing"
-					class="text-xs font-semibold uppercase">
-					<Loading
-						v-if="form.processing"
-						class="!w-4 !h-4 mr-2 -ml-1" />
-					Update Notification settings
-				</PrimaryButton>
-			</div>
-		</div>
-		<div class="bg-white mt-8 dark:bg-gray-800 p-6 rounded shadow-md">
-			<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-				Protecting Your Contact Privacy
-			</h2>
 
-			<p class="mb-4 text-gray-700 dark:text-gray-300">
-				At {{ $page.props.appName }}, we take your privacy seriously.
-				Here's how we protect your contact information:
-			</p>
+				<div class="mt-6">
+					<CollapseTransition>
+						<p v-show="form.recentlySuccessful" class="mb-3 text-green-400 text-sm">
+							Saved successfully
+						</p>
+					</CollapseTransition>
+					<button
+						@click="updateGrossLimit"
+						:disabled="form.processing"
+						class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-purple-600 hover:bg-purple-700 text-white transition-all duration-200 min-h-[44px] disabled:opacity-50">
+						<Loading v-if="form.processing" class="!w-4 !h-4" />
+						Update Notification Settings
+					</button>
+				</div>
+			</AccountSectionCard>
 
-			<ul class="space-y-2 text-gray-600 dark:text-gray-400">
-				<li class="flex items-start">
-					<svg
-						class="w-6 h-6 mr-2 text-green-500 flex-shrink-0"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-						xmlns="http://www.w3.org/2000/svg">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M5 13l4 4L19 7"></path>
-					</svg>
-					<span>
-						We will never spam you or send unsolicited emails.
-					</span>
-				</li>
-				<li class="flex items-start">
-					<svg
-						class="w-6 h-6 mr-2 text-green-500 flex-shrink-0"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-						xmlns="http://www.w3.org/2000/svg">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M5 13l4 4L19 7"></path>
-					</svg>
-					<span>
-						Your contact information will never be shared with
-						third-party advertisers or spammers.
-					</span>
-				</li>
-				<li class="flex items-start">
-					<svg
-						class="w-6 h-6 mr-2 text-green-500 flex-shrink-0"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-						xmlns="http://www.w3.org/2000/svg">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M5 13l4 4L19 7"></path>
-					</svg>
-					<span>
-						We use industry-standard encryption to protect your data
-						during transmission and storage.
-					</span>
-				</li>
-				<li class="flex items-start">
-					<svg
-						class="w-6 h-6 mr-2 text-green-500 flex-shrink-0"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-						xmlns="http://www.w3.org/2000/svg">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M5 13l4 4L19 7"></path>
-					</svg>
-					<span>
-						You can opt-out of non-essential communications at any
-						time.
-					</span>
-				</li>
-				<li class="flex items-start">
-					<svg
-						class="w-6 h-6 mr-2 text-green-500 flex-shrink-0"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-						xmlns="http://www.w3.org/2000/svg">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M5 13l4 4L19 7"></path>
-					</svg>
-					<span>
-						We regularly review and update our privacy practices to
-						ensure your information remains secure.
-					</span>
-				</li>
-			</ul>
-
-			<p class="mt-4 text-sm text-gray-500 dark:text-gray-400">
-				For more details, please review our full
-				<a
-					href="#"
-					class="text-blue-600 hover:underline dark:text-blue-400">
-					Privacy Policy
-				</a>
-				.
-			</p>
+			<AccountSectionCard title="Privacy Protection" description="How we protect your contact information" :icon="Shield">
+				<ul class="space-y-3 text-gray-400 text-sm">
+					<li class="flex items-start gap-3">
+						<div class="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+							<Check class="w-3 h-3 text-green-400" />
+						</div>
+						<span>We will never spam you or send unsolicited emails.</span>
+					</li>
+					<li class="flex items-start gap-3">
+						<div class="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+							<Check class="w-3 h-3 text-green-400" />
+						</div>
+						<span>Your contact information will never be shared with third-party advertisers or spammers.</span>
+					</li>
+					<li class="flex items-start gap-3">
+						<div class="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+							<Check class="w-3 h-3 text-green-400" />
+						</div>
+						<span>We use industry-standard encryption to protect your data during transmission and storage.</span>
+					</li>
+					<li class="flex items-start gap-3">
+						<div class="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+							<Check class="w-3 h-3 text-green-400" />
+						</div>
+						<span>You can opt-out of non-essential communications at any time.</span>
+					</li>
+					<li class="flex items-start gap-3">
+						<div class="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+							<Check class="w-3 h-3 text-green-400" />
+						</div>
+						<span>We regularly review and update our privacy practices to ensure your information remains secure.</span>
+					</li>
+				</ul>
+			</AccountSectionCard>
 		</div>
 	</SettingsLayout>
 </template>

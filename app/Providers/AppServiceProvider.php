@@ -5,7 +5,12 @@ namespace App\Providers;
 use App;
 use App\Enums\ConnectionProvider;
 use App\Enums\MailDrivers;
+use App\Listeners\NotifyAdminOfNewUser;
 use Exception;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Contracts\Auth\StatefulGuard;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -28,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(StatefulGuard::class, fn () => Auth::guard('web'));
     }
 
     /**
@@ -39,6 +44,8 @@ class AppServiceProvider extends ServiceProvider
         /**
          * force https // for cloudflare proxies
          */
+        Event::listen(Registered::class, NotifyAdminOfNewUser::class);
+
         if (App::environment(['staging', 'production'])) {
             URL::forceScheme('https');
             $this->app['request']->server->set('HTTPS', true);

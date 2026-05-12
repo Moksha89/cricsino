@@ -3,6 +3,7 @@ import { computed, ref } from "vue";
 
 import { usePage } from "@inertiajs/vue3";
 
+import AdminNotificationBell from "@/Components/Admin/AdminNotificationBell.vue";
 import Logo from "@/Components/ApplicationLogo.vue";
 import VueIcon from "@/Components/VueIcon.vue";
 import AnimatedMobileIcon from "@/Layouts/AdminLayout/AnimatedMobileButton.vue";
@@ -71,6 +72,7 @@ const toggle = () => emit("update:modelValue", !props.modelValue);
                     >
                         <VueIcon :icon="HiCog" class="w-7 h-7 text-white" />
                     </button>
+                    <AdminNotificationBell />
                     <DarkSwitch />
                     <div class="relative">
                         <div>

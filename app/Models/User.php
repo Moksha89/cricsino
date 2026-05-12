@@ -139,6 +139,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Personal::class);
     }
 
+    public function agent(): HasOne
+    {
+        return $this->hasOne(Agent::class);
+    }
+
     /**
      * Get users whitelists.
      *
@@ -200,6 +205,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function tickets(): HasMany
     {
         return $this->hasMany(Ticket::class, 'user_id', 'id');
+    }
+
+    public function supportConversations(): HasMany
+    {
+        return $this->hasMany(SupportConversation::class, 'user_id', 'id');
     }
 
     /**
