@@ -118,6 +118,11 @@ const bettingEnded = computed(() =>
 							</div>
 						</div>
 
+						<!-- Score unavailable notice -->
+						<div v-if="isLive && !game.scores?.length" class="text-[11px] text-gray-500 italic mb-1">
+							Score unavailable
+						</div>
+
 						<!-- Match meta -->
 						<div class="flex flex-wrap items-center gap-3 text-xs">
 							<!-- Live badge -->

@@ -309,4 +309,81 @@ class TheOddsApi
 
         return $results;
     }
+
+    public static function importScores(string $sportKey, int $daysFrom = 3): array
+    {
+        $events = static::getScores($sportKey, $daysFrom);
+        if (empty($events)) return ['updated' => 0, 'skipped' => 0, 'errors' => 0];
+
+        $sportMap = static::sportKeyMap();
+        $sport = $sportMap[$sportKey] ?? null;
+        if (!$sport) return ['updated' => 0, 'skipped' => 0, 'errors' => 0];
+
+        $updated = 0;
+        $skipped = 0;
+        $errors = 0;
+
+        foreach ($events as $event) {
+            try {
+                $game = Game::where('gameId', $event['id'])
+                    ->where('sport', $sport)
+                    ->first();
+
+                if (!$game) {
+                    $skipped++;
+                    continue;
+                }
+
+                $scores = $event['scores'] ?? null;
+                $completed = $event['completed'] ?? false;
+                $lastUpdate = $event['last_update'] ?? null;
+
+                if ($scores && is_array($scores)) {
+                    $homeScore = null;
+                    $awayScore = null;
+
+                    foreach ($scores as $scoreEntry) {
+                        $name = $scoreEntry['name'] ?? '';
+                        $score = $scoreEntry['score'] ?? '0';
+
+                        if (strcasecmp($name, $event['home_team'] ?? '') === 0) {
+                            $homeScore = $score;
+                        } elseif (strcasecmp($name, $event['away_team'] ?? '') === 0) {
+                            $awayScore = $score;
+                        }
+                    }
+
+                    if ($homeScore !== null || $awayScore !== null) {
+                        $finalScoreType = $sport->finalScoreType();
+                        $game->scores()->updateOrCreate(
+                            ['type' => $finalScoreType],
+                            [
+                                'home' => $homeScore ?? '0',
+                                'away' => $awayScore ?? '0',
+                            ]
+                        );
+                    }
+                }
+
+                if ($completed && !$game->closed) {
+                    $game->closed = true;
+                    $game->endTime = $lastUpdate ? Carbon::parse($lastUpdate) : now();
+                    $game->save();
+                } elseif (!$completed && $scores) {
+                    $game->is_live = true;
+                    $game->save();
+                }
+
+                $updated++;
+            } catch (\Exception $e) {
+                Log::error('TheOddsApi: Error processing score', [
+                    'event_id' => $event['id'] ?? 'unknown',
+                    'error' => $e->getMessage(),
+                ]);
+                $errors++;
+            }
+        }
+
+        return ['updated' => $updated, 'skipped' => $skipped, 'errors' => $errors];
+    }
 }

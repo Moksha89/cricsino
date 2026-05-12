@@ -144,6 +144,7 @@ function addBet(price, isLay, bet) {
 							:class="game.homeScore > game.awayScore ? 'text-green-400' : game.homeScore < game.awayScore ? 'text-red-400' : 'text-white'">
 							{{ game.homeScore }}
 						</span>
+						<span v-else-if="isLive" class="text-[10px] text-gray-500 ml-2">—</span>
 					</div>
 					<div class="flex items-center justify-between">
 						<span class="text-sm font-semibold text-white group-hover:text-primary-light transition-colors truncate">
@@ -153,6 +154,7 @@ function addBet(price, isLay, bet) {
 							:class="game.awayScore > game.homeScore ? 'text-green-400' : game.awayScore < game.homeScore ? 'text-red-400' : 'text-white'">
 							{{ game.awayScore }}
 						</span>
+						<span v-else-if="isLive" class="text-[10px] text-gray-500 ml-2">—</span>
 					</div>
 				</Link>
 

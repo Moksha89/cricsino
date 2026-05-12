@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DepositsController;
 use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\GamesController;
 use App\Http\Controllers\Admin\LeaguesController;
+use App\Http\Controllers\Admin\LiveScoresController;
 use App\Http\Controllers\Admin\MarketsController;
 use App\Http\Controllers\Admin\OddsController;
 use App\Http\Controllers\Admin\OddsImportController;
@@ -139,6 +140,13 @@ Route::name('odds-import.')->controller(OddsImportController::class)->group(func
     Route::post('/odds-import/api-key', 'updateApiKey')->name('api-key');
 });
 #odds-import
+
+#live-scores
+Route::name('live-scores.')->controller(LiveScoresController::class)->group(function () {
+    Route::get('/live-scores', 'index')->name('index');
+    Route::post('/live-scores/refresh', 'refresh')->name('refresh');
+});
+#live-scores
 
 #stakes
 Route::name('stakes.')->controller(StakesController::class)->group(function () {

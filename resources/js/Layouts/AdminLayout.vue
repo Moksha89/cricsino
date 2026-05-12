@@ -572,6 +572,7 @@
 				window.route().current("admin.games.*") ||
 				window.route().current("admin.odds.*") ||
 				window.route().current("admin.odds-import.*") ||
+				window.route().current("admin.live-scores.*") ||
 				window.route().current("admin.scores.*"),
 			value: "games",
 			icon: RiStackFill,
@@ -612,6 +613,13 @@
 					text: "Odds Import",
 					url: window.route("admin.odds-import.index"),
 					active: window.route().current("admin.odds-import.*"),
+					icon: RiStackFill,
+					id: uid(),
+				},
+				{
+					text: "Live Scores",
+					url: window.route("admin.live-scores.index"),
+					active: window.route().current("admin.live-scores.*"),
 					icon: RiStackFill,
 					id: uid(),
 				},
