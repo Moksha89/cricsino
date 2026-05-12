@@ -139,6 +139,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Personal::class);
     }
 
+    public function agent(): HasOne
+    {
+        return $this->hasOne(Agent::class);
+    }
+
     /**
      * Get users whitelists.
      *
