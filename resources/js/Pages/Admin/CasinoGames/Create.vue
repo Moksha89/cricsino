@@ -66,7 +66,7 @@
 		<!-- Header -->
 		<div class="flex items-center gap-4">
 			<Link
-				:href="window.route('admin.casino.index')"
+				:href="route('admin.casino.index')"
 				class="rounded-lg p-2 text-slate-400 transition-colors hover:bg-slate-700/50 hover:text-slate-200"
 			>
 				<ArrowLeft class="h-5 w-5" />
@@ -242,7 +242,7 @@
 			<!-- Submit -->
 			<div class="flex items-center justify-end gap-3">
 				<Link
-					:href="window.route('admin.casino.index')"
+					:href="route('admin.casino.index')"
 					class="rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700"
 				>
 					Cancel

@@ -5,6 +5,7 @@ use App\Http\Controllers\DepositsController;
 use App\Http\Controllers\FavouritesController;
 use App\Http\Controllers\GamesController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\S3Controller;
 
@@ -269,6 +270,18 @@ Route::name('personal.')
 #personal
 
 
+
+#notifications
+Route::name('notifications.')
+    ->middleware('auth')
+    ->controller(NotificationsController::class)
+    ->group(function () {
+        Route::get('/notifications', 'index')->name('index');
+        Route::get('/notifications/latest', 'latest')->name('latest');
+        Route::post('/notifications/{id}/read', 'markAsRead')->name('read');
+        Route::post('/notifications/read-all', 'markAllAsRead')->name('read.all');
+    });
+#notifications
 
 #whitelists
 Route::name('whitelists.')
