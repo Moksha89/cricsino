@@ -7,14 +7,18 @@ use App\Models\User;
 use App\Models\Withdraw;
 use App\Models\Stake;
 use App\Models\Agent;
+use App\Models\SupportConversation;
 use App\Notifications\Admin\AgentCreditDebitNotification;
 use App\Notifications\Admin\NewDepositNotification;
+use App\Notifications\Admin\NewSupportTicketNotification;
 use App\Notifications\Admin\NewUserRegisteredNotification;
 use App\Notifications\Admin\NewWithdrawalNotification;
+use App\Notifications\Admin\SupportUserRepliedNotification;
 use App\Notifications\User\BetPlacedNotification;
 use App\Notifications\User\DepositCompletedNotification;
 use App\Notifications\User\DepositCreatedNotification;
 use App\Notifications\User\DepositFailedNotification;
+use App\Notifications\User\SupportAdminRepliedNotification;
 use App\Notifications\User\WithdrawalApprovedNotification;
 use App\Notifications\User\WithdrawalRejectedNotification;
 use App\Notifications\User\WithdrawalRequestedNotification;
@@ -66,6 +70,21 @@ class NotificationService
     public static function agentCreditDebit(Agent $agent, string $action, float $amount): void
     {
         static::notifyAdmins(new AgentCreditDebitNotification($agent, $action, $amount));
+    }
+
+    public static function supportTicketCreated(SupportConversation $conversation): void
+    {
+        static::notifyAdmins(new NewSupportTicketNotification($conversation));
+    }
+
+    public static function supportUserReplied(SupportConversation $conversation): void
+    {
+        static::notifyAdmins(new SupportUserRepliedNotification($conversation));
+    }
+
+    public static function supportAdminReplied(SupportConversation $conversation): void
+    {
+        $conversation->user->notify(new SupportAdminRepliedNotification($conversation));
     }
 
     protected static function notifyAdmins($notification): void

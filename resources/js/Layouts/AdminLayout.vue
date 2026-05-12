@@ -658,6 +658,14 @@
 			icon: MdMessageOutlined,
 			id: uid(),
 		},
+		{
+			text: "Support",
+			url: window.route("admin.support.index"),
+			active: window.route().current("admin.support.*"),
+			value: "support",
+			icon: MdMessageOutlined,
+			id: uid(),
+		},
 	]);
 
 	const showSidebar = ref(false);

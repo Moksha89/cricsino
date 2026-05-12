@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\S3Controller;
+use App\Http\Controllers\SupportController;
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -282,6 +283,20 @@ Route::name('notifications.')
         Route::post('/notifications/read-all', 'markAllAsRead')->name('read.all');
     });
 #notifications
+
+#support
+Route::name('support.')
+    ->middleware(['auth', 'throttle:60,1'])
+    ->controller(SupportController::class)
+    ->group(function () {
+        Route::get('/support', 'index')->name('index');
+        Route::get('/support/create', 'create')->name('create');
+        Route::post('/support', 'store')->middleware('throttle:10,1')->name('store');
+        Route::get('/support/{conversation}', 'show')->name('show');
+        Route::post('/support/{conversation}/reply', 'reply')->middleware('throttle:30,1')->name('reply');
+        Route::put('/support/{conversation}/close', 'close')->name('close');
+    });
+#support
 
 #whitelists
 Route::name('whitelists.')

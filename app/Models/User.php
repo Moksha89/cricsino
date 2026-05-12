@@ -207,6 +207,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Ticket::class, 'user_id', 'id');
     }
 
+    public function supportConversations(): HasMany
+    {
+        return $this->hasMany(SupportConversation::class, 'user_id', 'id');
+    }
+
     /**
      * Get upline of the ref.
      *

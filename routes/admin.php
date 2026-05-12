@@ -287,3 +287,11 @@ Route::name('notifications.')->controller(\App\Http\Controllers\Admin\Notificati
     Route::post('/notifications/{id}/read', 'markAsRead')->name('read');
     Route::post('/notifications/read-all', 'markAllAsRead')->name('read.all');
 });
+
+# Admin Support
+Route::name('support.')->controller(\App\Http\Controllers\Admin\SupportController::class)->group(function () {
+    Route::get('/support', 'index')->name('index');
+    Route::get('/support/{conversation}', 'show')->name('show');
+    Route::post('/support/{conversation}/reply', 'reply')->middleware('throttle:30,1')->name('reply');
+    Route::put('/support/{conversation}/status', 'updateStatus')->name('status');
+});
