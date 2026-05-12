@@ -8,6 +8,8 @@ use App\Enums\MailDrivers;
 use App\Listeners\NotifyAdminOfNewUser;
 use Exception;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Contracts\Auth\StatefulGuard;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\RateLimiter;
@@ -31,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(StatefulGuard::class, fn () => Auth::guard('web'));
     }
 
     /**
