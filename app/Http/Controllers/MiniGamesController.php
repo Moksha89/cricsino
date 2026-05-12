@@ -6,6 +6,7 @@ use App\Enums\TransactionAction;
 use App\Enums\TransactionType;
 use App\Models\CasinoGame;
 use App\Models\CasinoSession;
+use App\Models\User;
 use App\Support\ProvablyFair;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -38,19 +39,18 @@ class MiniGamesController extends Controller
             'auto_cashout' => 'nullable|numeric|min:1.01',
         ]);
 
-        $user = $request->user();
-        if ($user->balance < $request->amount) {
-            throw ValidationException::withMessages(['amount' => ['Insufficient balance.']]);
-        }
-
         $serverSeed = ProvablyFair::generateServerSeed();
         $clientSeed = $request->input('client_seed', Str::random(16));
         $nonce = rand(1, 999999);
-
         $crashPoint = ProvablyFair::crashPoint($serverSeed, $clientSeed, $nonce);
 
-        DB::beginTransaction();
-        try {
+        return DB::transaction(function () use ($request, $serverSeed, $clientSeed, $nonce, $crashPoint) {
+            $user = User::lockForUpdate()->find($request->user()->id);
+            if ($user->balance < $request->amount) {
+                throw ValidationException::withMessages(['amount' => ['Insufficient balance.']]);
+            }
+
+            $balance_before = $user->balance;
             $user->decrement('balance', $request->amount);
 
             $autoCashout = $request->auto_cashout;
@@ -61,17 +61,15 @@ class MiniGamesController extends Controller
                 $user->increment('balance', $payout);
             }
 
-            $session = CasinoSession::create([
+            CasinoSession::create([
                 'uuid' => Str::uuid(),
                 'user_id' => $user->id,
                 'casino_game_id' => self::gameId('crash'),
                 'bet_amount' => $request->amount,
                 'win_amount' => $payout,
-                'balance_before' => $user->balance + $request->amount - $payout,
+                'balance_before' => $balance_before,
                 'status' => 'completed',
             ]);
-
-            DB::commit();
 
             return response()->json([
                 'crash_point' => $crashPoint,
@@ -83,10 +81,7 @@ class MiniGamesController extends Controller
                 'nonce' => $nonce,
                 'server_seed_hash' => ProvablyFair::hashServerSeed($serverSeed),
             ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw $e;
-        }
+        });
     }
 
     // ─── DICE GAME ───
@@ -104,15 +99,9 @@ class MiniGamesController extends Controller
             'direction' => 'required|in:over,under',
         ]);
 
-        $user = $request->user();
-        if ($user->balance < $request->amount) {
-            throw ValidationException::withMessages(['amount' => ['Insufficient balance.']]);
-        }
-
         $serverSeed = ProvablyFair::generateServerSeed();
         $clientSeed = $request->input('client_seed', Str::random(16));
         $nonce = rand(1, 999999);
-
         $roll = ProvablyFair::diceResult($serverSeed, $clientSeed, $nonce);
 
         $won = $request->direction === 'over'
@@ -125,8 +114,13 @@ class MiniGamesController extends Controller
         $multiplier = round((100 / $winChance) * 0.97, 4); // 3% house edge
         $payout = $won ? round($request->amount * $multiplier, 2) : 0;
 
-        DB::beginTransaction();
-        try {
+        return DB::transaction(function () use ($request, $serverSeed, $clientSeed, $nonce, $roll, $won, $multiplier, $payout) {
+            $user = User::lockForUpdate()->find($request->user()->id);
+            if ($user->balance < $request->amount) {
+                throw ValidationException::withMessages(['amount' => ['Insufficient balance.']]);
+            }
+
+            $balance_before = $user->balance;
             $user->decrement('balance', $request->amount);
             if ($won) {
                 $user->increment('balance', $payout);
@@ -138,11 +132,9 @@ class MiniGamesController extends Controller
                 'casino_game_id' => self::gameId('dice'),
                 'bet_amount' => $request->amount,
                 'win_amount' => $payout,
-                'balance_before' => $user->balance + $request->amount - $payout,
+                'balance_before' => $balance_before,
                 'status' => 'completed',
             ]);
-
-            DB::commit();
 
             return response()->json([
                 'roll' => $roll,
@@ -156,10 +148,7 @@ class MiniGamesController extends Controller
                 'client_seed' => $clientSeed,
                 'nonce' => $nonce,
             ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw $e;
-        }
+        });
     }
 
     // ─── MINES GAME ───
@@ -176,43 +165,45 @@ class MiniGamesController extends Controller
             'mines' => 'required|integer|min:1|max:24',
         ]);
 
-        $user = $request->user();
-        if ($user->balance < $request->amount) {
-            throw ValidationException::withMessages(['amount' => ['Insufficient balance.']]);
-        }
-
         $serverSeed = ProvablyFair::generateServerSeed();
         $clientSeed = $request->input('client_seed', Str::random(16));
         $nonce = rand(1, 999999);
-
         $result = ProvablyFair::minesGrid($serverSeed, $clientSeed, $nonce, $request->mines);
 
-        $user->decrement('balance', $request->amount);
+        return DB::transaction(function () use ($request, $serverSeed, $clientSeed, $nonce, $result) {
+            $user = User::lockForUpdate()->find($request->user()->id);
+            if ($user->balance < $request->amount) {
+                throw ValidationException::withMessages(['amount' => ['Insufficient balance.']]);
+            }
 
-        $session = CasinoSession::create([
-            'uuid' => Str::uuid(),
-            'user_id' => $user->id,
-            'casino_game_id' => self::gameId('mines'),
-            'bet_amount' => $request->amount,
-            'win_amount' => 0,
-            'balance_before' => $user->balance + $request->amount,
-            'status' => 'active',
-            'session_token' => encrypt(json_encode([
-                'mines' => $result['mines'],
-                'server_seed' => $serverSeed,
-                'client_seed' => $clientSeed,
-                'nonce' => $nonce,
-                'revealed' => [],
-                'amount' => $request->amount,
-                'mine_count' => $request->mines,
-            ])),
-        ]);
+            $balance_before = $user->balance;
+            $user->decrement('balance', $request->amount);
 
-        return response()->json([
-            'session_id' => $session->uuid,
-            'server_seed_hash' => ProvablyFair::hashServerSeed($serverSeed),
-            'balance' => $user->fresh()->balance,
-        ]);
+            $session = CasinoSession::create([
+                'uuid' => Str::uuid(),
+                'user_id' => $user->id,
+                'casino_game_id' => self::gameId('mines'),
+                'bet_amount' => $request->amount,
+                'win_amount' => 0,
+                'balance_before' => $balance_before,
+                'status' => 'active',
+                'session_token' => encrypt(json_encode([
+                    'mines' => $result['mines'],
+                    'server_seed' => $serverSeed,
+                    'client_seed' => $clientSeed,
+                    'nonce' => $nonce,
+                    'revealed' => [],
+                    'amount' => $request->amount,
+                    'mine_count' => $request->mines,
+                ])),
+            ]);
+
+            return response()->json([
+                'session_id' => $session->uuid,
+                'server_seed_hash' => ProvablyFair::hashServerSeed($serverSeed),
+                'balance' => $user->fresh()->balance,
+            ]);
+        });
     }
 
     public function minesReveal(Request $request)
@@ -222,49 +213,51 @@ class MiniGamesController extends Controller
             'position' => 'required|integer|min:0|max:24',
         ]);
 
-        $session = CasinoSession::where('uuid', $request->session_id)
-            ->where('user_id', $request->user()->id)
-            ->where('status', 'active')
-            ->firstOrFail();
+        return DB::transaction(function () use ($request) {
+            $session = CasinoSession::lockForUpdate()
+                ->where('uuid', $request->session_id)
+                ->where('user_id', $request->user()->id)
+                ->where('status', 'active')
+                ->firstOrFail();
 
-        $data = json_decode(decrypt($session->session_token), true);
-        $mines = $data['mines'];
-        $revealed = $data['revealed'];
+            $data = json_decode(decrypt($session->session_token), true);
+            $mines = $data['mines'];
+            $revealed = $data['revealed'];
 
-        if (in_array($request->position, $revealed)) {
-            return response()->json(['error' => 'Already revealed'], 400);
-        }
+            if (in_array($request->position, $revealed)) {
+                return response()->json(['error' => 'Already revealed'], 400);
+            }
 
-        $isMine = in_array($request->position, $mines);
-        $revealed[] = $request->position;
-        $data['revealed'] = $revealed;
+            $isMine = in_array($request->position, $mines);
+            $revealed[] = $request->position;
+            $data['revealed'] = $revealed;
 
-        if ($isMine) {
-            $session->status = 'completed';
+            if ($isMine) {
+                $session->status = 'completed';
+                $session->save();
+
+                return response()->json([
+                    'is_mine' => true,
+                    'mines' => $mines,
+                    'payout' => 0,
+                    'server_seed' => $data['server_seed'],
+                    'balance' => $request->user()->fresh()->balance,
+                ]);
+            }
+
+            $safeCount = count($revealed);
+            $multiplier = static::minesMultiplier($safeCount, $data['mine_count']);
+
+            $session->session_token = encrypt(json_encode($data));
             $session->save();
 
             return response()->json([
-                'is_mine' => true,
-                'mines' => $mines,
-                'payout' => 0,
-                'server_seed' => $data['server_seed'],
-                'balance' => $request->user()->fresh()->balance,
+                'is_mine' => false,
+                'position' => $request->position,
+                'multiplier' => $multiplier,
+                'potential_payout' => round($data['amount'] * $multiplier, 2),
             ]);
-        }
-
-        $safeCount = count($revealed);
-        $totalSafe = 25 - $data['mine_count'];
-        $multiplier = static::minesMultiplier($safeCount, $data['mine_count']);
-
-        $session->session_token = encrypt(json_encode($data));
-        $session->save();
-
-        return response()->json([
-            'is_mine' => false,
-            'position' => $request->position,
-            'multiplier' => $multiplier,
-            'potential_payout' => round($data['amount'] * $multiplier, 2),
-        ]);
+        });
     }
 
     public function minesCashout(Request $request)
@@ -273,35 +266,38 @@ class MiniGamesController extends Controller
             'session_id' => 'required|string',
         ]);
 
-        $session = CasinoSession::where('uuid', $request->session_id)
-            ->where('user_id', $request->user()->id)
-            ->where('status', 'active')
-            ->firstOrFail();
+        return DB::transaction(function () use ($request) {
+            $session = CasinoSession::lockForUpdate()
+                ->where('uuid', $request->session_id)
+                ->where('user_id', $request->user()->id)
+                ->where('status', 'active')
+                ->firstOrFail();
 
-        $data = json_decode(decrypt($session->session_token), true);
-        $safeCount = count($data['revealed']);
+            $data = json_decode(decrypt($session->session_token), true);
+            $safeCount = count($data['revealed']);
 
-        if ($safeCount === 0) {
-            return response()->json(['error' => 'Must reveal at least one tile'], 400);
-        }
+            if ($safeCount === 0) {
+                return response()->json(['error' => 'Must reveal at least one tile'], 400);
+            }
 
-        $multiplier = static::minesMultiplier($safeCount, $data['mine_count']);
-        $payout = round($data['amount'] * $multiplier, 2);
+            $multiplier = static::minesMultiplier($safeCount, $data['mine_count']);
+            $payout = round($data['amount'] * $multiplier, 2);
 
-        $user = $request->user();
-        $user->increment('balance', $payout);
+            $user = User::lockForUpdate()->find($request->user()->id);
+            $user->increment('balance', $payout);
 
-        $session->win_amount = $payout;
-        $session->status = 'completed';
-        $session->save();
+            $session->win_amount = $payout;
+            $session->status = 'completed';
+            $session->save();
 
-        return response()->json([
-            'payout' => $payout,
-            'multiplier' => $multiplier,
-            'mines' => $data['mines'],
-            'server_seed' => $data['server_seed'],
-            'balance' => $user->fresh()->balance,
-        ]);
+            return response()->json([
+                'payout' => $payout,
+                'multiplier' => $multiplier,
+                'mines' => $data['mines'],
+                'server_seed' => $data['server_seed'],
+                'balance' => $user->fresh()->balance,
+            ]);
+        });
     }
 
     private static function minesMultiplier(int $revealed, int $mineCount): float
@@ -332,15 +328,9 @@ class MiniGamesController extends Controller
             'current_card' => 'nullable|integer|min:1|max:13',
         ]);
 
-        $user = $request->user();
-        if ($user->balance < $request->amount) {
-            throw ValidationException::withMessages(['amount' => ['Insufficient balance.']]);
-        }
-
         $serverSeed = ProvablyFair::generateServerSeed();
         $clientSeed = $request->input('client_seed', Str::random(16));
         $nonce = rand(1, 999999);
-
         $card = ProvablyFair::hiloCard($serverSeed, $clientSeed, $nonce);
         $currentCard = $request->current_card ?? rand(1, 13);
 
@@ -354,8 +344,13 @@ class MiniGamesController extends Controller
         $multiplier = $winChance > 0 ? round((1 / $winChance) * 0.97, 4) : 0;
         $payout = $won ? round($request->amount * $multiplier, 2) : 0;
 
-        DB::beginTransaction();
-        try {
+        return DB::transaction(function () use ($request, $serverSeed, $clientSeed, $nonce, $card, $currentCard, $won, $multiplier, $payout) {
+            $user = User::lockForUpdate()->find($request->user()->id);
+            if ($user->balance < $request->amount) {
+                throw ValidationException::withMessages(['amount' => ['Insufficient balance.']]);
+            }
+
+            $balance_before = $user->balance;
             $user->decrement('balance', $request->amount);
             if ($won) {
                 $user->increment('balance', $payout);
@@ -367,11 +362,9 @@ class MiniGamesController extends Controller
                 'casino_game_id' => self::gameId('hilo'),
                 'bet_amount' => $request->amount,
                 'win_amount' => $payout,
-                'balance_before' => $user->balance + $request->amount - $payout,
+                'balance_before' => $balance_before,
                 'status' => 'completed',
             ]);
-
-            DB::commit();
 
             return response()->json([
                 'card' => $card,
@@ -385,9 +378,6 @@ class MiniGamesController extends Controller
                 'client_seed' => $clientSeed,
                 'nonce' => $nonce,
             ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw $e;
-        }
+        });
     }
 }
