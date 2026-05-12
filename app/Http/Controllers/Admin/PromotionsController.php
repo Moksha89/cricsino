@@ -167,8 +167,8 @@ class PromotionsController extends Controller
 
     public function creditClaim(Request $request, PromotionClaim $claim)
     {
-        if (!in_array($claim->status, ['pending', 'approved'])) {
-            return back()->with('error', 'Claim must be pending or approved to credit.');
+        if ($claim->status !== 'approved') {
+            return back()->with('error', 'Claim must be approved before crediting.');
         }
 
         $success = BonusCreditingService::creditBonus($claim, $request->user()->id);
