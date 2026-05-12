@@ -88,6 +88,9 @@ class StakesController extends Controller
         }
         $bet = Bet::find($request->bet_id);
         $game = Game::find($request->game_id);
+        if ($game->closed || !$game->active) {
+            throw ValidationException::withMessages(['game' => ['Betting is closed for this match.']]);
+        }
         //ensure market is attached.
         $game->markets()->syncWithoutDetaching([$bet->market_id => ['uuid' => Str::uuid()]]);
         $stake = new Stake();

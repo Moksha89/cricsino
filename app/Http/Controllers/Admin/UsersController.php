@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Wager;
 use App\TwoFactorAuth\Actions\DisableTwoFactorAuthentication;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -167,25 +168,30 @@ class UsersController extends Controller
             'details' => 'string|required',
             'type' => ['required', new Enum(TransactionAction::class)]
         ]);
-        $balance_before = $user->balance;
-        if ($request->type == 'credit') {
-            $user->increment('balance', $request->amount);
-        }
-        if ($request->type == 'debit') {
-            $user->decrement('balance', $request->amount);
-        }
-        $user->save();
-        $user->transactions()->create([
-            'user_id' => $user->id,
-            'transactable_id' => $user->id,
-            'transactable_type' => $user->getMorphClass(),
-            'description' => $request->details,
-            'amount' => $request->amount,
-            'balance_before' => $balance_before,
-            'action' => TransactionAction::from($request->type),
-            'type' => TransactionType::ADMIN_ACTION
-        ]);
-        return back()->with('success', __('Transaction Executed successfully'));
+        return DB::transaction(function () use ($request, $user) {
+            $user = User::lockForUpdate()->find($user->id);
+            $balance_before = $user->balance;
+            if ($request->type == 'debit' && $user->balance < $request->amount) {
+                return back()->with('error', __('Insufficient balance for debit'));
+            }
+            if ($request->type == 'credit') {
+                $user->increment('balance', $request->amount);
+            }
+            if ($request->type == 'debit') {
+                $user->decrement('balance', $request->amount);
+            }
+            $user->transactions()->create([
+                'user_id' => $user->id,
+                'transactable_id' => $user->id,
+                'transactable_type' => $user->getMorphClass(),
+                'description' => $request->details,
+                'amount' => $request->amount,
+                'balance_before' => $balance_before,
+                'action' => TransactionAction::from($request->type),
+                'type' => TransactionType::ADMIN_ACTION
+            ]);
+            return back()->with('success', __('Transaction Executed successfully'));
+        });
     }
 
     /**

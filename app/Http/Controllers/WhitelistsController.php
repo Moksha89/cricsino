@@ -34,10 +34,12 @@ class WhitelistsController extends Controller
             ->with(['user', 'currency'])
             ->where('user_id', $request->user()->id);
         if (!empty($keyword)) {
-            $query->where('uuid', 'LIKE', "%$keyword%")
-                ->orWhere('currency_id', 'LIKE', "%$keyword%")
-                ->orWhere('payout_address', 'LIKE', "%$keyword%")
-                ->orWhere('status', 'LIKE', "%$keyword%");
+            $query->where(function ($q) use ($keyword) {
+                $q->where('uuid', 'LIKE', "%$keyword%")
+                    ->orWhere('currency_id', 'LIKE', "%$keyword%")
+                    ->orWhere('payout_address', 'LIKE', "%$keyword%")
+                    ->orWhere('status', 'LIKE', "%$keyword%");
+            });
         }
         $whitelistsItems = $query->latest()->paginate($perPage);
         $whitelists = WhitelistResource::collection($whitelistsItems);

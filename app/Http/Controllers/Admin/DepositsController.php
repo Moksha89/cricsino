@@ -9,6 +9,7 @@ use App\Http\Resources\Deposit as DepositResource;
 
 use App\Models\Deposit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class DepositsController extends Controller
@@ -59,13 +60,19 @@ class DepositsController extends Controller
      */
     public function complete(Request $request, Deposit $deposit)
     {
-        if ($deposit->status == DepositStatus::COMPLETE) {
-            return back()->with('error', "Deposit already complete");
-        }
-        $deposit->status = DepositStatus::COMPLETE;
-        $deposit->gateway_error = null;
-        $deposit->save();
-        app(DepositTx::class)->create($deposit);
-        return  back();
+        return DB::transaction(function () use ($deposit) {
+            $deposit = Deposit::lockForUpdate()->find($deposit->id);
+            if ($deposit->status == DepositStatus::COMPLETE) {
+                return back()->with('error', "Deposit already complete");
+            }
+            if ($deposit->status == DepositStatus::FAILED) {
+                return back()->with('error', "Cannot approve a failed deposit");
+            }
+            $deposit->status = DepositStatus::COMPLETE;
+            $deposit->gateway_error = null;
+            $deposit->save();
+            app(DepositTx::class)->create($deposit);
+            return back()->with('success', 'Deposit approved successfully');
+        });
     }
 }
