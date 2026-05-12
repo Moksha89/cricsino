@@ -14,6 +14,7 @@
 		MdSportsvolleyballOutlined,
 		MdWalletRound,
 		RiAlarmWarningFill,
+		RiGamepadFill,
 		RiStackFill,
 		RiUserSettingsFill,
 	} from "oh-vue-icons/icons";
@@ -260,6 +261,30 @@
 					url: window.route("admin.agents.hierarchy"),
 					active: window.route().current("admin.agents.hierarchy"),
 					value: "agents.hierarchy",
+					id: uid(),
+				},
+			],
+		},
+		{
+			text: "Casino Games",
+			url: "#",
+			active: window.route().current("admin.casino.*"),
+			value: "casino",
+			icon: RiGamepadFill,
+			id: uid(),
+			submenu: [
+				{
+					text: "All Games",
+					url: window.route("admin.casino.index"),
+					active: window.route().current("admin.casino.index"),
+					value: "casino.index",
+					id: uid(),
+				},
+				{
+					text: "Add Game",
+					url: window.route("admin.casino.create"),
+					active: window.route().current("admin.casino.create"),
+					value: "casino.create",
 					id: uid(),
 				},
 			],
