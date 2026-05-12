@@ -60,7 +60,7 @@
 		<div class="p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
 			<div class="flex items-center gap-3 mb-4">
 				<Link
-					:href="window.route('admin.support.index')"
+					:href="route('admin.support.index')"
 					class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition">
 					<ArrowLeft class="w-4 h-4" />
 					Back to Tickets

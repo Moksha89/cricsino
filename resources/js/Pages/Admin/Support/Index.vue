@@ -132,7 +132,7 @@
 									<td class="p-4 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{{ formatDate(conv.created_at) }}</td>
 									<td class="p-4 whitespace-nowrap">
 										<Link
-											:href="window.route('admin.support.show', conv.id)"
+											:href="route('admin.support.show', conv.id)"
 											class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/40 transition">
 											<Eye class="w-3.5 h-3.5" />
 											View
