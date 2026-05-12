@@ -58,6 +58,7 @@
 		logo_uri: null,
 		coincap_apikey: null,
 		apifootball_api_key: null,
+		theoddsapi_api_key: null,
 		...props.settings,
 	});
 	const saving = ref(1);
@@ -422,6 +423,27 @@
 								:help="
 									$t(
 										'The free key is too limitted for more than 10 games.',
+									)
+								"></FormInput>
+						</div>
+						<div
+							class="w-full border mt-4 dark:border-gray-600 p-6 rounded-sm">
+							<h3 class="text-emerald-500">THEODDSAPI KEY</h3>
+							<p class="mb-2">
+								Get your key here.
+								<a
+									target="_blank"
+									class="text-sky-500 dark:hover:text-sky-300 hover:text-sky-700"
+									href="https://the-odds-api.com/#get-access">
+									https://the-odds-api.com
+								</a>
+							</p>
+							<FormInput
+								type="password"
+								v-model="form.theoddsapi_api_key"
+								:help="
+									$t(
+										'Free tier: 500 requests/month. Used for cricket/IPL and other sport odds.',
 									)
 								"></FormInput>
 						</div>

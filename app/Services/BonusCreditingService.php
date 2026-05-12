@@ -17,13 +17,18 @@ class BonusCreditingService
     public static function creditBonus(PromotionClaim $claim, ?int $adminId = null): bool
     {
         return DB::transaction(function () use ($claim, $adminId) {
-            $user = User::lockForUpdate()->find($claim->user_id);
+            $freshClaim = PromotionClaim::lockForUpdate()->find($claim->id);
+            if (!$freshClaim || $freshClaim->status !== 'approved') {
+                return false;
+            }
+
+            $user = User::lockForUpdate()->find($freshClaim->user_id);
             if (!$user) {
                 return false;
             }
 
             $balanceBefore = (float) ($user->bonus ?? 0);
-            $bonusAmount = (float) $claim->bonus_amount;
+            $bonusAmount = (float) $freshClaim->bonus_amount;
             $balanceAfter = round($balanceBefore + $bonusAmount, 2);
 
             $user->bonus = $balanceAfter;
@@ -31,21 +36,21 @@ class BonusCreditingService
 
             BonusTransaction::create([
                 'user_id' => $user->id,
-                'promotion_id' => $claim->promotion_id,
-                'claim_id' => $claim->id,
+                'promotion_id' => $freshClaim->promotion_id,
+                'claim_id' => $freshClaim->id,
                 'amount' => $bonusAmount,
                 'type' => 'credit',
                 'balance_before' => $balanceBefore,
                 'balance_after' => $balanceAfter,
-                'description' => 'Bonus credited: ' . ($claim->promotion->title ?? 'Promotion #' . $claim->promotion_id),
+                'description' => 'Bonus credited: ' . ($freshClaim->promotion->title ?? 'Promotion #' . $freshClaim->promotion_id),
                 'created_by' => $adminId,
             ]);
 
-            $claim->update([
+            $freshClaim->update([
                 'status' => 'credited',
                 'credited_at' => now(),
-                'approved_by' => $adminId ?? $claim->approved_by,
-                'approved_at' => $claim->approved_at ?? now(),
+                'approved_by' => $adminId ?? $freshClaim->approved_by,
+                'approved_at' => $freshClaim->approved_at ?? now(),
             ]);
 
             return true;

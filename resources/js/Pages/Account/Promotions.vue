@@ -195,7 +195,7 @@ function formatCurrency(val) {
                                 <div v-if="promo.user_claims_count > 0" class="text-xs text-gray-400 mb-1 text-center">
                                     Claimed {{ promo.user_claims_count }}x
                                 </div>
-                                <div v-if="promo.type === 'deposit' && promo.can_claim" class="mb-2">
+                                <div v-if="(promo.min_deposit || promo.bonus_percent) && promo.can_claim" class="mb-2">
                                     <input
                                         v-model="depositAmount"
                                         type="number"

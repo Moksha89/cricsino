@@ -47,9 +47,11 @@ class Odd extends Model
         'game_id',
         'game_type',
         'market_id',
+        'league_id',
         'oddId',
         'odd',
         'md5',
+        'bookie',
         'active',
     ];
 
