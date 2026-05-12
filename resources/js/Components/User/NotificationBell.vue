@@ -5,6 +5,13 @@ import { Bell, CheckCheck, ArrowDownCircle, ArrowUpCircle, CheckCircle, XCircle,
 
 const page = usePage();
 const unreadCount = computed(() => page.props.notificationCount ?? 0);
+
+function getCsrfToken() {
+	const meta = document.querySelector('meta[name="csrf-token"]');
+	if (meta) return meta.content;
+	const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
+	return match ? decodeURIComponent(match[1]) : '';
+}
 const dropdownOpen = ref(false);
 const notifications = ref([]);
 const loading = ref(false);
@@ -77,7 +84,7 @@ async function markAsRead(id) {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
 				'X-Requested-With': 'XMLHttpRequest',
-				'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content,
+				'X-XSRF-TOKEN': getCsrfToken(),
 			},
 		});
 		const n = notifications.value.find(n => n.id === id);
@@ -96,7 +103,7 @@ async function markAllAsRead() {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
 				'X-Requested-With': 'XMLHttpRequest',
-				'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content,
+				'X-XSRF-TOKEN': getCsrfToken(),
 			},
 		});
 		notifications.value.forEach(n => n.read_at = new Date().toISOString());

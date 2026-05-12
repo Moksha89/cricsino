@@ -11,6 +11,7 @@ class NotificationsController extends Controller
     {
         $notifications = $request->user()
             ->notifications()
+            ->where('type', 'not like', '%Admin%')
             ->latest()
             ->paginate(20);
 
@@ -23,11 +24,15 @@ class NotificationsController extends Controller
     {
         $notifications = $request->user()
             ->notifications()
+            ->where('type', 'not like', '%Admin%')
             ->latest()
             ->take(10)
             ->get();
 
-        $unreadCount = $request->user()->unreadNotifications()->count();
+        $unreadCount = $request->user()
+            ->unreadNotifications()
+            ->where('type', 'not like', '%Admin%')
+            ->count();
 
         return response()->json([
             'notifications' => $notifications,
@@ -39,6 +44,7 @@ class NotificationsController extends Controller
     {
         $notification = $request->user()
             ->notifications()
+            ->where('type', 'not like', '%Admin%')
             ->findOrFail($id);
 
         $notification->markAsRead();
@@ -52,7 +58,11 @@ class NotificationsController extends Controller
 
     public function markAllAsRead(Request $request)
     {
-        $request->user()->unreadNotifications->markAsRead();
+        $request->user()
+            ->unreadNotifications()
+            ->where('type', 'not like', '%Admin%')
+            ->get()
+            ->markAsRead();
 
         if ($request->wantsJson()) {
             return response()->json(['success' => true]);
