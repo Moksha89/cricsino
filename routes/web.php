@@ -25,6 +25,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\WagersController;
 use App\Http\Controllers\WhitelistsController;
 use App\Http\Controllers\WithdrawsController;
+use App\Http\Controllers\PromotionsController;
 use App\Http\Middleware\OnlyTimedOut;
 use App\Http\Middleware\Timeout;
 use App\Http\Resources\Personal;
@@ -243,7 +244,7 @@ Route::name('accounts.')
         Route::get('/settings/limits', 'limits')->name('limits');
         Route::get('/commission', 'commission')->name('commission');
         Route::get('/referrals', 'referrals')->name('referrals');
-        Route::get('/promotions', 'promotions')->name('promotions');
+        // promotions moved to PromotionsController
         Route::post('/feedback', 'feedback')->name('feedback');
         Route::post('/optin', 'optin')->name('optin');
         Route::put('/verify/address', 'verifyAddress')->name('verify.address');
@@ -254,6 +255,16 @@ Route::name('accounts.')
 
 #transactions
 
+# User Promotions
+Route::name('promotions.')
+    ->prefix('account/promotions')
+    ->controller(PromotionsController::class)
+    ->middleware('auth')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/{promotion}/claim', 'claim')->middleware('throttle:10,1')->name('claim');
+        Route::get('/claims', 'claimHistory')->name('claims');
+    });
 
 #personal
 Route::name('personal.')

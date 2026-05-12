@@ -666,6 +666,30 @@
 			icon: MdMessageOutlined,
 			id: uid(),
 		},
+		{
+			text: "Promotions",
+			url: "#",
+			active: window.route().current("admin.promotions.*"),
+			value: "promotions",
+			icon: RiStackFill,
+			id: uid(),
+			submenu: [
+				{
+					text: "All Promotions",
+					url: window.route("admin.promotions.index"),
+					active: window.route().current("admin.promotions.index"),
+					value: "promotions.index",
+					id: uid(),
+				},
+				{
+					text: "Create Promotion",
+					url: window.route("admin.promotions.create"),
+					active: window.route().current("admin.promotions.create"),
+					value: "promotions.create",
+					id: uid(),
+				},
+			],
+		},
 	]);
 
 	const showSidebar = ref(false);

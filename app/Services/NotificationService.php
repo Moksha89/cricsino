@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Deposit;
+use App\Models\PromotionClaim;
 use App\Models\User;
 use App\Models\Withdraw;
 use App\Models\Stake;
@@ -10,11 +11,13 @@ use App\Models\Agent;
 use App\Models\SupportConversation;
 use App\Notifications\Admin\AgentCreditDebitNotification;
 use App\Notifications\Admin\NewDepositNotification;
+use App\Notifications\Admin\NewPromotionClaimNotification;
 use App\Notifications\Admin\NewSupportTicketNotification;
 use App\Notifications\Admin\NewUserRegisteredNotification;
 use App\Notifications\Admin\NewWithdrawalNotification;
 use App\Notifications\Admin\SupportUserRepliedNotification;
 use App\Notifications\User\BetPlacedNotification;
+use App\Notifications\User\BonusCreditedNotification;
 use App\Notifications\User\DepositCompletedNotification;
 use App\Notifications\User\DepositCreatedNotification;
 use App\Notifications\User\DepositFailedNotification;
@@ -85,6 +88,16 @@ class NotificationService
     public static function supportAdminReplied(SupportConversation $conversation): void
     {
         $conversation->user->notify(new SupportAdminRepliedNotification($conversation));
+    }
+
+    public static function promotionClaimed(PromotionClaim $claim): void
+    {
+        static::notifyAdmins(new NewPromotionClaimNotification($claim));
+    }
+
+    public static function bonusCredited(PromotionClaim $claim): void
+    {
+        $claim->user->notify(new BonusCreditedNotification($claim));
     }
 
     protected static function notifyAdmins($notification): void
