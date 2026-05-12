@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { Link, usePage, router } from "@inertiajs/vue3";
+import NotificationBell from "@/Components/User/NotificationBell.vue";
 
 const page = usePage();
 const user = computed(() => page.props.auth?.user);
@@ -62,6 +63,8 @@ function handleToggle() {
 			<div class="flex items-center gap-1 bg-gray-800 rounded-xl px-3 py-1.5 border border-white/[0.06]">
 				<span class="text-success font-bold text-sm">₹{{ Number(balance).toLocaleString() }}</span>
 			</div>
+			<!-- Notifications -->
+			<NotificationBell />
 			<!-- Deposit Button -->
 			<Link
 				:href="route('deposits.create')"

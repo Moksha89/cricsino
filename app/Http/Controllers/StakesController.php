@@ -18,6 +18,7 @@ use App\Models\GameMarket;
 use App\Http\Resources\StatStake;
 use App\Models\Bet;
 use App\Models\Game;
+use App\Services\NotificationService;
 use App\Support\EventHydrant;
 use App\Support\TradeManager;
 use Gate;
@@ -121,6 +122,7 @@ class StakesController extends Controller
             DB::commit();
             $gameMarket = GameMarket::where('game_id', $stake->game_id)->where('market_id', $stake->market_id)->first();
             static::fireEvents($gameMarket);
+            NotificationService::betPlaced($stake);
             return back()->with('success', __('Bet placed successfully'));
         } catch (\Exception $e) {
             DB::rollBack();

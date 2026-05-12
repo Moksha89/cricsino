@@ -279,3 +279,11 @@ Route::name('casino.')->controller(\App\Http\Controllers\Admin\CasinoGamesContro
     Route::put('/casino-games/{casinoGame}/toggle', 'toggle')->name('toggle');
     Route::delete('/casino-games/{casinoGame}', 'destroy')->name('destroy');
 });
+
+# Admin Notifications
+Route::name('notifications.')->controller(\App\Http\Controllers\Admin\NotificationsController::class)->group(function () {
+    Route::get('/notifications', 'index')->name('index');
+    Route::get('/notifications/latest', 'latest')->name('latest');
+    Route::post('/notifications/{id}/read', 'markAsRead')->name('read');
+    Route::post('/notifications/read-all', 'markAllAsRead')->name('read.all');
+});

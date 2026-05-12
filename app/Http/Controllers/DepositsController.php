@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Deposit as DepositResource;
 use App\Models\Currency;
 use App\Models\Deposit;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
@@ -107,6 +108,7 @@ class DepositsController extends Controller
         $deposit->data = null;
         $deposit->status = DepositStatus::PENDING;
         $deposit->save();
+        NotificationService::depositCreated($deposit);
         return $gateway->driver()->deposit($deposit);
     }
 

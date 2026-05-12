@@ -58,6 +58,8 @@ class HandleInertiaRequests extends Middleware
                 ];
             },
             'isAdmin' => fn() => $user ? $user->isAdmin() : false,
+            'notificationCount' => fn() => $user ? $user->unreadNotifications()->where('type', 'not like', '%Admin%')->count() : 0,
+            'adminNotificationCount' => fn() => $user && $user->isAdmin() ? $user->unreadNotifications()->where('type', 'like', '%Admin%')->count() : 0,
             'flash' => [
                 'message' => fn() => $request->session()->get('message'),
                 'error' => fn() => $request->session()->get('error'),

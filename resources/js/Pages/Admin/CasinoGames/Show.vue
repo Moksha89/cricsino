@@ -125,7 +125,7 @@
 		<div class="flex flex-wrap items-start justify-between gap-4">
 			<div class="flex items-center gap-4">
 				<Link
-					:href="window.route('admin.casino.index')"
+					:href="route('admin.casino.index')"
 					class="rounded-lg p-2 text-slate-400 transition-colors hover:bg-slate-700/50 hover:text-slate-200"
 				>
 					<ArrowLeft class="h-5 w-5" />

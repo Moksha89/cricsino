@@ -99,7 +99,7 @@
 					Manage casino games, providers, and categories.
 				</p>
 			</div>
-			<Link :href="window.route('admin.casino.create')">
+			<Link :href="route('admin.casino.create')">
 				<PrimaryButton class="flex items-center gap-2">
 					<Plus class="h-4 w-4" />
 					Add Game
@@ -291,7 +291,7 @@
 								>
 									<Link
 										:href="
-											window.route(
+											route(
 												'admin.casino.show',
 												game.id,
 											)
@@ -347,7 +347,7 @@
 				</p>
 				<Link
 					v-if="!search"
-					:href="window.route('admin.casino.create')"
+					:href="route('admin.casino.create')"
 					class="mt-4"
 				>
 					<PrimaryButton class="flex items-center gap-2">
