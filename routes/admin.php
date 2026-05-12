@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\GamesController;
 use App\Http\Controllers\Admin\LeaguesController;
 use App\Http\Controllers\Admin\MarketsController;
 use App\Http\Controllers\Admin\OddsController;
+use App\Http\Controllers\Admin\PromotionsController;
 use App\Http\Controllers\Admin\ScoresController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\SlidersController;
@@ -278,4 +279,36 @@ Route::name('casino.')->controller(\App\Http\Controllers\Admin\CasinoGamesContro
     Route::put('/casino-games/{casinoGame}', 'update')->name('update');
     Route::put('/casino-games/{casinoGame}/toggle', 'toggle')->name('toggle');
     Route::delete('/casino-games/{casinoGame}', 'destroy')->name('destroy');
+});
+
+# Admin Notifications
+Route::name('notifications.')->controller(\App\Http\Controllers\Admin\NotificationsController::class)->group(function () {
+    Route::get('/notifications', 'index')->name('index');
+    Route::get('/notifications/latest', 'latest')->name('latest');
+    Route::post('/notifications/{id}/read', 'markAsRead')->name('read');
+    Route::post('/notifications/read-all', 'markAllAsRead')->name('read.all');
+});
+
+# Admin Support
+Route::name('support.')->controller(\App\Http\Controllers\Admin\SupportController::class)->group(function () {
+    Route::get('/support', 'index')->name('index');
+    Route::get('/support/{conversation}', 'show')->name('show');
+    Route::post('/support/{conversation}/reply', 'reply')->middleware('throttle:30,1')->name('reply');
+    Route::put('/support/{conversation}/status', 'updateStatus')->name('status');
+});
+
+# Admin Promotions
+Route::name('promotions.')->controller(PromotionsController::class)->group(function () {
+    Route::get('/promotions', 'index')->name('index');
+    Route::get('/promotions/create', 'create')->name('create');
+    Route::post('/promotions', 'store')->name('store');
+    Route::get('/promotions/{promotion}', 'show')->name('show');
+    Route::get('/promotions/{promotion}/edit', 'edit')->name('edit');
+    Route::put('/promotions/{promotion}', 'update')->name('update');
+    Route::put('/promotions/{promotion}/toggle', 'toggle')->name('toggle');
+    Route::delete('/promotions/{promotion}', 'destroy')->name('destroy');
+    Route::put('/promotions/claims/{claim}/approve', 'approveClaim')->name('claims.approve');
+    Route::put('/promotions/claims/{claim}/reject', 'rejectClaim')->name('claims.reject');
+    Route::put('/promotions/claims/{claim}/credit', 'creditClaim')->name('claims.credit');
+    Route::put('/promotions/claims/{claim}/cancel', 'cancelClaim')->name('claims.cancel');
 });

@@ -8,13 +8,13 @@
 </script>
 <template>
 	<div
-		class="flex flex-[1_0_200px] flex-col text-center bg-white dark:bg-gray-850 rounded-sm mt-2.5 py-4 px-5">
+		class="flex flex-[1_0_200px] flex-col text-center bg-gray-800/50 border border-white/[0.06] rounded-sm mt-2.5 py-4 px-5">
 		<div
 			class="text-sm text-gray-550 dark:text-gray-250 font-bold tracking-[2px] text-left uppercase">
 			{{ stat.info }}
 		</div>
 		<div
-			class="flex-[1_0_auto] text-[2.5rem] font-bold font-inter py-6 text-gray-900 dark:text-white">
+			class="flex-[1_0_auto] text-[2.5rem] font-bold font-inter py-6 text-white">
 			<MoneyFormat v-if="isMoney" :amount="stat.stat" />
 			<span v-else>{{ stat.stat }}</span>
 		</div>

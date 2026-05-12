@@ -5,8 +5,10 @@ use App\Http\Controllers\DepositsController;
 use App\Http\Controllers\FavouritesController;
 use App\Http\Controllers\GamesController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\S3Controller;
+use App\Http\Controllers\SupportController;
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,6 +25,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\WagersController;
 use App\Http\Controllers\WhitelistsController;
 use App\Http\Controllers\WithdrawsController;
+use App\Http\Controllers\PromotionsController;
 use App\Http\Middleware\OnlyTimedOut;
 use App\Http\Middleware\Timeout;
 use App\Http\Resources\Personal;
@@ -241,7 +244,7 @@ Route::name('accounts.')
         Route::get('/settings/limits', 'limits')->name('limits');
         Route::get('/commission', 'commission')->name('commission');
         Route::get('/referrals', 'referrals')->name('referrals');
-        Route::get('/promotions', 'promotions')->name('promotions');
+        // promotions moved to PromotionsController
         Route::post('/feedback', 'feedback')->name('feedback');
         Route::post('/optin', 'optin')->name('optin');
         Route::put('/verify/address', 'verifyAddress')->name('verify.address');
@@ -252,6 +255,16 @@ Route::name('accounts.')
 
 #transactions
 
+# User Promotions
+Route::name('promotions.')
+    ->prefix('account/promotions')
+    ->controller(PromotionsController::class)
+    ->middleware('auth')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/{promotion}/claim', 'claim')->middleware('throttle:10,1')->name('claim');
+        Route::get('/claims', 'claimHistory')->name('claims');
+    });
 
 #personal
 Route::name('personal.')
@@ -269,6 +282,32 @@ Route::name('personal.')
 #personal
 
 
+
+#notifications
+Route::name('notifications.')
+    ->middleware('auth')
+    ->controller(NotificationsController::class)
+    ->group(function () {
+        Route::get('/notifications', 'index')->name('index');
+        Route::get('/notifications/latest', 'latest')->name('latest');
+        Route::post('/notifications/{id}/read', 'markAsRead')->name('read');
+        Route::post('/notifications/read-all', 'markAllAsRead')->name('read.all');
+    });
+#notifications
+
+#support
+Route::name('support.')
+    ->middleware(['auth', 'throttle:60,1'])
+    ->controller(SupportController::class)
+    ->group(function () {
+        Route::get('/support', 'index')->name('index');
+        Route::get('/support/create', 'create')->name('create');
+        Route::post('/support', 'store')->middleware('throttle:10,1')->name('store');
+        Route::get('/support/{conversation}', 'show')->name('show');
+        Route::post('/support/{conversation}/reply', 'reply')->middleware('throttle:30,1')->name('reply');
+        Route::put('/support/{conversation}/close', 'close')->name('close');
+    });
+#support
 
 #whitelists
 Route::name('whitelists.')

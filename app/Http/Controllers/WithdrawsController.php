@@ -13,6 +13,7 @@ use App\Models\Currency;
 use App\Models\Transaction;
 use App\Models\Whitelist;
 use App\Models\Withdraw;
+use App\Services\NotificationService;
 use App\Support\Rate;
 use DB;
 use Illuminate\Http\Request;
@@ -124,6 +125,7 @@ class WithdrawsController extends Controller
             // Deduct the amount from user's balance
             $user->decrement('balance', $withdraw->amount);
             DB::commit();
+            NotificationService::withdrawalRequested($withdraw);
             return redirect()->route('withdraws.show', ['withdraw' => $withdraw])->with('success', __('Withdrawal confirmed and sent for review.'));
         } catch (\Exception $e) {
             DB::rollBack();

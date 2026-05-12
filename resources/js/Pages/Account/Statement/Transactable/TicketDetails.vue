@@ -13,11 +13,11 @@
 <template>
 	<div class="">
 		<div class="flex items-center justify-between">
-			<p class="text-gray-600 dark:text-gray-300">
+			<p class="text-gray-300">
 				<span class="font-semibold mr-2">Stake:</span>
 				<MoneyFormat :amount="transaction.transactable.amount" />
 			</p>
-			<p class="text-gray-600 dark:text-gray-300">
+			<p class="text-gray-300">
 				<span class="font-semibold mr-2">Total Odds:</span>
 				<OddsFormat :odds="transaction.transactable.total_odds" />
 			</p>

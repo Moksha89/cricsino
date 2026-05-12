@@ -36,7 +36,7 @@ class Game extends JsonResource
             'startTime' => $this->startTime,
             'startTimeAgo' =>  $this->startTime->diffForHumans(),
             'endTime' => $this->endTime,
-            'status' => $status->gameState() ?? null,
+            'status' => $status?->gameState() ?? null,
             'statusText' => $status?->statusText() ?? null,
             'statusTooltip' => $status?->description() ?? null,
             'state' => $status?->gameState() ?? null,
