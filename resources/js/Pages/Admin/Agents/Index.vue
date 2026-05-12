@@ -345,7 +345,7 @@
 										</tbody>
 									</table>
 								</div>
-								<Pagination :data="agents" />
+								<Pagination :meta="agents" />
 							</div>
 						</div>
 					</div>
