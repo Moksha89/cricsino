@@ -29,7 +29,7 @@
 			<div class="mt-8 space-y-6">
 				<Link
 					:href="route('installer.requirements')"
-					class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm uppercase font-bold text-sm text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+					class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm uppercase font-bold text-sm text-white bg-primary-dark hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
 					Start Installation
 				</Link>
 			</div>

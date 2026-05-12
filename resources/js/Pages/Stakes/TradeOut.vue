@@ -11,7 +11,7 @@
 	import Loading from "@/Components/Loading.vue";
 	import MoneyFormat from "@/Components/MoneyFormat.vue";
 	import PrimaryButton from "@/Components/PrimaryButton.vue";
-	import AppLayout from "@/Layouts/FrontendLayout.vue";
+	import UserLayout from "@/Layouts/UserLayout.vue";
 	import MarketButtons from "@/Pages/Stakes/MarketButtons.vue";
 
 	const props = defineProps({
@@ -178,14 +178,14 @@
 </script>
 
 <template>
-	<AppLayout>
+	<UserLayout>
 		<div class="sm:px-3.5">
 			<div class="px-2 sm:px-0">
 				<BreadCrumbs class="mt-3" :crumbs="crumbs" />
 			</div>
 			<div class="grid px-2 sm:px-0 pb-6 pt-3">
 				<h1
-					class="text-lg sm:text-3xl md:text-4xl text-gray-850 dark:text-white font-inter font-extrabold">
+					class="text-lg sm:text-3xl md:text-4xl text-white font-inter font-extrabold">
 					{{ $t("Trade out") }}
 				</h1>
 				<div class="w-full">
@@ -195,7 +195,7 @@
 						:stake="stake" />
 				</div>
 				<div
-					class="p-6 mt-4 rounded bg-white dark:bg-gray-800 transition-colors duration-300">
+					class="p-6 mt-4 rounded bg-gray-800/50 border border-white/[0.06] transition-colors duration-300">
 					<div class="flex justify-center space-x-4 mb-6">
 						<PrimaryButton
 							class="uppercase text-xs"
@@ -259,7 +259,7 @@
 					</div>
 
 					<div class="mb-6">
-						<label class="mb-2 block text-gray-800 dark:text-white">
+						<label class="mb-2 block text-white">
 							Partial Trade-Out ({{ partialTradeOut }}%)
 							<MoneyFormat
 								v-if="stake"
@@ -275,7 +275,7 @@
 							step="1"
 							class="w-full" />
 						<div
-							class="flex justify-between text-gray-800 dark:text-white">
+							class="flex justify-between text-white">
 							<span>0%</span>
 							<span>50%</span>
 							<span>100%</span>
@@ -290,13 +290,13 @@
 							<span
 								:class="
 									result.value > 0
-										? 'text-emerald-700 dark:text-emerald-500'
+										? 'text-emerald-700 dark:text-primary'
 										: 'text-red-700 dark:text-red-500'
 								">
 								{{ result.label }}
 							</span>
 							<span
-								class="text-2xl text-gray-800 dark:text-white">
+								class="text-2xl text-white">
 								<MoneyFormat :amount="result.value" />
 							</span>
 						</div>
@@ -328,5 +328,5 @@
 				</div>
 			</div>
 		</div>
-	</AppLayout>
+	</UserLayout>
 </template>

@@ -47,10 +47,10 @@
 				{{ status }}
 			</div>
 			<div class="text-start mb-8">
-				<h2 class="text-3xl font-bold text-gray-800 dark:text-white">
+				<h2 class="text-3xl font-bold text-white">
 					Welcome Back 👋
 				</h2>
-				<p class="text-gray-600 dark:text-gray-300">
+				<p class="text-gray-300">
 					Enter the information you entered while registering.
 				</p>
 			</div>
@@ -73,7 +73,7 @@
 							@click="togglePassword"
 							class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
 							<VueIcon
-								class="h-5 w-5 text-emerald-500"
+								class="h-5 w-5 text-primary"
 								:icon="HiEye"
 								v-if="showPassword" />
 							<VueIcon
@@ -99,7 +99,7 @@
 						<Link
 							v-if="canResetPassword"
 							:href="route('password.request')"
-							class="font-medium text-amber-600 hover:text-amber-500">
+							class="font-medium text-primary hover:text-primary-light">
 							Forgot your password?
 						</Link>
 					</div>
@@ -123,7 +123,7 @@
 				Don't have an account?
 				<Link
 					:href="route('register')"
-					class="font-medium text-amber-600 hover:text-amber-500">
+					class="font-medium text-primary hover:text-primary-light">
 					Sign Up
 				</Link>
 			</p>

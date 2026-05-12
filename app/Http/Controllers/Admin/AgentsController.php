@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Agent;
 use App\Models\AgentTransaction;
 use App\Models\User;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -133,6 +134,7 @@ class AgentsController extends Controller
         ]);
 
         $agent->creditBalance($request->amount, $request->description ?? 'Admin credit');
+        NotificationService::agentCreditDebit($agent, 'credit', $request->amount);
         return back()->with('success', "Credited ₹{$request->amount} to agent {$agent->code}.");
     }
 
@@ -148,6 +150,7 @@ class AgentsController extends Controller
         }
 
         $agent->debitBalance($request->amount, $request->description ?? 'Admin debit');
+        NotificationService::agentCreditDebit($agent, 'debit', $request->amount);
         return back()->with('success', "Debited ₹{$request->amount} from agent {$agent->code}.");
     }
 

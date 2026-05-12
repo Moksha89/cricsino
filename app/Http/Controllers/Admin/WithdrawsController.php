@@ -13,6 +13,7 @@ use App\Http\Resources\Withdraw as WithdrawResource;
 use App\Models\Transaction;
 use App\Models\Withdraw;
 use App\Notifications\BalanceWithdraw;
+use App\Services\NotificationService;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -64,6 +65,7 @@ class WithdrawsController extends Controller
         $withdraw->status = WithdrawStatus::FAILED;
         $withdraw->gateway_error = __('Withdraw cancelled by admin');
         $withdraw->save();
+        NotificationService::withdrawalRejected($withdraw);
         return  back();
     }
 
@@ -112,6 +114,11 @@ class WithdrawsController extends Controller
         }
         $withdraw->status =  $status;
         $withdraw->save();
+        if ($status === WithdrawStatus::APPROVED || $status === WithdrawStatus::COMPLETE) {
+            NotificationService::withdrawalApproved($withdraw);
+        } elseif ($status === WithdrawStatus::REJECTED || $status === WithdrawStatus::FAILED) {
+            NotificationService::withdrawalRejected($withdraw);
+        }
         return  back();
     }
 

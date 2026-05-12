@@ -1,6 +1,6 @@
 <template>
 	<div class="space-y-2">
-		<div class="text-gray-600 dark:text-gray-300 flex justify-between">
+		<div class="text-gray-300 flex justify-between">
 			<span class="font-semibold">Payment Gateway:</span>
 			<div class="flex items-center space-x-3">
 				<span>{{ transaction.transactable.gateway?.name }}</span>
@@ -16,7 +16,7 @@
 				{{ transaction.transactable.gateway_currency }}
 			</span>
 		</p>
-		<p class="text-gray-600 dark:text-gray-300 flex justify-between">
+		<p class="text-gray-300 flex justify-between">
 			<span class="font-semibold">Status:</span>
 			<span class="uppercase font-bold">
 				{{ transaction.transactable.status }}

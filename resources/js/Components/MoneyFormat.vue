@@ -14,7 +14,11 @@
 	});
 
 	const page = usePage();
-	const config = computed(() => page.props.currency);
+	const config = computed(() => page.props.currency ?? {
+		currency_code: 'INR',
+		currency_symbol: '₹',
+		currency_display: 'auto',
+	});
 	const useBillions = (billion) => {
 		let newValue = parseInt(billion) ?? 0;
 		if (!newValue) return 0;
